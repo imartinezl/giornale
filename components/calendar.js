@@ -8,12 +8,18 @@ export class Calendario extends React.Component {
 		this.state = {
 			date : new Date()
 		};
+
+		// This binding is necessary to make `this` work in the callback
+		this._onDayPress = this._onDayPress.bind(this);
 	}
 	componentDidMount(){
 		console.log(this.state.date);
 	}
 	_onDayPress(day){
-		console.log('selected day', day)
+		console.log('selected day', day);
+		this.setState({
+			date: day.dateString
+		});
 	}
 	onDayLongPress(day){
 		console.log('selected day', day)
@@ -54,6 +60,17 @@ export class Calendario extends React.Component {
 			onPressArrowLeft={substractMonth => substractMonth()}
 			// Handler which gets executed when press arrow icon left. It receive a callback can go next month
 			onPressArrowRight={addMonth => addMonth()}
+
+			// Collection of dates that have to be colored in a special way. Default = {}
+			markedDates={
+				{
+				'2019-01-23': {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
+				'2019-01-04': {disabled: true, startingDay: true, color: 'green', endingDay: true},
+				'2019-01-18': {marked: true, dotColor: 'red', activeOpacity: 0},
+				[this.state.date] : {marked: true, dotColor: 'red', activeOpacity: 0}
+				}}
+			// Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
+			markingType={'simple'}
 			/>
 		);
   }
