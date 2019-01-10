@@ -31,7 +31,7 @@ export default class App extends React.Component {
   }
 
   _onPressButton() {
-    this.storeInFirebase('hello' + Date());
+    this.storeInFirebase('hello ' + Date());
     Alert.alert('You tapped the button!')
   }
   render() {
