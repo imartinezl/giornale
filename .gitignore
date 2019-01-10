@@ -1,7 +1,5 @@
 node_modules/**/*
-
 .expo/*
-
 npm-debug.*
-
 package-lock.json
+components/firebase_init.js

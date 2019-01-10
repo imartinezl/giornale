@@ -3,6 +3,12 @@ import { StyleSheet, Text, View, Alert, Button } from 'react-native';
 import Hyperlink from 'react-native-hyperlink';
 import {Calendario} from './components/calendar.js';
 
+
+import * as firebase from 'firebase';
+import {firebaseConfig} from './components/firebase_init.js'
+firebase.initializeApp(firebaseConfig);
+
+
 export default class App extends React.Component {
   constructor(props){
     super(props);
@@ -10,11 +16,22 @@ export default class App extends React.Component {
     this.state = {
       
     };
+
+    this._onPressButton = this._onPressButton.bind(this);
+    this.storeInFirebase = this.storeInFirebase.bind(this);
   }
   componentDidMount(){
     console.log(this.state);
   }
+  storeInFirebase(text) {
+    console.log('Saving...');
+    firebase.database().ref('test/').set({
+      highscore: text
+    });
+  }
+
   _onPressButton() {
+    this.storeInFirebase('hello' + Date());
     Alert.alert('You tapped the button!')
   }
   render() {
@@ -32,7 +49,9 @@ export default class App extends React.Component {
           This text will be parsed to check for clickable strings like https://open.spotify.com/track/00FRRwuaJP9KimukvLQCOz and made clickable.
           </Text>
         </Hyperlink>
+        <View>
         <Calendario/>
+        </View>
 
       </View>
     );

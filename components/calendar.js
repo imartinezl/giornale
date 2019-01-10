@@ -18,7 +18,7 @@ export class Calendario extends React.Component {
 	_onDayPress(day){
 		console.log('selected day', day);
 		this.setState({
-			date: day.dateString
+			currentDate: day.dateString
 		});
 	}
 	onDayLongPress(day){
@@ -28,11 +28,11 @@ export class Calendario extends React.Component {
 		return (
 			<Calendar
 			// Initially visible month. Default = Date()
-			current={new Date().toString()}
+			current={Date()}
 			// Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
 			minDate={'2019-01-01'}
 			// Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-			maxDate={'2019-09-01'}
+			maxDate={Date()}
 			// Handler which gets executed on day press. Default = undefined
 			onDayPress={this._onDayPress}
 			// Handler which gets executed on day long press. Default = undefined
@@ -67,7 +67,7 @@ export class Calendario extends React.Component {
 				'2019-01-23': {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
 				'2019-01-04': {disabled: true, startingDay: true, color: 'green', endingDay: true},
 				'2019-01-18': {marked: true, dotColor: 'red', activeOpacity: 0},
-				[this.state.date] : {marked: true, dotColor: 'red', activeOpacity: 0}
+				[this.state.currentDate] : {selected: true}
 				}}
 			// Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
 			markingType={'simple'}
