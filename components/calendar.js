@@ -30,7 +30,7 @@ export class Calendario extends React.Component {
 			// Initially visible month. Default = Date()
 			current={Date()}
 			// Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-			minDate={'2019-01-01'}
+			minDate={'2018-10-01'}
 			// Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
 			maxDate={Date()}
 			// Handler which gets executed on day press. Default = undefined
@@ -64,9 +64,9 @@ export class Calendario extends React.Component {
 			// Collection of dates that have to be colored in a special way. Default = {}
 			markedDates={
 				{
-				'2019-01-23': {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
-				'2019-01-04': {disabled: true, startingDay: true, color: 'green', endingDay: true},
-				'2019-01-18': {marked: true, dotColor: 'red', activeOpacity: 0},
+				// '2019-01-23': {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
+				// '2019-01-04': {disabled: true, startingDay: true, color: 'green', endingDay: true},
+				// '2019-01-18': {marked: true, dotColor: 'red', activeOpacity: 0},
 				[this.state.currentDate] : {selected: true}
 				}}
 			// Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
