@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, Button } from 'react-native';
+import { StyleSheet, Text, View, Alert, Button, StatusBar } from 'react-native';
 import Hyperlink from 'react-native-hyperlink';
 import {Calendario} from './components/calendar.js';
+import {AgendaC} from './components/agenda.js';
 
 
 import * as firebase from 'firebase';
@@ -36,7 +37,10 @@ export default class App extends React.Component {
   }
   render() {
     return (
-      <View style={styles.container}>
+      <View style={{flex: 1, backgroundColor: 'powderblue'}}>
+        <StatusBar hidden={true} />
+
+        <AgendaC/>
         <Text>Open up App.js to start working on your app!</Text>
         <View>
           <Button
@@ -49,9 +53,8 @@ export default class App extends React.Component {
           This text will be parsed to check for clickable strings like https://open.spotify.com/track/00FRRwuaJP9KimukvLQCOz and made clickable.
           </Text>
         </Hyperlink>
-        <View>
-        <Calendario/>
-        </View>
+
+
 
       </View>
     );
