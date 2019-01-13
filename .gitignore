@@ -3,3 +3,4 @@ node_modules/**/*
 npm-debug.*
 package-lock.json
 components/firebase_init.js
+.DS_Store

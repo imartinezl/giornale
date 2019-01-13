@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
 export class AgendaC extends React.Component {
@@ -7,23 +7,46 @@ export class AgendaC extends React.Component {
 		super(props);
 
 		this.state = {
-			date : new Date()
+			
 		};
 
-		// This binding is necessary to make `this` work in the callback
-		this._onDayPress = this._onDayPress.bind(this);
 	}
 	componentDidMount(){
-		console.log(this.state.date);
+		this.setState({
+			currentDate: '2012-05-22'
+		});
+		console.log('Component mount:');
+		console.log(this.state);
+
 	}
 	_onDayPress(day){
-		console.log('selected day', day);
+		console.log('day pressed:', day);
 		this.setState({
 			currentDate: day.dateString
 		});
 	}
-	onDayLongPress(day){
-		console.log('selected day', day)
+	renderItem(item, firstItemInDay) {
+		if(item.dateString === this.state.currentDate){
+		    return (
+		      <View style={styles.item}><Text>{item.text}</Text></View>
+		    );
+		}
+	}
+	renderEmptyDate() {
+		return (
+			<View style={styles.emptyDate}><Text>This is empty date!</Text></View>
+		);
+	}	
+	renderDay(day, item) {
+		console.log("DAY:")
+		console.log(day,item);
+		if(typeof day !== "undefined"){
+			return (
+					<View style={styles.day}><Text>{day.dateString}</Text></View>
+			);
+		}else{
+			return(<View />);
+		}
 	}
 	render() {
 		return (
@@ -35,34 +58,37 @@ export class AgendaC extends React.Component {
 			    {'2012-05-22': [{text: 'item 1 - any js object'}],
 			     '2012-05-23': [{text: 'item 2 - any js object'}],
 			     '2012-05-24': [],
-			     '2012-05-25': [{text: 'item 3 - any js object'},{text: 'any js object'}],
+			     '2012-05-28': [{text: 'item 3 - any js object'},{text: 'any js object'}],
 			    }}
 			  // callback that gets called when items for a certain month should be loaded (month became visible)
 			  loadItemsForMonth={(month) => {console.log('trigger items loading')}}
 			  // callback that fires when the calendar is opened or closed
 			  onCalendarToggled={(calendarOpened) => {console.log(calendarOpened)}}
 			  // callback that gets called on day press
-			  onDayPress={(day)=>{console.log('day pressed')}}
+			  onDayPress={this._onDayPress.bind(this)}
 			  // callback that gets called when day changes while scrolling agenda list
 			  onDayChange={(day)=>{console.log('day changed')}}
 			  // initially selected day
-			  selected={'2012-05-16'}
+			  selected={'2012-05-22'}
 			  // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
 			  minDate={'2012-05-10'}
 			  // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
 			  maxDate={'2012-05-30'}
 			  // Max amount of months allowed to scroll to the past. Default = 50
-			  pastScrollRange={50}
+			  pastScrollRange={5}
 			  // Max amount of months allowed to scroll to the future. Default = 50
-			  futureScrollRange={50}
+			  futureScrollRange={5}
 			  // specify how each item should be rendered in agenda
-			  renderItem={(item, firstItemInDay) => {return (<View />);}}
+			  renderItem={this.renderItem.bind(this)}
+			  //renderItem={(item, firstItemInDay) => {console.log(item);return (<Text/>);}}
 			  // specify how each date should be rendered. day can be undefined if the item is not first in that day.
-			  renderDay={(day, item) => {return (<View />);}}
+			  renderDay={this.renderDay.bind(this)}
+			  //renderDay={(day, item) => {return (<View />);}}
 			  // specify how empty date content with no items should be rendered
-			  renderEmptyDate={() => {return (<View />);}}
+			  renderEmptyDate={this.renderEmptyDate.bind(this)}
+			  // renderEmptyDate={() => {return (<View />);}}
 			  // specify how agenda knob should look like
-			  renderKnob={() => {return (<View />);}}
+			  //renderKnob={() => {return (<View />);}}
 			  // specify what should be rendered instead of ActivityIndicator
 			  renderEmptyData = {() => {return (<View />);}}
 			  // specify your item comparison function for increased performance
@@ -94,3 +120,24 @@ export class AgendaC extends React.Component {
 		);
   }
 }
+
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: 'white',
+    flex: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17
+  },
+  emptyDate: {
+    height: 15,
+    flex:1,
+    paddingTop: 30
+  },
+  day:{
+	padding: 10,
+    marginRight: 10,
+    marginTop: 17
+  }
+});
