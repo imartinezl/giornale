@@ -26,11 +26,9 @@ export class AgendaC extends React.Component {
 		});
 	}
 	renderItem(item, firstItemInDay) {
-		if(item.dateString === this.state.currentDate){
-		    return (
-		      <View style={styles.item}><Text>{item.text}</Text></View>
-		    );
-		}
+	    return (
+	      <View style={styles.item}><Text>{item.text}</Text></View>
+	    );
 	}
 	renderEmptyDate() {
 		return (
@@ -112,7 +110,7 @@ export class AgendaC extends React.Component {
 			    agendaDayTextColor: 'yellow',
 			    agendaDayNumColor: 'green',
 			    agendaTodayColor: 'red',
-			    agendaKnobColor: 'blue'
+			    agendaKnobColor: 'red'
 			  }}
 			  // agenda container style
 			  style={{}}
