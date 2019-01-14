@@ -11,19 +11,41 @@ export class AgendaC extends React.Component {
 		};
 		this.loadItems.bind(this);
 	}
-	componentDidMount(){
-		// this.setState({
 
-		// });
-		//console.log('Component mount:');
-		//console.log(this.state);
-
+	componentDidMount() {
+		const milisecondsOneDay = 24 * 60 * 60 * 1000;
+		// this.countdown = setInterval(() => {
+		//   this.animate();
+		// }, milisecondsOneDay);
 	}
+
+
+	millisUntilMidnight() {
+	    var midnight = new Date();
+	    midnight.setHours( 24 );
+	    midnight.setMinutes( 0 );
+	    midnight.setSeconds( 0 );
+	    midnight.setMilliseconds( 0 );
+	    return ( midnight.getTime() - new Date().getTime() );
+	}
+
+
+
+	componentWillUnmount() {
+		clearInterval(this.countdown);
+	}
+
+	animate() {
+		this.setState({
+		  currentDate: Date()
+		});
+	}
+
 	onDayPress(day){
 		console.log('day pressed:', day);
 		this.setState({ selected: day.dateString }, () => {
 			console.log("State updated:",this.state);
-			this.loadItems(items);
+			//this.loadItems(items);
 		});
 	}	
 	onDayChange(day){
@@ -51,12 +73,16 @@ export class AgendaC extends React.Component {
 		}
 	}
 	loadItems(items){
+		var result = {};
 		for(var key in items){
 			if(key === this.state.selected){
 				console.log(key, items[key]);
 			}
+			if(key <= maxDate){
+				result[key] = items[key];
+			}
 		}
-
+		return(result);
 	}
 	render() {
 		return (
@@ -64,7 +90,7 @@ export class AgendaC extends React.Component {
 			  // the list of items that have to be displayed in agenda. If you want to render item as empty date
 			  // the value of date key kas to be an empty array []. If there exists no value for date key it is
 			  // considered that the date in question is not yet loaded
-			  items={items}
+			  items={this.loadItems(items)}
 			  // callback that gets called when items for a certain month should be loaded (month became visible)
 			  loadItemsForMonth={(month) => {console.log('trigger items loading')}}
 			  // callback that fires when the calendar is opened or closed
@@ -140,15 +166,15 @@ const styles = StyleSheet.create({
 
 
 var items = {
-	'2019-01-02': [{text: 'item 1 - any js object'},{link:'https://open.spotify.com/track/00FRRwuaJP9KimukvLQCOz'}],
-	'2019-01-03': [{text: 'item 2 - any js object'},{link:'https://open.spotify.com/track/00FRRwuaJP9KimukvLQCOz'}],
-	'2019-01-04': [],
-	'2018-12-28': [{text: 'item 3 - any js object'},{text: 'any js object'},{link:'https://open.spotify.com/track/00FRRwuaJP9KimukvLQCOz'}],
+	'2018-12-31': [{text: 'item 1 - any js object'},{link:'https://open.spotify.com/track/00FRRwuaJP9KimukvLQCOz'}],
+	'2019-01-06': [{text: 'item 2 - any js object'},{link:'https://open.spotify.com/track/00FRRwuaJP9KimukvLQCOz'}],
+	'2019-01-07': [],
+	'2019-01-08': [{text: 'item 3 - any js object'},{text: 'any js object'},{link:'https://open.spotify.com/track/00FRRwuaJP9KimukvLQCOz'}],
 };
 var markedDates = {
-	'2019-01-06': {selected: true, marked: true},
-	'2019-01-07': {marked: true},
-	'2019-01-08': {disabled: true}
+	'2019-01-01': {selected: true, marked: true},
+	'2019-01-02': {marked: true},
+	'2019-01-03': {disabled: true}
 };
 const theme = {
 	agendaDayTextColor: 'yellow',
@@ -160,6 +186,6 @@ const theme = {
 	backgroundColor: 'blue'
 };
 const minDate = '2018-12-10';
-const maxDate = '2019-02-10';
-const selected = Date();
+const maxDate = '2019-01-07';
+const selected = '2019-01-07';
 
