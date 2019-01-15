@@ -13,39 +13,17 @@ export class AgendaC extends React.Component {
 	}
 
 	componentDidMount() {
-		const milisecondsOneDay = 24 * 60 * 60 * 1000;
-		// this.countdown = setInterval(() => {
-		//   this.animate();
-		// }, milisecondsOneDay);
+
 	}
-
-
-	millisUntilMidnight() {
-	    var midnight = new Date();
-	    midnight.setHours( 24 );
-	    midnight.setMinutes( 0 );
-	    midnight.setSeconds( 0 );
-	    midnight.setMilliseconds( 0 );
-	    return ( midnight.getTime() - new Date().getTime() );
-	}
-
-
-
 	componentWillUnmount() {
-		clearInterval(this.countdown);
-	}
 
-	animate() {
-		this.setState({
-		  currentDate: Date()
-		});
 	}
-
 	onDayPress(day){
 		console.log('day pressed:', day);
 		this.setState({ selected: day.dateString }, () => {
 			console.log("State updated:",this.state);
 			//this.loadItems(items);
+			this.props.save(this.state);
 		});
 	}	
 	onDayChange(day){

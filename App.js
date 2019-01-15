@@ -9,6 +9,8 @@ import * as firebase from 'firebase';
 import {firebaseConfig} from './components/firebase_init.js'
 firebase.initializeApp(firebaseConfig);
 
+// Get a reference to the database service
+var database = firebase.database();
 
 export default class App extends React.Component {
   constructor(props){
@@ -18,20 +20,20 @@ export default class App extends React.Component {
       
     };
 
-    this._onPressButton = this._onPressButton.bind(this);
+    this.onPressButton = this.onPressButton.bind(this);
     this.storeInFirebase = this.storeInFirebase.bind(this);
   }
   componentDidMount(){
     console.log(this.state);
   }
-  storeInFirebase(text) {
-    console.log('Saving...');
-    firebase.database().ref('test/').set({
-      highscore: text
+  storeInFirebase(x){
+    console.log("Value received!!!:",x);
+    database.ref('dates/').set({
+      selected: x.selected,
     });
   }
 
-  _onPressButton() {
+  onPressButton() {
     this.storeInFirebase('hello ' + Date());
     Alert.alert('You tapped the button!')
   }
@@ -40,11 +42,11 @@ export default class App extends React.Component {
       <View style={{flex: 1, backgroundColor: 'powderblue'}}>
         <StatusBar hidden={true} />
 
-        <AgendaC/>
+        <AgendaC save={this.storeInFirebase}/>
         <Text>Open up App.js to start working on your app!</Text>
         <View>
           <Button
-            onPress={this._onPressButton}
+            onPress={this.onPressButton}
             title="Press Me"
           />
         </View>
