@@ -9,26 +9,26 @@ export class AgendaC extends React.Component {
 		this.state = {
 			selected: selected
 		};
-		this.loadItems.bind(this);
-		this.storeInFirebase = this.storeInFirebase.bind(this);
-    	this.getFromFirebase = this.getFromFirebase.bind(this);
+		// this.storeInFirebase = this.storeInFirebase.bind(this);
+  //   	this.getFromFirebase = this.getFromFirebase.bind(this);
+		this.loadItems = this.loadItems.bind(this);
+		this.itemsCallback = this.itemsCallback.bind(this);
 
-    	this.loadItems(this.getFromFirebase(this.props.db, 'items'))
+    	this.getFromFirebase(this.props.db, 'items', this.itemsCallback);
 	}
 
 	componentDidMount() {
-
+    	console.log("Component Mount");
 	}
 	componentWillUnmount() {
-
+    	console.log("Component Unmount");
 	}
 	onDayPress(day){
-		console.log('day pressed:', day);
+		console.log('day pressed:', day.dateString);
 		this.setState({ selected: day.dateString }, () => {
-			console.log("State updated:",this.state);
-			//this.loadItems(items);
-			this.storeInFirebase(this.props.db, 'dates/', this.state);
-			
+			console.log("State updated:",this.state.selected);
+			// this.storeInFirebase(this.props.db, 'dates/', 'selected', this.state.selected);
+			// this.loadItems();			
 		});
 	}	
 	onDayChange(day){
@@ -55,59 +55,46 @@ export class AgendaC extends React.Component {
 			return(<View />);
 		}
 	}
+	storeInFirebase(database, key, field, value){
+		console.log("Value received!!!:",value);
+		database.ref(key).set({
+		  [field]: value,
+		});
+	}
+	getFromFirebase(database, key, callback){
+		console.log("Getting key !!!:",key);
+    	this.props.db.ref(key).once('value', snapshot => {
+			callback(snapshot, key);
+    	});
+	}
+	itemsCallback(snapshot, key){
+		this.setState({[key]: snapshot.val()});
+		this.loadItems();
+	}
 	loadItems(){
-		items = this.state.items;
-		console.log("ITEMS:",items);
-		var result = {};
+		var items = this.state.items;
+		var selected = this.state.selected;
+		var itemsFil = {};
 		for(var key in items){
-			if(key === this.state.selected){
-				console.log(key, items[key]);
-				result[key] = items[key];
+			if(key === selected){
+				itemsFil[key] = items[key];
 			}
 			// if(key <= maxDate){
 			// 	result[key] = items[key];
 			// }
 		}
 		this.setState({
-			result : result
+			itemsFil : itemsFil
 		})
-		// return(result);
 	}
-	storeInFirebase(database, key, value){
-		console.log("Value received!!!:",value);
-		database.ref(key).set({
-		  selected: value.selected,
-		});
-	}
-	getFromFirebase(database, key){
-		console.log("Getting key !!!:",key);
-		var result;
-		database.ref(key).once('value', function(snapshot) {
-			if(snapshot){
-				doMyThing(snapshot);
-			}
-		    // result = snapshot.val();
-		});
-		function doMyThing(snapshot){
-			result = snapshot.val();
-			console.log("result: ", result);
-			// this.setState({
-			// 	items : snapshot.val()
-			// })
-		}
-		// database.ref(key).once('value', function(snapshot) {
-		//     console.log('first');   
-		//     result = snapshot.val();
-		// }).then(function() { console.log('second') });
-		// return(result);
-	}
+
 	render() {
 		return (
 			<Agenda
 			  // the list of items that have to be displayed in agenda. If you want to render item as empty date
 			  // the value of date key kas to be an empty array []. If there exists no value for date key it is
 			  // considered that the date in question is not yet loaded
-			  items={this.state.result}
+			  items={items2}
 			  // callback that gets called when items for a certain month should be loaded (month became visible)
 			  loadItemsForMonth={(month) => {console.log('trigger items loading')}}
 			  // callback that fires when the calendar is opened or closed
@@ -185,7 +172,7 @@ var today = new Date();
 var yesterday = new Date();
 yesterday.setDate(today.getDate() - 1);
 
-var items = {
+var items2 = {
 	'2018-12-31': [{text: 'item 1 - any js object'},{link:'https://open.spotify.com/track/00FRRwuaJP9KimukvLQCOz'}],
 	'2019-01-06': [{text: 'item 2 - any js object'},{link:'https://open.spotify.com/track/00FRRwuaJP9KimukvLQCOz'}],
 	'2019-01-07': [],
@@ -207,5 +194,5 @@ const theme = {
 };
 const minDate = '2018-12-10';
 const maxDate = today;
-const selected = yesterday;
+const selected = '2019-01-06';//yesterday;
 
