@@ -10,6 +10,10 @@ export class AgendaC extends React.Component {
 			selected: selected
 		};
 		this.loadItems.bind(this);
+		this.storeInFirebase = this.storeInFirebase.bind(this);
+    	this.getFromFirebase = this.getFromFirebase.bind(this);
+
+    	this.loadItems(this.getFromFirebase(this.props.db, 'items'))
 	}
 
 	componentDidMount() {
@@ -23,7 +27,8 @@ export class AgendaC extends React.Component {
 		this.setState({ selected: day.dateString }, () => {
 			console.log("State updated:",this.state);
 			//this.loadItems(items);
-			this.props.save(this.state);
+			this.storeInFirebase(this.props.db, 'dates/', this.state);
+			
 		});
 	}	
 	onDayChange(day){
@@ -50,17 +55,51 @@ export class AgendaC extends React.Component {
 			return(<View />);
 		}
 	}
-	loadItems(items){
+	loadItems(){
+		items = this.state.items;
+		console.log("ITEMS:",items);
 		var result = {};
 		for(var key in items){
 			if(key === this.state.selected){
 				console.log(key, items[key]);
-			}
-			if(key <= maxDate){
 				result[key] = items[key];
 			}
+			// if(key <= maxDate){
+			// 	result[key] = items[key];
+			// }
 		}
-		return(result);
+		this.setState({
+			result : result
+		})
+		// return(result);
+	}
+	storeInFirebase(database, key, value){
+		console.log("Value received!!!:",value);
+		database.ref(key).set({
+		  selected: value.selected,
+		});
+	}
+	getFromFirebase(database, key){
+		console.log("Getting key !!!:",key);
+		var result;
+		database.ref(key).once('value', function(snapshot) {
+			if(snapshot){
+				doMyThing(snapshot);
+			}
+		    // result = snapshot.val();
+		});
+		function doMyThing(snapshot){
+			result = snapshot.val();
+			console.log("result: ", result);
+			// this.setState({
+			// 	items : snapshot.val()
+			// })
+		}
+		// database.ref(key).once('value', function(snapshot) {
+		//     console.log('first');   
+		//     result = snapshot.val();
+		// }).then(function() { console.log('second') });
+		// return(result);
 	}
 	render() {
 		return (
@@ -68,7 +107,7 @@ export class AgendaC extends React.Component {
 			  // the list of items that have to be displayed in agenda. If you want to render item as empty date
 			  // the value of date key kas to be an empty array []. If there exists no value for date key it is
 			  // considered that the date in question is not yet loaded
-			  items={this.loadItems(items)}
+			  items={this.state.result}
 			  // callback that gets called when items for a certain month should be loaded (month became visible)
 			  loadItemsForMonth={(month) => {console.log('trigger items loading')}}
 			  // callback that fires when the calendar is opened or closed
@@ -142,6 +181,9 @@ const styles = StyleSheet.create({
   }
 });
 
+var today = new Date();
+var yesterday = new Date();
+yesterday.setDate(today.getDate() - 1);
 
 var items = {
 	'2018-12-31': [{text: 'item 1 - any js object'},{link:'https://open.spotify.com/track/00FRRwuaJP9KimukvLQCOz'}],
@@ -164,6 +206,6 @@ const theme = {
 	backgroundColor: 'blue'
 };
 const minDate = '2018-12-10';
-const maxDate = '2019-01-07';
-const selected = '2019-01-07';
+const maxDate = today;
+const selected = yesterday;
 

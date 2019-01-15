@@ -21,17 +21,11 @@ export default class App extends React.Component {
     };
 
     this.onPressButton = this.onPressButton.bind(this);
-    this.storeInFirebase = this.storeInFirebase.bind(this);
   }
   componentDidMount(){
     console.log(this.state);
   }
-  storeInFirebase(x){
-    console.log("Value received!!!:",x);
-    database.ref('dates/').set({
-      selected: x.selected,
-    });
-  }
+
 
   onPressButton() {
     this.storeInFirebase('hello ' + Date());
@@ -42,7 +36,7 @@ export default class App extends React.Component {
       <View style={{flex: 1, backgroundColor: 'powderblue'}}>
         <StatusBar hidden={true} />
 
-        <AgendaC save={this.storeInFirebase}/>
+        <AgendaC db={database}/>
         <Text>Open up App.js to start working on your app!</Text>
         <View>
           <Button
