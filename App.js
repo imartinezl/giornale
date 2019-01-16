@@ -16,6 +16,7 @@ var storage = firebase.storage();
 
 
 import { Video } from 'expo';
+import VideoPlayer from '@expo/videoplayer';
 
 export default class App extends React.Component {
   constructor(props){
@@ -60,6 +61,19 @@ export default class App extends React.Component {
   }
 
   //<AgendaC db={database}/>
+  //   <Video
+  //   source={{ uri: this.state.musicFile }}
+  //   // posterSource={{uri: this.state.musicCover}}
+  //   // usePoster={true}
+  //   rate={1.0}
+  //   volume={1.0}
+  //   isMuted={false}
+  //   resizeMode="cover"
+  //   shouldPlay={false}
+  //   isLooping={false}
+  //   useNativeControls={true}
+  //   style={styles.video}
+  // />
   render() {
     return (
       <View style={{flex: 1, backgroundColor: '#eee'}}>
@@ -82,19 +96,24 @@ export default class App extends React.Component {
           style={{width: 50, height: 50}}
           source={{uri: this.state.musicCover}}
         />
-        <Video
-          source={{ uri: this.state.musicFile }}
-          // posterSource={{uri: this.state.musicCover}}
-          usePoster={true}
-          rate={1.0}
-          volume={1.0}
-          isMuted={false}
-          resizeMode="cover"
-          shouldPlay={false}
-          isLooping={false}
-          useNativeControls={true}
-          style={styles.video}
-        />
+
+        <VideoPlayer
+          videoProps={{
+            shouldPlay: false,
+            resizeMode: Video.RESIZE_MODE_STRETCH,
+            useNativeControls: true,
+            source: {
+              uri: this.state.musicFile,
+            },
+            style:{width: 50, height: 50}
+          }}
+          hideControlsTimerDuration={4000000}
+          isPortrait={true}
+          playFromPositionMillis={0}
+          showControlsOnLoad={true}
+          showFullscreenButton={false}
+          textStyle={{ color: '#FFFFFF', fontSize: 14, }}
+          />
 
 
 
@@ -114,6 +133,6 @@ const styles = StyleSheet.create({
   video: {
     // flex:1,
     width:300,
-    height:50,
+    height:100,
   }
 });

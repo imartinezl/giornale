@@ -9,6 +9,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo/videoplayer": "^0.4.0",
     "expo": "^30.0.1",
     "expo-cli": "^2.2.0",
     "firebase": "^5.7.2",
