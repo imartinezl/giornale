@@ -15,7 +15,6 @@ export class AgendaC extends React.Component {
 		this.itemsCallback = this.itemsCallback.bind(this);
 
     	this.getFromFirebase(this.props.db, 'items', this.itemsCallback);
-    	console.ignoredYellowBox = ['Setting a timer'];
 
 	}
 
