@@ -23,7 +23,8 @@ export default class App extends React.Component {
     this.onPressButton = this.onPressButton.bind(this);
   }
   componentDidMount(){
-    console.log(this.state);
+
+    console.log("App Mount:",this.state);
   }
 
 
