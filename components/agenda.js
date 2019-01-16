@@ -128,7 +128,7 @@ export class AgendaC extends React.Component {
 			  // specify how each item should be rendered in agenda
 			  renderItem={this.renderItem.bind(this)}
 			  // specify how each date should be rendered. day can be undefined if the item is not first in that day.
-			  // renderDay={this.renderDay.bind(this)}
+			  renderDay={this.renderDay.bind(this)}
 			  // specify how empty date content with no items should be rendered
 			  renderEmptyDate={this.renderEmptyDate.bind(this)}
 			  // specify how agenda knob should look like
@@ -144,7 +144,7 @@ export class AgendaC extends React.Component {
 			  // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
 			  firstDay={1}
 			  // If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly.
-			  onRefresh={() => console.log('refreshing...')}
+			  onRefresh={() => {console.log('refreshing...');this.getFromFirebase(this.props.db, 'items', this.itemsCallback);}}
 			  // Set this true while waiting for new data from a refresh
 			  refreshing={false}
 			  // Add a custom RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView.
@@ -197,15 +197,15 @@ var markedDates = {
 	'2019-01-03': {disabled: true}
 };
 const theme = {
-	agendaDayTextColor: 'yellow',
-	agendaDayNumColor: 'green',
-	agendaTodayColor: 'red',
-	agendaKnobColor: 'black',
-	dotColor: 'blue',
-	selectedDayBackgroundColor: 'blue',
+	agendaDayTextColor: '#7a92a5',
+	agendaDayNumColor: '#7a92a5',
+	agendaTodayColor: '#00adf5',
+	agendaKnobColor: '#4ac4f7',
+	dotColor: '#00adf5',
+	selectedDayBackgroundColor: '#00adf5',
 	backgroundColor: '#ddd'
 };
-const minDate = '2018-12-10';
+const minDate = '2018-11-01';
 const maxDate = today;
 const selected = '2019-01-06';//yesterday;
 
