@@ -15,7 +15,7 @@ export class AgendaC extends React.Component {
 		this.itemsCallback = this.itemsCallback.bind(this);
 
     	this.getFromFirebase(this.props.db, 'items', this.itemsCallback);
-
+    	this.storeInFirebase(this.props.db, 'dates/', 'selected', this.state.selected);
 	}
 
 	componentDidMount() {
@@ -26,11 +26,11 @@ export class AgendaC extends React.Component {
 	}
 	onDayPress(day){
 		console.log('day pressed:', day.dateString);
-		// this.setState({ selected: day.dateString }, () => {
-		// 	console.log("State updated:",this.state.selected);
-		// 	this.storeInFirebase(this.props.db, 'dates/', 'selected', this.state.selected);
-		// 	this.loadItems();			
-		// });
+		this.setState({ selected: day.dateString }, () => {
+			console.log("State updated:",this.state.selected);
+			this.storeInFirebase(this.props.db, 'dates/', 'selected', this.state.selected);
+			// this.loadItems();			
+		});
 	}	
 	onDayChange(day){
 		console.log('day changed:', day);
@@ -105,7 +105,7 @@ export class AgendaC extends React.Component {
 			  // the list of items that have to be displayed in agenda. If you want to render item as empty date
 			  // the value of date key kas to be an empty array []. If there exists no value for date key it is
 			  // considered that the date in question is not yet loaded
-			  items={this.state.items}
+			  items={this.state.itemsFil}
 			  // callback that gets called when items for a certain month should be loaded (month became visible)
 			  loadItemsForMonth={this.loadItemsForMonth.bind(this)}
 			  // callback that fires when the calendar is opened or closed
@@ -151,7 +151,7 @@ export class AgendaC extends React.Component {
 			  // agenda theme
 			  theme={theme}
 			  // agenda container style
-			  style={{}}
+			  style={{height:300}}
 			/>
 		);
   }
