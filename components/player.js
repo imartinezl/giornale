@@ -47,7 +47,7 @@ export class Player extends React.Component {
 		this.setState({ minified: !this.state.minified });
 	}
 	goBackward(){
-		if(this.state.currentTime < 3 && this.state.songIndex !== 0 ){
+		if(this.state.currentTime < 3000 && this.state.songIndex !== 0 ){
 			this.setState({
 				songIndex: this.state.songIndex - 1,
 				currentTime: 0,
@@ -72,25 +72,18 @@ export class Player extends React.Component {
 	}
 	setTime(params){
 		if( !this.state.sliding ){
-			console.log("Params",params);
 			this.setState({ currentTime: params.positionMillis });
 		}
 	}
 	onLoad(params){
 		this.setState({ songDuration: params.durationMillis });
 	}
-	onSlidingStart(){
-		this.setState({ sliding: true });
-	}
 	onSlidingChange(value){
 		this.setState({ sliding: true });
-		// let newPosition = value * this.state.songDuration;
-		// this.setState({ currentTime: newPosition });
 	}
 	onSlidingComplete(value){
 		let newPosition = value * this.state.songDuration;
 		this.videoRef.setPositionAsync( newPosition );
-		// this.videoRef.setPositionAsync( this.state.currentTime );
 		this.setState({ sliding: false });
 	}
 	onEnd(){
@@ -116,6 +109,12 @@ export class Player extends React.Component {
 		} else {
 			forwardButton = <Icon onPress={ this.goForward.bind(this) } style={ styles.forward } name="ios-skip-forward" size={25} color="#fff" />;
 		}
+		let backwardButton;
+		if( !this.state.shuffle && this.state.songIndex === 0 ){
+			backwardButton = <Icon style={ styles.back } name="ios-skip-backward" size={25} color="#333" />;
+		} else {
+			backwardButton = <Icon onPress={ this.goBackward.bind(this) } style={ styles.back } name="ios-skip-backward" size={25} color="#fff" />;
+		}
 		let volumeButton;
 		if( this.state.muted ){
 			volumeButton = <Icon onPress={ this.toggleVolume.bind(this) } style={ styles.volume } name="ios-volume-off" size={18} color="#fff" />;
@@ -129,9 +128,6 @@ export class Player extends React.Component {
 			shuffleButton = <Icon onPress={ this.toggleShuffle.bind(this) } style={ styles.shuffle } name="ios-shuffle" size={18} color="#fff" />;
 		}
 		let image = songPlaying.albumImage ? songPlaying.albumImage : this.props.artist.background;
-		console.log("Alo: ", this.state);
-		console.log("Song Percentage: ", songPercentage);
-
 		return (
 			<View style={styles.container}>
                 <Video source={{uri: songPlaying.url }}
@@ -193,7 +189,7 @@ export class Player extends React.Component {
 					</View>
 					<View style={ styles.controls }>
 						{ shuffleButton }
-						<Icon onPress={ this.goBackward.bind(this) } style={ styles.back } name="ios-skip-backward" size={25} color="#fff" />
+						{ backwardButton }
 						{ playButton }
 						{ forwardButton }
 						{ volumeButton }
@@ -206,6 +202,7 @@ export class Player extends React.Component {
 						onPress={this.toggleMinify}>
                 		<Text style={{color: 'red'}}> Alo </Text>
 					</TouchableHighlight>
+
                 </View>
                 )}
 			</View>
@@ -213,6 +210,7 @@ export class Player extends React.Component {
 	}
 }
 
+						// <Icon onPress={ this.goBackward.bind(this) } style={ styles.back } name="ios-skip-backward" size={25} color="#fff" />
 
 const styles = StyleSheet.create({
   container: {
