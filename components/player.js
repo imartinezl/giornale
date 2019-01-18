@@ -1,10 +1,11 @@
 import React from 'react';
-import { AppRegistry, Component, Dimensions, Image, Button, Slider, View, Text, StyleSheet } from 'react-native';
+import { AppRegistry, Button, Component, Dimensions, Image, Modal, 
+	Text, TouchableHighlight, Slider, StatusBar, StyleSheet, View} from 'react-native';
 
 
 // import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Video } from 'expo';
+import { Font, Video } from 'expo';
 
 const window = Dimensions.get('window');
 
@@ -12,17 +13,27 @@ export class Player extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-		      playing: true,
+		      playing: false,
 		      muted: false,
 		      shuffle: false,
 		      sliding: false,
 		      currentTime: 0,
 		      songIndex: this.props.songIndex,
+		      minified: false,
+		      fontLoaded: false,
 		};
+		// this.onSlidingStart = this.onSlidingStart.bind(this);
+		// this.onSlidingChange = this.onSlidingChange.bind(this);
+		// this.onSlidingComplete = this.onSlidingComplete.bind(this);
+		this.toggleMinify = this.toggleMinify.bind(this);
 	}
-	componentDidMount(){
+	async componentDidMount(){
+		await Font.loadAsync({
+			'Roboto-Condensed': require('../assets/fonts/Roboto/Roboto-Regular.ttf'),
+		});
+		this.setState({ fontLoaded: true });
+	}
 
-	}
 	togglePlay(){
 		this.setState({ playing: !this.state.playing });
 	}
@@ -31,6 +42,9 @@ export class Player extends React.Component {
 	}
 	toggleShuffle(){
 		this.setState({ shuffle: !this.state.shuffle });
+	}	
+	toggleMinify(){
+		this.setState({ minified: !this.state.minified });
 	}
 	goBackward(){
 		if(this.state.currentTime < 3 && this.state.songIndex !== 0 ){
@@ -58,21 +72,25 @@ export class Player extends React.Component {
 	}
 	setTime(params){
 		if( !this.state.sliding ){
-		  this.setState({ currentTime: params.positionMillis/1000 });
+			console.log("Params",params);
+			this.setState({ currentTime: params.positionMillis });
 		}
 	}
 	onLoad(params){
-		this.setState({ songDuration: params.durationMillis/1000 });
+		this.setState({ songDuration: params.durationMillis });
 	}
 	onSlidingStart(){
 		this.setState({ sliding: true });
 	}
 	onSlidingChange(value){
-		let newPosition = value * this.state.songDuration;
-		this.setState({ currentTime: newPosition });
+		this.setState({ sliding: true });
+		// let newPosition = value * this.state.songDuration;
+		// this.setState({ currentTime: newPosition });
 	}
-	onSlidingComplete(){
-		this.videoRef.setPositionAsync( this.state.currentTime );
+	onSlidingComplete(value){
+		let newPosition = value * this.state.songDuration;
+		this.videoRef.setPositionAsync( newPosition );
+		// this.videoRef.setPositionAsync( this.state.currentTime );
 		this.setState({ sliding: false });
 	}
 	onEnd(){
@@ -111,9 +129,12 @@ export class Player extends React.Component {
 			shuffleButton = <Icon onPress={ this.toggleShuffle.bind(this) } style={ styles.shuffle } name="ios-shuffle" size={18} color="#fff" />;
 		}
 		let image = songPlaying.albumImage ? songPlaying.albumImage : this.props.artist.background;
+		console.log("Alo: ", this.state);
+		console.log("Song Percentage: ", songPercentage);
+
 		return (
 			<View style={styles.container}>
-				<Video source={{uri: songPlaying.url }}
+                <Video source={{uri: songPlaying.url }}
 					ref={(ref) => { this.videoRef = ref; }}
 					rate={1.0}
 					volume={ this.state.muted ? 0 : 1.0}
@@ -125,48 +146,68 @@ export class Player extends React.Component {
 					// resizeMode="cover"
 					isLooping={false}/>
 
-				<View style={ styles.header }>
-					<Text style={ styles.headerText }>
-						{ this.props.artist.name }
-					</Text>
-				</View>
-				<View style={ styles.headerClose }>
-					<Icon name="ios-arrow-down" size={15} color="#fff" />
-				</View>
-				<Image
-					style={ styles.songImage }
-					source={{uri: image,
-					width: window.width - 30,
-					height: 300}}/>
-				<Text style={ styles.songTitle }>
-					{ songPlaying.title }
-				</Text>
-				<Text style={ styles.albumTitle }>
-					{ songPlaying.album }
-				</Text>
-				<View style={ styles.sliderContainer }>
-					<Slider
-						onSlidingStart={ this.onSlidingStart.bind(this) }
-						onSlidingComplete={ this.onSlidingComplete.bind(this) }
-						onValueChange={ this.onSlidingChange.bind(this) }
-						minimumTrackTintColor='#851c44'
-						style={ styles.slider }
-						trackStyle={ styles.sliderTrack }
-						thumbStyle={ styles.sliderThumb }
-						value={ songPercentage }/>
+				<Modal
+		          animationType="slide"
+		          transparent={false}
+		          visible={!this.state.minified}
+		          onRequestClose={this.toggleMinify}>
+                <View style={styles.container}>
+					<View style={ styles.header }>
+						<Text style={ styles.headerText }>
+							{ this.props.artist.name }
+						</Text>
+					</View>
+					<View style={ styles.headerClose }>
+						<Icon onPress={ this.toggleMinify } name="ios-arrow-down" size={35} color="#fff" />
+					</View>
+					<Image
+						style={ styles.songImage }
+						source={{uri: image,
+						width: window.width - 30,
+						height: 300}}/>
+					{this.state.fontLoaded ? (
+						<Text style={ styles.songTitle }>
+							{ songPlaying.title }
+						</Text>
+					): null}
+					{this.state.fontLoaded ? (
+						<Text style={ styles.albumTitle }>
+							{ songPlaying.album }
+						</Text>
+					): null}
+					<View style={ styles.sliderContainer }>
+						<Slider
+							// onSlidingStart={ this.onSlidingStart.bind(this) }
+							onSlidingComplete={ this.onSlidingComplete.bind(this) }
+							onValueChange={ this.onSlidingChange.bind(this) }
+							minimumTrackTintColor='#851c44'
+							style={ styles.slider }
+							// trackStyle={ styles.sliderTrack }
+							// thumbStyle={ styles.sliderThumb }
+							value={ songPercentage }/>
 
-					<View style={ styles.timeInfo }>
-						<Text style={ styles.time }>{ formattedTime(this.state.currentTime)  }</Text>
-						<Text style={ styles.timeRight }>- { formattedTime( this.state.songDuration - this.state.currentTime ) }</Text>
+						<View style={ styles.timeInfo }>
+							<Text style={ styles.time }>{ formattedTime(this.state.currentTime/1000)  }</Text>
+							<Text style={ styles.timeRight }> - { formattedTime( (this.state.songDuration - this.state.currentTime)/1000 ) }</Text>
+						</View>
+					</View>
+					<View style={ styles.controls }>
+						{ shuffleButton }
+						<Icon onPress={ this.goBackward.bind(this) } style={ styles.back } name="ios-skip-backward" size={25} color="#fff" />
+						{ playButton }
+						{ forwardButton }
+						{ volumeButton }
 					</View>
 				</View>
-				<View style={ styles.controls }>
-					{ shuffleButton }
-					<Icon onPress={ this.goBackward.bind(this) } style={ styles.back } name="ios-skip-backward" size={25} color="#fff" />
-					{ playButton }
-					{ forwardButton }
-					{ volumeButton }
-				</View>
+                </Modal>
+                { this.state.minified && (
+                <View style={styles.minified}>
+					<TouchableHighlight	
+						onPress={this.toggleMinify}>
+                		<Text style={{color: 'red'}}> Alo </Text>
+					</TouchableHighlight>
+                </View>
+                )}
 			</View>
 		)
 	}
@@ -186,7 +227,7 @@ const styles = StyleSheet.create({
   },
   headerClose: {
     position: 'absolute',
-    top: 10,
+    top: 0,
     left: 0,
     paddingTop: 10,
     paddingBottom: 10,
@@ -203,14 +244,14 @@ const styles = StyleSheet.create({
   },
   songTitle: {
     color: "white",
-    //fontFamily: "Helvetica Neue",
+    fontFamily: "Roboto-Condensed",
     marginBottom: 10,
     marginTop: 13,
     fontSize: 19
   },
   albumTitle: {
     color: "#BBB",
-    //fontFamily: "Helvetica Neue",
+    fontFamily: "Roboto-Condensed",
     fontSize: 14,
     marginBottom: 20,
   },
@@ -269,6 +310,10 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 0},
     shadowRadius: 2,
     shadowOpacity: 1,
+  },
+  minified:{
+  	position: 'absolute',
+  	bottom: 0,
   }
 });
 

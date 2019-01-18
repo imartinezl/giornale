@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, Button, StatusBar, Image } from 'react-native';
+import { Alert, Button, Image, StatusBar, StyleSheet, Text, View } from 'react-native';
 import Hyperlink from 'react-native-hyperlink';
 import {Calendario} from './components/calendar.js';
 import {AgendaC} from './components/agenda.js';
@@ -49,11 +49,11 @@ export default class App extends React.Component {
     });
   }
   render() {
+    // <AgendaC db={database}/>
     return (
       <View style={{flex: 1, backgroundColor: '#eee'}}>
         <StatusBar hidden={true} />
 
-        <AgendaC db={database}/>
         <Player artist={Artists[0]} songs={Artists[0].songs} songIndex={1}/>
       </View>
     );
