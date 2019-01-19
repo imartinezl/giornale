@@ -206,13 +206,12 @@ export class Player extends React.Component {
 					): null}
 					<View style={ styles.sliderContainer }>
 						<Slider
-							// onSlidingStart={ this.onSlidingStart.bind(this) }
 							onSlidingComplete={ this.onSlidingComplete.bind(this) }
 							onValueChange={ this.onSlidingChange.bind(this) }
-							minimumTrackTintColor='#851c44'
 							style={ styles.slider }
-							// trackStyle={ styles.sliderTrack }
-							// thumbStyle={ styles.sliderThumb }
+							minimumTrackTintColor='#767488'
+							thumbTintColor='#FFF'
+							maximumTrackTintColor='#bab9c3'
 							value={ songPercentage }/>
 
 						<View style={ styles.timeInfo }>
@@ -364,30 +363,16 @@ const styles = StyleSheet.create({
   time: {
     color: '#FFF',
     flex: 1,
-    fontSize: 10,
+    fontSize: 12,
   },
   timeRight: {
     color: '#FFF',
     textAlign: 'right',
     flex: 1,
-    fontSize: 10,
+    fontSize: 12,
   },
   slider: {
     height: 20,
-  },
-  sliderTrack: {
-    height: 2,
-    backgroundColor: '#333',
-  },
-  sliderThumb: {
-    width: 10,
-    height: 10,
-    backgroundColor: '#f62976',
-    borderRadius: 10 / 2,
-    shadowColor: 'red',
-    shadowOffset: {width: 0, height: 0},
-    shadowRadius: 2,
-    shadowOpacity: 1,
   },
   containerMin:{
   	position: 'absolute',
