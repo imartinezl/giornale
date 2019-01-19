@@ -29,7 +29,8 @@ export class Player extends React.Component {
 	}
 	async componentDidMount(){
 		await Font.loadAsync({
-			'Roboto-Condensed': require('../assets/fonts/Roboto/Roboto-Regular.ttf'),
+			'Roboto-Regular': require('../assets/fonts/Roboto/Roboto-Regular.ttf'),
+			'Roboto-Bold': require('../assets/fonts/Roboto/Roboto-Bold.ttf'),
 		});
 		this.setState({ fontLoaded: true });
 	}
@@ -99,33 +100,33 @@ export class Player extends React.Component {
 		}
 		let playButton;
 		if( this.state.playing ){
-			playButton = <Icon onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-pause" size={70} color="#fff" />;
+			playButton = <Icon onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-pause" size={60} color="#fff" />;
 		} else {
-			playButton = <Icon onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-play" size={70} color="#fff" />;
+			playButton = <Icon onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-play" size={60} color="#fff" />;
 		}
 		let forwardButton;
 		if( !this.state.shuffle && this.state.songIndex + 1 === this.props.songs.length ){
-			forwardButton = <Icon style={ styles.forward } name="ios-skip-forward" size={25} color="#333" />;
+			forwardButton = <Icon style={ styles.forward } name="ios-skip-forward" size={36} color="#333" />;
 		} else {
-			forwardButton = <Icon onPress={ this.goForward.bind(this) } style={ styles.forward } name="ios-skip-forward" size={25} color="#fff" />;
+			forwardButton = <Icon onPress={ this.goForward.bind(this) } style={ styles.forward } name="ios-skip-forward" size={36} color="#fff" />;
 		}
 		let backwardButton;
 		if( !this.state.shuffle && this.state.songIndex === 0 ){
-			backwardButton = <Icon style={ styles.back } name="ios-skip-backward" size={25} color="#333" />;
+			backwardButton = <Icon style={ styles.back } name="ios-skip-backward" size={36} color="#333" />;
 		} else {
-			backwardButton = <Icon onPress={ this.goBackward.bind(this) } style={ styles.back } name="ios-skip-backward" size={25} color="#fff" />;
+			backwardButton = <Icon onPress={ this.goBackward.bind(this) } style={ styles.back } name="ios-skip-backward" size={36} color="#fff" />;
 		}
 		let volumeButton;
 		if( this.state.muted ){
-			volumeButton = <Icon onPress={ this.toggleVolume.bind(this) } style={ styles.volume } name="ios-volume-off" size={18} color="#fff" />;
+			volumeButton = <Icon onPress={ this.toggleVolume.bind(this) } style={ styles.volume } name="ios-volume-off" size={28} color="#fff" />;
 		} else {
-			volumeButton = <Icon onPress={ this.toggleVolume.bind(this) } style={ styles.volume } name="ios-volume-up" size={18} color="#fff" />;
+			volumeButton = <Icon onPress={ this.toggleVolume.bind(this) } style={ styles.volume } name="ios-volume-up" size={28} color="#fff" />;
 		}
 		let shuffleButton;
 		if( this.state.shuffle ){
-			shuffleButton = <Icon onPress={ this.toggleShuffle.bind(this) } style={ styles.shuffle } name="ios-shuffle" size={18} color="#f62976" />;
+			shuffleButton = <Icon onPress={ this.toggleShuffle.bind(this) } style={ styles.shuffle } name="ios-shuffle" size={28} color="#f62976" />;
 		} else {
-			shuffleButton = <Icon onPress={ this.toggleShuffle.bind(this) } style={ styles.shuffle } name="ios-shuffle" size={18} color="#fff" />;
+			shuffleButton = <Icon onPress={ this.toggleShuffle.bind(this) } style={ styles.shuffle } name="ios-shuffle" size={28} color="#fff" />;
 		}
 		let image = songPlaying.albumImage ? songPlaying.albumImage : this.props.artist.background;
 		return (
@@ -149,8 +150,8 @@ export class Player extends React.Component {
 		          onRequestClose={this.toggleMinify}>
                 <View style={styles.opened}>
 					<View style={ styles.header }>
-						<Text style={ styles.headerText }>
-							{ this.props.artist.name }
+						<Text style={ styles.albumTitle }>
+							{ songPlaying.album }
 						</Text>
 					</View>
 					<View style={ styles.headerClose }>
@@ -167,8 +168,8 @@ export class Player extends React.Component {
 						</Text>
 					): null}
 					{this.state.fontLoaded ? (
-						<Text style={ styles.albumTitle }>
-							{ songPlaying.album }
+						<Text style={ styles.artistTitle }>
+							{ this.props.artist.name }
 						</Text>
 					): null}
 					<View style={ styles.sliderContainer }>
@@ -216,9 +217,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#040126',
   },
   header: {
-    marginTop: 17,
-    marginBottom: 17,
-    width: window.width,
+    marginTop: 10,
+    marginBottom: 10,
+    width: window.width-100,
   },
   headerClose: {
     position: 'absolute',
@@ -230,50 +231,62 @@ const styles = StyleSheet.create({
   	paddingBottom: 10,
   	paddingLeft: 15,
   	paddingRight: 15,
-
   },
-  headerText: {
-    color: "#FFF",
-    fontSize: 18,
+  albumTitle: {
+    color: "#BBB",
+    fontFamily: "Roboto-Regular",
+    fontSize: 14,
     textAlign: 'center',
   },
   songImage: {
-    marginBottom: 20,
+    marginBottom: 15,
   },
   songTitle: {
     color: "white",
-    fontFamily: "Roboto-Condensed",
+    fontFamily: "Roboto-Bold",
     marginBottom: 10,
     marginTop: 13,
     fontSize: 19
   },
-  albumTitle: {
+  artistTitle: {
     color: "#BBB",
-    fontFamily: "Roboto-Condensed",
-    fontSize: 14,
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
     marginBottom: 20,
   },
   controls: {
     flexDirection: 'row',
     marginTop: 30,
   },
-  back: {
-    marginTop: 22,
-    marginLeft: 45,
-  },
   play: {
-    marginLeft: 50,
-    marginRight: 50,
+	paddingTop: 12,
+  	paddingBottom: 12,
+  	paddingLeft: 20,
+  	paddingRight: 20,
+  },
+  back: {
+    paddingTop: 24,
+  	paddingBottom: 24,
+  	paddingLeft: 15,
+  	paddingRight: 15,
   },
   forward: {
-    marginTop: 22,
-    marginRight: 45,
+    paddingTop: 24,
+  	paddingBottom: 24,
+  	paddingLeft: 15,
+  	paddingRight: 15,
   },
   shuffle: {
-    marginTop: 26,
+    paddingTop: 28,
+  	paddingBottom: 28,
+  	paddingLeft: 15,
+  	paddingRight: 15,
   },
   volume: {
-    marginTop: 26,
+    paddingTop: 28,
+  	paddingBottom: 28,
+  	paddingLeft: 15,
+  	paddingRight: 15,
   },
   sliderContainer: {
     width: window.width - 40,
