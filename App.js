@@ -23,43 +23,85 @@ export default class App extends React.Component {
       
     };    
     this.getMusicFile = this.getMusicFile.bind(this);
-    this.getMusicCover = this.getMusicCover.bind(this);
+    this.getMusicAlbum = this.getMusicAlbum.bind(this);
+    this.getData = this.getData.bind(this);
 
-    this.getFromStorage('image.jpg',this.getMusicCover);
-    this.getFromStorage('test.mp3',this.getMusicFile);
+    this.getFromFirebase(database, 'data', this.getData);
+
+    // this.getFromStorage(storage, 'image.jpg',this.getMusicCover);
+    // this.getFromStorage(storage, 'test.mp3',this.getMusicFile);
   }
   componentDidMount(){
     console.log("App Mount:",this.state);
   }
   getMusicFile(downloadURL){
     console.log(downloadURL);
-    this.setState({
-        musicFile: downloadURL
-      })
+    let s = downloadURL.match(/(\/)(?!.*\/)(.*).mp3/);
+    let d = this.state.data;
+    for (var i = 0; i < d.length; i++) {
+      if(parseInt(s[2]) === d[i].id){
+        d[i].url = downloadURL;
+        break;
+      }
+    }
+    this.setState({data: d},()=>
+      console.log(this.state.data)
+    );
   }
-  getMusicCover(downloadURL){
+  getMusicAlbum(downloadURL){
     console.log(downloadURL);
-    this.setState({
-        musicCover: downloadURL
-      })
+    let s = downloadURL.match(/(\/)(?!.*\/)(.*).jpg/);
+    let d = this.state.data;
+    for (var i = 0; i < d.length; i++) {
+      if(parseInt(s[2]) === d[i].id){
+        d[i].albumImage = downloadURL;
+        break;
+      }
+    }
+    this.setState({data: d},()=>
+      console.log(this.state.data)
+    );
   }
-  getFromStorage(file, callback){
+  getFromStorage(storage, file, callback){
+    console.log("File:",file);
     storage.ref().child(file).getDownloadURL().then((downloadURL) => {
-        callback(downloadURL);
+      callback(downloadURL);
     });
+  }
+  getData(snapshot, key){
+    if(snapshot){
+      console.log(key,' OBTAINED ]]]')
+      let data = snapshot.val();
+
+      this.setState({[key]: data}, () => {
+        data.map((item, key) => {
+          this.getFromStorage(storage, item['id'] +'.jpg' ,this.getMusicAlbum);
+          this.getFromStorage(storage, item['id'] +'.mp3' ,this.getMusicFile);
+        });
+      });
+      // this.loadItemsForMonth(this.state.selected);
+    }
+  }
+  getFromFirebase(database, key, callback){
+    console.log('[[[ GETTING ',key);
+      database.ref(key).once('value', snapshot => {
+        callback(snapshot, key);
+      });
   }
   render() {
     // <AgendaC db={database}/>
     // <StatusBar hidden={true} />
+    // <Player artist={Artists[0]} songs={Artists[0].songs} songIndex={1}/>
     return (
       <View style={{flex: 1, backgroundColor: '#eee'}}>
 
-        <Player artist={Artists[0]} songs={Artists[0].songs} songIndex={1}/>
       </View>
     );
   }        
 }
-
+function isDefined(x){
+  return(typeof(x) !== 'undefined');
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
