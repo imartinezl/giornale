@@ -305,6 +305,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   songImage: {
+    marginTop: 10,
     marginBottom: 15,
   },
   songTitle: {
@@ -322,7 +323,7 @@ const styles = StyleSheet.create({
   },
   controls: {
     flexDirection: 'row',
-    marginTop: 30,
+    marginTop: 10,
   },
   play: {
 	paddingTop: 12,
@@ -387,16 +388,20 @@ const styles = StyleSheet.create({
   songTitleMin: {
     color: "white",
     fontFamily: "Roboto-Bold",
-    marginBottom: 0,
-    marginTop: 0,
+	paddingTop: 5,
+  	paddingBottom: 0,
+  	paddingLeft: 5,
+  	paddingRight: 0,
     fontSize: 14,
-    // width: window.width,
   },
   artistTitleMin: {
     color: "#BBB",
     fontFamily: "Roboto-Regular",
     fontSize: 12,
-    marginBottom: 0,
+    paddingTop: 0,
+  	paddingBottom: 0,
+  	paddingLeft: 5,
+  	paddingRight: 0,
   },
   playMin: {
 	paddingTop: 15,
