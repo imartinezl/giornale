@@ -68,11 +68,13 @@ export class Player extends React.Component {
 		}
 	}
 	goForward(){
-		this.setState({
-		  songIndex: this.state.shuffle ? this.randomSongIndex() : this.state.songIndex + 1,
-		  currentTime: 0,
-		});
-		this.videoRef.setPositionAsync(0);
+		if(this.state.songIndex !== (this.props.songs.length - 1) ){
+			this.setState({
+			  songIndex: this.state.shuffle ? this.randomSongIndex() : this.state.songIndex + 1,
+			  currentTime: 0,
+			});
+			this.videoRef.setPositionAsync(0);
+		}
 	}
 	randomSongIndex(){
 		let maxIndex = this.props.songs.length - 1;
