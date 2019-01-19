@@ -21,7 +21,7 @@ export class Player extends React.Component {
 		      sliding: false,
 		      currentTime: 0,
 		      songIndex: this.props.songIndex,
-		      minified: true,
+		      minified: false,
 		      fontLoaded: false,
 		};
 		// this.onSlidingStart = this.onSlidingStart.bind(this);
@@ -33,7 +33,9 @@ export class Player extends React.Component {
 			'Roboto-Bold': require('../assets/fonts/Roboto/Roboto-Bold.ttf'),
 		});
 		this.setState({ fontLoaded: true });
-		setTimeout(() => this.scroller.scrollTo({ x: scrollBox, y: 0, animated: false}) , 1);
+		if(this.state.minified){
+			setTimeout(() => this.scroller.scrollTo({ x: scrollBox, y: 0, animated: false}) , 0);
+		}
 	}
 
 	togglePlay(){
@@ -46,7 +48,11 @@ export class Player extends React.Component {
 		this.setState({ shuffle: !this.state.shuffle });
 	}	
 	toggleMinify(){
-		this.setState({ minified: !this.state.minified });
+		this.setState({ minified: !this.state.minified }, () => {
+			if(this.state.minified){
+				setTimeout(() => this.scroller.scrollTo({ x: scrollBox, y: 0, animated: true}) , 0);
+			}
+		});
 	}
 	goBackward(){
 		if(this.state.currentTime < 3000 && this.state.songIndex !== 0 ){
@@ -90,8 +96,6 @@ export class Player extends React.Component {
 	}
 	onScroll(event){
 		let posX = event.nativeEvent.contentOffset.x;
-		console.log('Scrolled x: ',event.nativeEvent.contentOffset.x);
-		console.log('Scrolled y: ',event.nativeEvent.contentOffset.y);
 		if(posX > scrollBox){
 			this.goForward();
 		}else if(posX < scrollBox){
@@ -128,15 +132,21 @@ export class Player extends React.Component {
 		}
 		let forwardButtonMin;
 		if( !this.state.shuffle && this.state.songIndex + 1 === this.props.songs.length ){
-			forwardButtonMin = <Icon style={ styles.forwardMin } name="ios-skip-forward" size={16} color="#333" />;
+			forwardButtonMin = <Icon style={ styles.forwardMin } name="ios-skip-forward" size={30} color="#333" />;
 		} else {
-			forwardButtonMin = <Icon onPress={ this.goForward.bind(this) } style={ styles.forwardMin } name="ios-skip-forward" size={16} color="#fff" />;
+			forwardButtonMin = <Icon style={ styles.forwardMin } name="ios-skip-forward" size={30} color="#fff" />;
 		}
 		let backwardButton;
 		if( !this.state.shuffle && this.state.songIndex === 0 ){
-			backwardButton = <Icon style={ styles.back } name="ios-skip-backward" size={36} color="#333" />;
+			backwardButton = <Icon style={ styles.backward } name="ios-skip-backward" size={36} color="#333" />;
 		} else {
-			backwardButton = <Icon onPress={ this.goBackward.bind(this) } style={ styles.back } name="ios-skip-backward" size={36} color="#fff" />;
+			backwardButton = <Icon onPress={ this.goBackward.bind(this) } style={ styles.backward } name="ios-skip-backward" size={36} color="#fff" />;
+		}
+		let backwardButtonMin;
+		if( !this.state.shuffle && this.state.songIndex === 0 ){
+			backwardButtonMin = <Icon style={ styles.backwardMin } name="ios-skip-backward" size={30} color="#333" />;
+		} else {
+			backwardButtonMin = <Icon style={ styles.backwardMin } name="ios-skip-backward" size={30} color="#fff" />;
 		}
 		let volumeButton;
 		if( this.state.muted ){
@@ -231,14 +241,16 @@ export class Player extends React.Component {
 							{this.state.fontLoaded ? (
 								<ScrollView 
 								contentContainerStyle={{ flexGrow: 1 }}
-								ref={(scroller) => {this.scroller = scroller}}
+								ref={(scroller) => {
+									this.scroller = scroller;
+								}}
 								horizontal={true} 
 								pagingEnabled={true} 
 								showsHorizontalScrollIndicator={false}
 								onMomentumScrollEnd={this.onScroll}
 								>
 									<View style={styles.scrollContainer}>
-										{forwardButtonMin}
+										{backwardButtonMin}
 									</View>
 									<View style={styles.scrollContainer}>
 									<TouchableHighlight	onPress={this.toggleMinify.bind(this)}>
@@ -252,7 +264,9 @@ export class Player extends React.Component {
 										</View>
 									</TouchableHighlight>
 									</View>
-									<View style={styles.scrollContainer}/>
+									<View style={styles.scrollContainer}>
+										{forwardButtonMin}
+									</View>
 								</ScrollView>
 							): null}
 							{ playButtonMin }
@@ -317,7 +331,7 @@ const styles = StyleSheet.create({
   	paddingLeft: 20,
   	paddingRight: 20,
   },
-  back: {
+  backward: {
     paddingTop: 24,
   	paddingBottom: 24,
   	paddingLeft: 15,
@@ -407,13 +421,21 @@ const styles = StyleSheet.create({
   	marginLeft: 'auto',
   },
   scrollContainer:{
-  	width: window.width - 60 - 55
+  	width: scrollBox
   },
   forwardMin: {
-    paddingTop: 0,
-  	paddingBottom: 0,
-  	paddingLeft: 0,
-  	paddingRight: 0,
+    paddingTop: 15,
+  	paddingBottom: 15,
+  	paddingLeft: 40,
+  	paddingRight: 20,
+  	marginRight: 'auto',
+  },
+  backwardMin: {
+    paddingTop: 15,
+  	paddingBottom: 15,
+  	paddingLeft: 20,
+  	paddingRight: 40,
+  	marginLeft: 'auto',
   },
 });
 
