@@ -50,9 +50,9 @@ export default class App extends React.Component {
   }
   render() {
     // <AgendaC db={database}/>
+    // <StatusBar hidden={true} />
     return (
       <View style={{flex: 1, backgroundColor: '#eee'}}>
-        <StatusBar hidden={true} />
 
         <Player artist={Artists[0]} songs={Artists[0].songs} songIndex={1}/>
       </View>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 const Artists = [
   {
     name: "Breakbot",
-    background: "http://jgnatch-dropshare.s3.amazonaws.com/Screen-Shot-2016-03-01-15-29-06/Screen-Shot-2016-03-01-15-29-06.png",
+    background: "https://99designs-blog.imgix.net/blog/wp-content/uploads/2017/12/attachment_68585523.jpg",
     songs: [
       {
         title: "Star Tripper",
