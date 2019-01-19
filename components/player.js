@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppRegistry, Button, Component, Dimensions, Image, Modal, 
-	Text, TouchableHighlight, Slider, StyleSheet, View} from 'react-native';
+	Text, TouchableHighlight, ScrollView, Slider, StyleSheet, View} from 'react-native';
 
 
 // import {Actions} from 'react-native-router-flux';
@@ -8,6 +8,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Font, Video } from 'expo';
 
 const window = Dimensions.get('window');
+
+const scrollBox = window.width - 60 - 55;
 
 export class Player extends React.Component {
 	constructor(props){
@@ -19,13 +21,11 @@ export class Player extends React.Component {
 		      sliding: false,
 		      currentTime: 0,
 		      songIndex: this.props.songIndex,
-		      minified: false,
+		      minified: true,
 		      fontLoaded: false,
 		};
 		// this.onSlidingStart = this.onSlidingStart.bind(this);
-		// this.onSlidingChange = this.onSlidingChange.bind(this);
-		// this.onSlidingComplete = this.onSlidingComplete.bind(this);
-		this.toggleMinify = this.toggleMinify.bind(this);
+		this.onScroll = this.onScroll.bind(this);
 	}
 	async componentDidMount(){
 		await Font.loadAsync({
@@ -33,6 +33,7 @@ export class Player extends React.Component {
 			'Roboto-Bold': require('../assets/fonts/Roboto/Roboto-Bold.ttf'),
 		});
 		this.setState({ fontLoaded: true });
+		setTimeout(() => this.scroller.scrollTo({ x: scrollBox, y: 0, animated: false}) , 1);
 	}
 
 	togglePlay(){
@@ -87,8 +88,17 @@ export class Player extends React.Component {
 		this.videoRef.setPositionAsync( newPosition );
 		this.setState({ sliding: false });
 	}
-	onEnd(){
-		this.setState({ playing: false });
+	onScroll(event){
+		let posX = event.nativeEvent.contentOffset.x;
+		console.log('Scrolled x: ',event.nativeEvent.contentOffset.x);
+		console.log('Scrolled y: ',event.nativeEvent.contentOffset.y);
+		if(posX > scrollBox){
+			this.goForward();
+		}else if(posX < scrollBox){
+			this.goBackward();
+		}
+		this.scroller.scrollTo({ x: scrollBox, y: 0, animated: true});
+
 	}
 	render() {
 		let songPlaying = this.props.songs[this.state.songIndex];
@@ -104,11 +114,23 @@ export class Player extends React.Component {
 		} else {
 			playButton = <Icon onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-play" size={60} color="#fff" />;
 		}
+		let playButtonMin;
+		if( this.state.playing ){
+			playButtonMin = <Icon onPress={ this.togglePlay.bind(this) } style={ styles.playMin } name="ios-pause" size={30} color="#fff" />;
+		} else {
+			playButtonMin = <Icon onPress={ this.togglePlay.bind(this) } style={ styles.playMin } name="ios-play" size={30} color="#fff" />;
+		}
 		let forwardButton;
 		if( !this.state.shuffle && this.state.songIndex + 1 === this.props.songs.length ){
 			forwardButton = <Icon style={ styles.forward } name="ios-skip-forward" size={36} color="#333" />;
 		} else {
 			forwardButton = <Icon onPress={ this.goForward.bind(this) } style={ styles.forward } name="ios-skip-forward" size={36} color="#fff" />;
+		}
+		let forwardButtonMin;
+		if( !this.state.shuffle && this.state.songIndex + 1 === this.props.songs.length ){
+			forwardButtonMin = <Icon style={ styles.forwardMin } name="ios-skip-forward" size={16} color="#333" />;
+		} else {
+			forwardButtonMin = <Icon onPress={ this.goForward.bind(this) } style={ styles.forwardMin } name="ios-skip-forward" size={16} color="#fff" />;
 		}
 		let backwardButton;
 		if( !this.state.shuffle && this.state.songIndex === 0 ){
@@ -139,23 +161,23 @@ export class Player extends React.Component {
 					shouldPlay={this.state.playing}
 					onLoad={ this.onLoad.bind(this) }
 					onPlaybackStatusUpdate={ this.setTime.bind(this) }
-					// onEnd={ this.onEnd.bind(this) }
-					// resizeMode="cover"
 					isLooping={false}/>
 
 				<Modal
 		          animationType="slide"
 		          transparent={false}
 		          visible={!this.state.minified}
-		          onRequestClose={this.toggleMinify}>
-                <View style={styles.opened}>
+		          onRequestClose={this.toggleMinify.bind(this)}>
+                <View style={styles.container}>
 					<View style={ styles.header }>
+						{this.state.fontLoaded ? (
 						<Text style={ styles.albumTitle }>
 							{ songPlaying.album }
 						</Text>
+						) : null}
 					</View>
 					<View style={ styles.headerClose }>
-						<Icon style={ styles.headerCloseIcon } onPress={ this.toggleMinify } name="ios-arrow-down" size={25} color="#fff" />
+						<Icon style={ styles.headerCloseIcon } onPress={ this.toggleMinify.bind(this) } name="ios-arrow-down" size={25} color="#fff" />
 					</View>
 					<Image
 						style={ styles.songImage }
@@ -198,13 +220,44 @@ export class Player extends React.Component {
 				</View>
                 </Modal>
                 { this.state.minified && (
-                <View style={styles.minified}>
-					<TouchableHighlight	
-						onPress={this.toggleMinify}>
-                		<Text style={{color: 'red'}}> Alo </Text>
-					</TouchableHighlight>
-
-                </View>
+					<View style={ styles.containerMin }>
+						<View style={ styles.controlsMin }>
+							<TouchableHighlight	onPress={this.toggleMinify.bind(this)}>
+								<Image
+									source={{uri: image,
+									width: 60,
+									height: 60}}/>
+							</TouchableHighlight>
+							{this.state.fontLoaded ? (
+								<ScrollView 
+								contentContainerStyle={{ flexGrow: 1 }}
+								ref={(scroller) => {this.scroller = scroller}}
+								horizontal={true} 
+								pagingEnabled={true} 
+								showsHorizontalScrollIndicator={false}
+								onMomentumScrollEnd={this.onScroll}
+								>
+									<View style={styles.scrollContainer}>
+										{forwardButtonMin}
+									</View>
+									<View style={styles.scrollContainer}>
+									<TouchableHighlight	onPress={this.toggleMinify.bind(this)}>
+										<View>
+											<Text style={ styles.songTitleMin }>
+												{ songPlaying.title }
+											</Text>
+											<Text style={ styles.artistTitleMin }>
+												{ this.props.artist.name }
+											</Text>
+										</View>
+									</TouchableHighlight>
+									</View>
+									<View style={styles.scrollContainer}/>
+								</ScrollView>
+							): null}
+							{ playButtonMin }
+						</View>
+					</View>
                 )}
 			</View>
 		)
@@ -322,14 +375,45 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     shadowOpacity: 1,
   },
-  minified:{
+  containerMin:{
   	position: 'absolute',
   	bottom: 0,
   },
-  opened: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#040126',
+  controlsMin: {
+    flexDirection: 'row',
+    marginTop: 30,
+    width: window.width,
+    backgroundColor: '#1a1839'
+  },
+  songTitleMin: {
+    color: "white",
+    fontFamily: "Roboto-Bold",
+    marginBottom: 0,
+    marginTop: 0,
+    fontSize: 14,
+    // width: window.width,
+  },
+  artistTitleMin: {
+    color: "#BBB",
+    fontFamily: "Roboto-Regular",
+    fontSize: 12,
+    marginBottom: 0,
+  },
+  playMin: {
+	paddingTop: 15,
+  	paddingBottom: 15,
+  	paddingLeft: 20,
+  	paddingRight: 20,
+  	marginLeft: 'auto',
+  },
+  scrollContainer:{
+  	width: window.width - 60 - 55
+  },
+  forwardMin: {
+    paddingTop: 0,
+  	paddingBottom: 0,
+  	paddingLeft: 0,
+  	paddingRight: 0,
   },
 });
 
