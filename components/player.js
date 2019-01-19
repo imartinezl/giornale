@@ -21,7 +21,7 @@ export class Player extends React.Component {
 		      sliding: false,
 		      currentTime: 0,
 		      songIndex: this.props.songIndex,
-		      minified: false,
+		      minified: true,
 		      fontLoaded: false,
 		};
 		// this.onSlidingStart = this.onSlidingStart.bind(this);
@@ -390,7 +390,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Bold",
 	paddingTop: 5,
   	paddingBottom: 0,
-  	paddingLeft: 5,
+  	paddingLeft: 10,
   	paddingRight: 0,
     fontSize: 14,
   },
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingTop: 0,
   	paddingBottom: 0,
-  	paddingLeft: 5,
+  	paddingLeft: 10,
   	paddingRight: 0,
   },
   playMin: {
