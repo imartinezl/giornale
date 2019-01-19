@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppRegistry, Button, Component, Dimensions, Image, Modal, 
-	Text, TouchableHighlight, Slider, StatusBar, StyleSheet, View} from 'react-native';
+	Text, TouchableHighlight, Slider, StyleSheet, View} from 'react-native';
 
 
 // import {Actions} from 'react-native-router-flux';
@@ -147,14 +147,14 @@ export class Player extends React.Component {
 		          transparent={false}
 		          visible={!this.state.minified}
 		          onRequestClose={this.toggleMinify}>
-                <View style={styles.container}>
+                <View style={styles.opened}>
 					<View style={ styles.header }>
 						<Text style={ styles.headerText }>
 							{ this.props.artist.name }
 						</Text>
 					</View>
 					<View style={ styles.headerClose }>
-						<Icon onPress={ this.toggleMinify } name="ios-arrow-down" size={35} color="#fff" />
+						<Icon style={ styles.headerCloseIcon } onPress={ this.toggleMinify } name="ios-arrow-down" size={25} color="#fff" />
 					</View>
 					<Image
 						style={ styles.songImage }
@@ -209,14 +209,11 @@ export class Player extends React.Component {
 		)
 	}
 }
-
-						// <Icon onPress={ this.goBackward.bind(this) } style={ styles.back } name="ios-skip-backward" size={25} color="#fff" />
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#000',
+    backgroundColor: '#040126',
   },
   header: {
     marginTop: 17,
@@ -227,10 +224,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
+  },
+  headerCloseIcon: {
+  	paddingTop: 10,
+  	paddingBottom: 10,
+  	paddingLeft: 15,
+  	paddingRight: 15,
+
   },
   headerText: {
     color: "#FFF",
@@ -312,7 +312,12 @@ const styles = StyleSheet.create({
   minified:{
   	position: 'absolute',
   	bottom: 0,
-  }
+  },
+  opened: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#040126',
+  },
 });
 
 //TODO: Move this to a Utils file
