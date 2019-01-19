@@ -34,33 +34,27 @@ export default class App extends React.Component {
   componentDidMount(){
     console.log("App Mount:",this.state);
   }
-  getMusicFile(downloadURL){
-    console.log(downloadURL);
-    let s = downloadURL.match(/(\/)(?!.*\/)(.*).mp3/);
+  extractIdx(downloadURL, ext, name){
+    let m = '(\/)(?!.*\/)(.*)' + ext;
+    let s = downloadURL.match(m);
     let d = this.state.data;
     for (var i = 0; i < d.length; i++) {
       if(parseInt(s[2]) === d[i].id){
-        d[i].url = downloadURL;
+        d[i][name] = downloadURL;
         break;
       }
     }
-    this.setState({data: d},()=>
-      console.log(this.state.data)
-    );
+    return(d);
+  }
+  getMusicFile(downloadURL){
+    this.setState({
+      data: this.extractIdx(downloadURL,'.mp3','url')
+    });
   }
   getMusicAlbum(downloadURL){
-    console.log(downloadURL);
-    let s = downloadURL.match(/(\/)(?!.*\/)(.*).jpg/);
-    let d = this.state.data;
-    for (var i = 0; i < d.length; i++) {
-      if(parseInt(s[2]) === d[i].id){
-        d[i].albumImage = downloadURL;
-        break;
-      }
-    }
-    this.setState({data: d},()=>
-      console.log(this.state.data)
-    );
+    this.setState({
+      data: this.extractIdx(downloadURL,'.jpg','albumImage')
+    });
   }
   getFromStorage(storage, file, callback){
     console.log("File:",file);
