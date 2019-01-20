@@ -20,17 +20,15 @@ export default class App extends React.Component {
     console.ignoredYellowBox = ['Setting a timer'];
 
     this.state = {
-      
+      loaded: false
     };    
     this.getMusicFile = this.getMusicFile.bind(this);
     this.getMusicAlbum = this.getMusicAlbum.bind(this);
     this.getData = this.getData.bind(this);
 
-    this.getFromFirebase(database, 'data', this.getData);
-
-    // this.getFromStorage(storage, 'image.jpg',this.getMusicCover);
-    // this.getFromStorage(storage, 'test.mp3',this.getMusicFile);
+    this.getFromFirebase(database, 'data', this.getData)
   }
+
   componentDidMount(){
     console.log("App Mount:",this.state);
   }
@@ -57,10 +55,10 @@ export default class App extends React.Component {
     });
   }
   getFromStorage(storage, file, callback){
-    console.log("File:",file);
+    // console.log("File:",file);
     storage.ref().child(file).getDownloadURL().then((downloadURL) => {
-      callback(downloadURL);
-    });
+      callback(downloadURLs);
+    })
   }
   getData(snapshot, key){
     if(snapshot){
@@ -78,18 +76,28 @@ export default class App extends React.Component {
   }
   getFromFirebase(database, key, callback){
     console.log('[[[ GETTING ',key);
-      database.ref(key).once('value', snapshot => {
-        callback(snapshot, key);
-      });
+    database.ref(key).once('value', snapshot => {
+      callback(snapshot, key);
+    }).then(() => {
+      this.setState({loaded: true},()=>{
+        console.log(this.state.data);
+      })
+    });
   }
+
   render() {
-    // <AgendaC db={database}/>
     // <StatusBar hidden={true} />
     // <Player artist={Artists[0]} songs={Artists[0].songs} songIndex={1}/>
-    return (
-      <View style={{flex: 1, backgroundColor: '#eee'}}>
+    // <AgendaC data={this.state.data}/>
 
-      </View>
+    return (
+        <View style={{flex: 1, backgroundColor: '#eee'}}>
+          {this.state.loaded ? (
+            <View style={styles.container}>
+              <Text style={{color: 'red', fontSize: 18}}>{"Hola"}</Text>
+            </View>
+          ) : null}
+        </View>
     );
   }        
 }

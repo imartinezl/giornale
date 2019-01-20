@@ -1,4 +1,6 @@
 node_modules/**/*
+assets/data/*.mp3
+assets/data/*.jpg
 .expo/*
 npm-debug.*
 package-lock.json
