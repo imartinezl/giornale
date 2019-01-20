@@ -1,38 +1,40 @@
-[
-  {
-    "date": "2019-01-07",
-    "title": "Mr. Brightside",
-    "artist": "The Killers",
-    "album": "Hot Fuss",
-    "id": 0,
-    "albumImage": "https://storage.googleapis.com/giornale-ac271.appspot.com/Mr.%20Brightside%5BThe%20Killers%5D.jpg?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=P91EAYaDIUdvm%2Bp81l8EXh3lRyex2KTSyKmsKtBwzr1aUQiAlKNCDenhrS%2BLE7SMR0Z75OfqKyUsvP6uq7olaAHJv9u8Dc%2B50irWzMuYjWKl4C%2FaHJkhiJfS5S6GcYLX2V2qyDVtKbsJ9RgVFuRzuGQyeApyTiU4HvZmHZm00xcB0XPV0GiGRpBpPmVCoZJt7oidjnGaOhLHfSdctZQhI6EL5gJKHPtiXbWLCT0ktO%2FWXdQYDGk%2BijLe2rfRQijqa%2FdfWZAshiLQBVkFMqpTOT%2BwV%2FXNVqPnODtXbqShfgPMKStANOffGKz0yO9gAwLk26vkE1L71V%2FYV57fljKCaQ%3D%3D",
-    "songFile": "https://storage.googleapis.com/giornale-ac271.appspot.com/Mr.%20Brightside%5BThe%20Killers%5D.mp3?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=vOMbrHgwVCr9UAJJnbEHUqjERjoV%2BSVJGPIq8IVcfolBNqg51hmnF78iiAfZ%2FWzJ8UDqeTdi3G3edFXKk7dKRa99HECMUcR%2Fx3UfEIxezaK3reicosI0rBVuXwTaPUAsBrcCUMcWndmAEtO%2B3LoWCfAelnV7%2Bt3qGzg%2FZ%2BH5sh9wb7ZCDXtwPCdvrL5J%2Br94LaZxm8LnmkSXtDUfLaSyCyKh06mDR7hRQjQ6wSdLcW5UJjIdrFAYPGEUYRErUyrJd61II%2BqMZ0x0ztmvsSxHllkqdwsAUxmSCzUZ9iP75Nin8LBNZ%2Bs84DRkST7nxqs5dRSP7yqMCNy%2B72FURTL1tw%3D%3D"
-  },
-  {
-    "date": "2019-01-08",
-    "title": "Fade Out Lines",
-    "artist": "The Avener & Phoebe Killdeer",
-    "album": "The Avener Rework",
-    "id": 1,
-    "albumImage": "https://storage.googleapis.com/giornale-ac271.appspot.com/Fade%20Out%20Lines%5BThe%20Avener%20%26%20Phoebe%20Killdeer%5D.jpg?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=hdHSHABR2ZoY2JsXe%2FcuwWJAAxe9Tv1yPTf%2BMeDLb2iN02ymLM4nws8tUZ9cT3BYtvIiRb3ZFTa%2B3VVLtY7K3BO%2FoOublq5Fe5XXOnbW7Td16FRRR6H1I6gEWiWpNbM213okTl%2FAROzSOhNKP94k3q%2BU4xduGUXaJajsmwj0%2BCVkRR7ZxMangr3SdETGqVIFqPLdP3qG4L56IsJtNf1Q5rnAq1ZGBZBNWr5mRL8IXKbyJVWGCwvRHxsNrp16tjWVGqlJnXT5MB56ImOzY80uVa1Xa02xP%2FI3lgXLBoIUL1Ndblw4gi5OLkuTi2cjJ0aK5y7sartczxxJ3fDTN0lnrg%3D%3D",
-    "songFile": "https://storage.googleapis.com/giornale-ac271.appspot.com/Fade%20Out%20Lines%5BThe%20Avener%20%26%20Phoebe%20Killdeer%5D.mp3?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=m1h9it5yDoQSArGhUWVaEhzkNtHY8XV17c9Re6tdtB7sc65YIGWpiJEQu5Bcu%2FP4ktihYDUgSREqDDisi50Ck4AioE6OhzdOQQh545hu1MT7tyH203N%2Bt9NUSSjHqBToy2DTdHBVeMqqoxVK4akP5mmWo5BqETKojwFCGSAY5%2FRzn3TDUDtIkxa%2BPrQvB5vlRtateWNdIi5GGUZ3ZoH8osTAqJXljDezgd2d8vZ%2F2L6567KrkBpGsC206RUign7wHNozmscqQGKIQyoOarljxzswdjLCtuDw%2BnCPvuA4VpiCRjUpKAXbQFnl9UGy0m0xDdMXlUO9nI9%2FmGYQdHE00Q%3D%3D"
-  },
-  {
-    "date": "2019-01-09",
-    "title": "Patience",
-    "artist": "Take That",
-    "album": "Beautiful World",
-    "id": 2,
-    "albumImage": "https://storage.googleapis.com/giornale-ac271.appspot.com/Patience%5BTake%20That%5D.jpg?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=NY5doFH1Iys3boAd1wQdP3ywDFVbGGy%2FNrvnIPXj%2F%2FCdgBg%2F%2BQcfFg4CWD2%2F%2FhmnRN02CG5SFrKmEoDgvw%2Bl4MzVuKSGGlIUahO8V4wO06NhJ7IEt8cG6wIv1WobsmTxiubksPFtbYQZ7%2FvFb4GTR%2FiOlPEPpEZb6IqDkTWbEFIWf88dGDNjz4cSvpdRppCy%2FEM4XpnRcdCMIlLRcBWNqccJt2NYx%2FFP2iAc%2BfJawDYDjMuk9xQPHseDBGGm2B3Sv04hmGbTl2tffQ7oPwwkkPFXQozmqa%2FaHcnvqGVG895np6RNGww9LvWdLHK%2F7myoJc1IH1X5az4OVPdHeec%2BCw%3D%3D",
-    "songFile": "https://storage.googleapis.com/giornale-ac271.appspot.com/Patience%5BTake%20That%5D.mp3?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=WYYakxaFlcfq39NYj0S4EfMSdvmoW1e0%2BrTIgmVhgjhhL%2FeFmpuXq9F2%2Fwtl%2BOt4KryPjiGXPuYPgurZ5qHlJS3zfbH%2FUaWhV2lkc3Hu8xCa8TSpdFU8wu8Ud2JB60mriyu%2FYOOA8v8gHA4C5LHj6arAzmhMwlODMJkzsbwppEcdQvRZJNDZ0mWAcGvyrcmkABNmE5JRhE3iIhVwzud%2FMpGbGuNTtxI6odfxxf5bC%2FqMq40nQqF9qQa3pQKWJFvm1cbJ4VAqfXglXnhy3dKMujiBE%2BvN5sJYsDGOsw8tKHaUJm6vPyfBRof7q3H3q%2BOBjKhYSTmb7WicDWeciXI4pQ%3D%3D"
-  },
-  {
-    "date": "2019-01-10",
-    "title": "La Playa",
-    "artist": "La Oreja de Van Gogh",
-    "album": "El viaje de Copperpot",
-    "id": 3,
-    "albumImage": "https://storage.googleapis.com/giornale-ac271.appspot.com/La%20Playa%5BLa%20Oreja%20de%20Van%20Gogh%5D.jpg?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=TkhpKziU%2FT3qVKE4ctWk%2B0Q%2FA9mZSFJKS8DOkq1LcEKdlWNFoWXKwdJCIM%2Ftm9yl7wXESXr9kK3naba7Bdq%2FjQYv2IKrHF4aG2vG8JS62vdhY6bq9x4eVOkKEaMPbj9qmBkg2i%2FjapkHZkrpJEENwxxwnr0Y9uYP8I7YPgVNIa7tG4FGFCwob6FUXolWhMkH5jeMUGmMMv4XBWAULhfVKYmOjBTsNNkl1QfF7E8XYM%2FvnSnZFgl3pyE9J3Ivi5KkACNatPEMsKchILz3IA%2FnSoT1vfvE%2Ft%2FUBBDZwHVkI2PxoVw3W0FAfup3K%2BnnRDFDBp6jaJI4yJIZ27tgdCIkJQ%3D%3D",
-    "songFile": "https://storage.googleapis.com/giornale-ac271.appspot.com/La%20Playa%5BLa%20Oreja%20de%20Van%20Gogh%5D.mp3?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=PbH4eXSeO8L8lw5T9WsF67uB7alTxQP1QTUrqr15bWoE7MYNnwdW9k8xBGlw5OJDWD2ARrMrC%2Fnx%2B9ytkATpvX6A4yopGKw7Gw8cQ5GxZskNv2Je1OYn2NcFoVP1hfl5iR9TB7C7fO6P7In9vWQuqlp1nXANBAgZHRnNt0tAK9z%2FWYGEnaAwNx5lU8KWOJAMEw6XWXLcDzKbjekeDHZQBb11k3IFEf9aCRgSECo5Z7qXinqIbjcwzojxOPG7y%2FR2UfUnxUXKMMQF0kWMebSIgbZ04LKZgpbZMkwOnCPT1GNqnN3%2B56kByjpYiHdsHEueILYEZQ3saAgZTifuKxLgZw%3D%3D"
-  }
-]
+{
+  "data": [
+    {
+      "date": "2019-01-07",
+      "title": "Mr. Brightside",
+      "artist": "The Killers",
+      "album": "Hot Fuss",
+      "id": 0,
+      "albumImage": "https://storage.googleapis.com/giornale-ac271.appspot.com/Mr.%20Brightside%5BThe%20Killers%5D.jpg?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=P91EAYaDIUdvm%2Bp81l8EXh3lRyex2KTSyKmsKtBwzr1aUQiAlKNCDenhrS%2BLE7SMR0Z75OfqKyUsvP6uq7olaAHJv9u8Dc%2B50irWzMuYjWKl4C%2FaHJkhiJfS5S6GcYLX2V2qyDVtKbsJ9RgVFuRzuGQyeApyTiU4HvZmHZm00xcB0XPV0GiGRpBpPmVCoZJt7oidjnGaOhLHfSdctZQhI6EL5gJKHPtiXbWLCT0ktO%2FWXdQYDGk%2BijLe2rfRQijqa%2FdfWZAshiLQBVkFMqpTOT%2BwV%2FXNVqPnODtXbqShfgPMKStANOffGKz0yO9gAwLk26vkE1L71V%2FYV57fljKCaQ%3D%3D",
+      "songFile": "https://storage.googleapis.com/giornale-ac271.appspot.com/Mr.%20Brightside%5BThe%20Killers%5D.mp3?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=vOMbrHgwVCr9UAJJnbEHUqjERjoV%2BSVJGPIq8IVcfolBNqg51hmnF78iiAfZ%2FWzJ8UDqeTdi3G3edFXKk7dKRa99HECMUcR%2Fx3UfEIxezaK3reicosI0rBVuXwTaPUAsBrcCUMcWndmAEtO%2B3LoWCfAelnV7%2Bt3qGzg%2FZ%2BH5sh9wb7ZCDXtwPCdvrL5J%2Br94LaZxm8LnmkSXtDUfLaSyCyKh06mDR7hRQjQ6wSdLcW5UJjIdrFAYPGEUYRErUyrJd61II%2BqMZ0x0ztmvsSxHllkqdwsAUxmSCzUZ9iP75Nin8LBNZ%2Bs84DRkST7nxqs5dRSP7yqMCNy%2B72FURTL1tw%3D%3D"
+    },
+    {
+      "date": "2019-01-08",
+      "title": "Fade Out Lines",
+      "artist": "The Avener & Phoebe Killdeer",
+      "album": "The Avener Rework",
+      "id": 1,
+      "albumImage": "https://storage.googleapis.com/giornale-ac271.appspot.com/Fade%20Out%20Lines%5BThe%20Avener%20%26%20Phoebe%20Killdeer%5D.jpg?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=hdHSHABR2ZoY2JsXe%2FcuwWJAAxe9Tv1yPTf%2BMeDLb2iN02ymLM4nws8tUZ9cT3BYtvIiRb3ZFTa%2B3VVLtY7K3BO%2FoOublq5Fe5XXOnbW7Td16FRRR6H1I6gEWiWpNbM213okTl%2FAROzSOhNKP94k3q%2BU4xduGUXaJajsmwj0%2BCVkRR7ZxMangr3SdETGqVIFqPLdP3qG4L56IsJtNf1Q5rnAq1ZGBZBNWr5mRL8IXKbyJVWGCwvRHxsNrp16tjWVGqlJnXT5MB56ImOzY80uVa1Xa02xP%2FI3lgXLBoIUL1Ndblw4gi5OLkuTi2cjJ0aK5y7sartczxxJ3fDTN0lnrg%3D%3D",
+      "songFile": "https://storage.googleapis.com/giornale-ac271.appspot.com/Fade%20Out%20Lines%5BThe%20Avener%20%26%20Phoebe%20Killdeer%5D.mp3?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=m1h9it5yDoQSArGhUWVaEhzkNtHY8XV17c9Re6tdtB7sc65YIGWpiJEQu5Bcu%2FP4ktihYDUgSREqDDisi50Ck4AioE6OhzdOQQh545hu1MT7tyH203N%2Bt9NUSSjHqBToy2DTdHBVeMqqoxVK4akP5mmWo5BqETKojwFCGSAY5%2FRzn3TDUDtIkxa%2BPrQvB5vlRtateWNdIi5GGUZ3ZoH8osTAqJXljDezgd2d8vZ%2F2L6567KrkBpGsC206RUign7wHNozmscqQGKIQyoOarljxzswdjLCtuDw%2BnCPvuA4VpiCRjUpKAXbQFnl9UGy0m0xDdMXlUO9nI9%2FmGYQdHE00Q%3D%3D"
+    },
+    {
+      "date": "2019-01-09",
+      "title": "Patience",
+      "artist": "Take That",
+      "album": "Beautiful World",
+      "id": 2,
+      "albumImage": "https://storage.googleapis.com/giornale-ac271.appspot.com/Patience%5BTake%20That%5D.jpg?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=NY5doFH1Iys3boAd1wQdP3ywDFVbGGy%2FNrvnIPXj%2F%2FCdgBg%2F%2BQcfFg4CWD2%2F%2FhmnRN02CG5SFrKmEoDgvw%2Bl4MzVuKSGGlIUahO8V4wO06NhJ7IEt8cG6wIv1WobsmTxiubksPFtbYQZ7%2FvFb4GTR%2FiOlPEPpEZb6IqDkTWbEFIWf88dGDNjz4cSvpdRppCy%2FEM4XpnRcdCMIlLRcBWNqccJt2NYx%2FFP2iAc%2BfJawDYDjMuk9xQPHseDBGGm2B3Sv04hmGbTl2tffQ7oPwwkkPFXQozmqa%2FaHcnvqGVG895np6RNGww9LvWdLHK%2F7myoJc1IH1X5az4OVPdHeec%2BCw%3D%3D",
+      "songFile": "https://storage.googleapis.com/giornale-ac271.appspot.com/Patience%5BTake%20That%5D.mp3?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=WYYakxaFlcfq39NYj0S4EfMSdvmoW1e0%2BrTIgmVhgjhhL%2FeFmpuXq9F2%2Fwtl%2BOt4KryPjiGXPuYPgurZ5qHlJS3zfbH%2FUaWhV2lkc3Hu8xCa8TSpdFU8wu8Ud2JB60mriyu%2FYOOA8v8gHA4C5LHj6arAzmhMwlODMJkzsbwppEcdQvRZJNDZ0mWAcGvyrcmkABNmE5JRhE3iIhVwzud%2FMpGbGuNTtxI6odfxxf5bC%2FqMq40nQqF9qQa3pQKWJFvm1cbJ4VAqfXglXnhy3dKMujiBE%2BvN5sJYsDGOsw8tKHaUJm6vPyfBRof7q3H3q%2BOBjKhYSTmb7WicDWeciXI4pQ%3D%3D"
+    },
+    {
+      "date": "2019-01-10",
+      "title": "La Playa",
+      "artist": "La Oreja de Van Gogh",
+      "album": "El viaje de Copperpot",
+      "id": 3,
+      "albumImage": "https://storage.googleapis.com/giornale-ac271.appspot.com/La%20Playa%5BLa%20Oreja%20de%20Van%20Gogh%5D.jpg?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=TkhpKziU%2FT3qVKE4ctWk%2B0Q%2FA9mZSFJKS8DOkq1LcEKdlWNFoWXKwdJCIM%2Ftm9yl7wXESXr9kK3naba7Bdq%2FjQYv2IKrHF4aG2vG8JS62vdhY6bq9x4eVOkKEaMPbj9qmBkg2i%2FjapkHZkrpJEENwxxwnr0Y9uYP8I7YPgVNIa7tG4FGFCwob6FUXolWhMkH5jeMUGmMMv4XBWAULhfVKYmOjBTsNNkl1QfF7E8XYM%2FvnSnZFgl3pyE9J3Ivi5KkACNatPEMsKchILz3IA%2FnSoT1vfvE%2Ft%2FUBBDZwHVkI2PxoVw3W0FAfup3K%2BnnRDFDBp6jaJI4yJIZ27tgdCIkJQ%3D%3D",
+      "songFile": "https://storage.googleapis.com/giornale-ac271.appspot.com/La%20Playa%5BLa%20Oreja%20de%20Van%20Gogh%5D.mp3?GoogleAccessId=firebase-adminsdk-82dbh%40giornale-ac271.iam.gserviceaccount.com&Expires=1735686000&Signature=PbH4eXSeO8L8lw5T9WsF67uB7alTxQP1QTUrqr15bWoE7MYNnwdW9k8xBGlw5OJDWD2ARrMrC%2Fnx%2B9ytkATpvX6A4yopGKw7Gw8cQ5GxZskNv2Je1OYn2NcFoVP1hfl5iR9TB7C7fO6P7In9vWQuqlp1nXANBAgZHRnNt0tAK9z%2FWYGEnaAwNx5lU8KWOJAMEw6XWXLcDzKbjekeDHZQBb11k3IFEf9aCRgSECo5Z7qXinqIbjcwzojxOPG7y%2FR2UfUnxUXKMMQF0kWMebSIgbZ04LKZgpbZMkwOnCPT1GNqnN3%2B56kByjpYiHdsHEueILYEZQ3saAgZTifuKxLgZw%3D%3D"
+    }
+  ]
+}

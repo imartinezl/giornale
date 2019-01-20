@@ -22,8 +22,6 @@ export default class App extends React.Component {
     this.state = {
       loaded: false
     };    
-    this.getMusicFile = this.getMusicFile.bind(this);
-    this.getMusicAlbum = this.getMusicAlbum.bind(this);
     this.getData = this.getData.bind(this);
 
     this.getFromFirebase(database, 'data', this.getData)
@@ -32,28 +30,7 @@ export default class App extends React.Component {
   componentDidMount(){
     console.log("App Mount:",this.state);
   }
-  extractIdx(downloadURL, ext, name){
-    let m = '(\/)(?!.*\/)(.*)' + ext;
-    let s = downloadURL.match(m);
-    let d = this.state.data;
-    for (var i = 0; i < d.length; i++) {
-      if(parseInt(s[2]) === d[i].id){
-        d[i][name] = downloadURL;
-        break;
-      }
-    }
-    return(d);
-  }
-  getMusicFile(downloadURL){
-    this.setState({
-      data: this.extractIdx(downloadURL,'.mp3','url')
-    });
-  }
-  getMusicAlbum(downloadURL){
-    this.setState({
-      data: this.extractIdx(downloadURL,'.jpg','albumImage')
-    });
-  }
+
   getFromStorage(storage, file, callback){
     // console.log("File:",file);
     storage.ref().child(file).getDownloadURL().then((downloadURL) => {
@@ -63,15 +40,7 @@ export default class App extends React.Component {
   getData(snapshot, key){
     if(snapshot){
       console.log(key,' OBTAINED ]]]')
-      let data = snapshot.val();
-
-      this.setState({[key]: data}, () => {
-        data.map((item, key) => {
-          this.getFromStorage(storage, item['id'] +'.jpg' ,this.getMusicAlbum);
-          this.getFromStorage(storage, item['id'] +'.mp3' ,this.getMusicFile);
-        });
-      });
-      // this.loadItemsForMonth(this.state.selected);
+      this.setState({[key]: snapshot.val()});
     }
   }
   getFromFirebase(database, key, callback){
