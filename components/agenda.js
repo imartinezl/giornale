@@ -11,10 +11,9 @@ export class AgendaC extends React.Component {
 			items: {}
 		};
 		this.storeInFirebase = this.storeInFirebase.bind(this);
-    	this.getFromFirebase = this.getFromFirebase.bind(this);
 		this.itemsCallback = this.itemsCallback.bind(this);
 
-    	this.getFromFirebase(this.props.db, 'items', this.itemsCallback);
+
     	this.storeInFirebase(this.props.db, 'dates/', 'selected', this.state.selected);
 	}
 
@@ -62,18 +61,15 @@ export class AgendaC extends React.Component {
 		  [field]: value,
 		});
 	}
-	getFromFirebase(database, key, callback){
-		console.log('[[[ GETTING ',key);
-    	this.props.db.ref(key).once('value', snapshot => {
-			callback(snapshot, key);
-    	});
-	}
-	itemsCallback(snapshot, key){
-		if(snapshot){
-			console.log(key,' OBTAINED ]]]')
-			this.setState({[key]: snapshot.val()});
-			// this.loadItemsForMonth(this.state.selected);
-		}
+	dataPreprocessing(){
+		let d = {};
+        let data = this.state.data;
+        for (var i = 0; i < data.length; i++) {
+          let date = data[i].date;
+          delete data[i].date;
+          d[date] = data[i];
+        }
+        console.log(d);
 	}
 	loadItemsForMonth(day){
 		console.log('trigger items loading:', day);
