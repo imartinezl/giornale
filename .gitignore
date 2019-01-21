@@ -1,4 +1,4 @@
-node_modules/**/*
+
 assets/data/*.mp3
 assets/data/*.jpg
 .expo/*
@@ -6,3 +6,6 @@ npm-debug.*
 package-lock.json
 components/firebase_init.js
 .DS_Store
+
+node_modules/*
+!node_modules/react-native-calendars/
