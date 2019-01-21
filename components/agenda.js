@@ -1,20 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Button, View, Text, StyleSheet } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { AgendaItem } from './agendaItem.js';
 
 export class AgendaC extends React.Component {
 	constructor(props){
 		super(props);
 
+		let items = this.dataPreprocessing(this.props.data);
 		this.state = {
 			selected: selected,
-			items: {}
+			items: items
 		};
 		this.storeInFirebase = this.storeInFirebase.bind(this);
-		this.itemsCallback = this.itemsCallback.bind(this);
-
-
     	this.storeInFirebase(this.props.db, 'dates/', 'selected', this.state.selected);
+
+    	// let day = {timestamp: new Date(minDate).getTime()};
+    	// this.loadItemsForMonth(day);
 	}
 
 	componentDidMount() {
@@ -36,7 +38,7 @@ export class AgendaC extends React.Component {
 	}
 	renderItem(item, firstItemInDay) {
 	    return (
-	      <View style={styles.item}><Text>{item.text}</Text></View>
+	      <AgendaItem item={item}/>
 	    );
 	}
 	renderEmptyDate() {
@@ -61,47 +63,57 @@ export class AgendaC extends React.Component {
 		  [field]: value,
 		});
 	}
-	dataPreprocessing(){
-		let d = {};
-        let data = this.state.data;
+	dataPreprocessing(data){
+		let items = {};
         for (var i = 0; i < data.length; i++) {
           let date = data[i].date;
           delete data[i].date;
-          d[date] = data[i];
+          items[date] = [data[i]];
         }
-        console.log(d);
+        return(items);
 	}
 	loadItemsForMonth(day){
-		console.log('trigger items loading:', day);
-		var s = day;
-		if (isDefined(day.dateString)){
-			s = day.dateString;
-		}
-		// var items = {};
-		// if (isDefined(this.state.items)){
-		// 	items = this.state.items;
-		// }
-
-		// console.log('Items: ',items,'day: ',s);
-		var itemsFil = {};
-		itemsFil[s] = this.state.items[s];
-		// for(var key in items){
-		// 	if(key <= maxDate){
-		// 		result[key] = items[key];
-		// 	}
-		// }
-		this.setState({
-			itemsFil : itemsFil
-		})
+		console.log('trigger items loading:', day.timestamp);
+		// let s = day.dateString;
+		// var itemsFil = {};
+		// itemsFil[s] = this.state.items[s];
+		// // for(var key in items){
+		// // 	if(key <= maxDate){
+		// // 		result[key] = items[key];
+		// // 	}
+		// // }
+		// this.setState({
+		// 	itemsFil : itemsFil
+		// })
+		setTimeout(() => {
+		      for (let i = -7; i < 40; i++) {
+		        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+		        const strTime = this.timeToString(time);
+		        if (!this.state.items[strTime] && strTime<this.timeToString(maxDate)) {
+		        	this.state.items[strTime] = [];
+		        }
+		      }
+		      //console.log(this.state.items);
+		      const newItems = {};
+		      Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
+		      this.setState({
+		        items: newItems
+		      });
+		}, 1000);
+	}
+	timeToString(time) {
+	    const date = new Date(time);
+	    return date.toISOString().split('T')[0];
 	}
 
 	render() {
 		return (
+			<View style={{flex:1}}>
 			<Agenda
 			  // the list of items that have to be displayed in agenda. If you want to render item as empty date
 			  // the value of date key kas to be an empty array []. If there exists no value for date key it is
 			  // considered that the date in question is not yet loaded
-			  items={this.state.itemsFil}
+			  items={this.state.items}
 			  // callback that gets called when items for a certain month should be loaded (month became visible)
 			  loadItemsForMonth={this.loadItemsForMonth.bind(this)}
 			  // callback that fires when the calendar is opened or closed
@@ -123,7 +135,7 @@ export class AgendaC extends React.Component {
 			  // specify how each item should be rendered in agenda
 			  renderItem={this.renderItem.bind(this)}
 			  // specify how each date should be rendered. day can be undefined if the item is not first in that day.
-			  renderDay={this.renderDay.bind(this)}
+			  // renderDay={this.renderDay.bind(this)}
 			  // specify how empty date content with no items should be rendered
 			  renderEmptyDate={this.renderEmptyDate.bind(this)}
 			  // specify how agenda knob should look like
@@ -131,7 +143,7 @@ export class AgendaC extends React.Component {
 			  // specify what should be rendered instead of ActivityIndicator
 			  renderEmptyData = {() => {return (<View />);}}
 			  // specify your item comparison function for increased performance
-			  rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
+			  rowHasChanged={(r1, r2) => {return r1.name !== r2.name}}
 			  // Hide knob button. Default = false
 			  hideKnob={false}
 			  // By default, agenda dates are marked if they have at least one item, but you can override this if needed
@@ -139,7 +151,7 @@ export class AgendaC extends React.Component {
 			  // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
 			  firstDay={1}
 			  // If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly.
-			  onRefresh={() => {console.log('refreshing...');this.getFromFirebase(this.props.db, 'items', this.itemsCallback);}}
+			  onRefresh={() => {console.log('refreshing...');}}//this.getFromFirebase(this.props.db, 'items', this.itemsCallback);}}
 			  // Set this true while waiting for new data from a refresh
 			  refreshing={false}
 			  // Add a custom RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView.
@@ -149,6 +161,7 @@ export class AgendaC extends React.Component {
 			  // agenda container style
 			  style={{height:300}}
 			/>
+			</View>
 		);
   }
 }
@@ -180,12 +193,6 @@ var today = new Date();
 var yesterday = new Date();
 yesterday.setDate(today.getDate() - 1);
 
-var items2 = {
-	'2018-12-31': [{text: 'item 1 - any js object'},{link:'https://open.spotify.com/track/00FRRwuaJP9KimukvLQCOz'}],
-	'2019-01-06': [{text: 'item 2 - any js object'},{link:'https://open.spotify.com/track/00FRRwuaJP9KimukvLQCOz'}],
-	'2019-01-07': [],
-	'2019-01-08': [{text: 'item 3 - any js object'},{text: 'any js object'},{link:'https://open.spotify.com/track/00FRRwuaJP9KimukvLQCOz'}],
-};
 var markedDates = {
 	'2019-01-01': {selected: true, marked: true},
 	'2019-01-02': {marked: true},
@@ -201,6 +208,7 @@ const theme = {
 	backgroundColor: '#ddd'
 };
 const minDate = '2018-11-01';
-const maxDate = today;
-const selected = '2019-01-06';//yesterday;
+const maxDate = '2019-01-08';//today;
+const selected = '2019-01-05';//yesterday;
+
 

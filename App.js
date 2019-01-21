@@ -1,13 +1,13 @@
 import React from 'react';
-import { Alert, Button, Image, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Button, Image, StatusBar, StyleSheet, Text, View } from 'react-native';
 import Hyperlink from 'react-native-hyperlink';
-import {Calendario} from './components/calendar.js';
-import {AgendaC} from './components/agenda.js';
-import {Player} from './components/player.js';
+import { Calendario } from './components/calendar.js';
+import { AgendaC } from './components/agenda.js';
+import { Player } from './components/player.js';
 
 
 import * as firebase from 'firebase';
-import {firebaseConfig} from './components/firebase_init.js'
+import {firebaseConfig} from './components/firebaseInit.js'
 firebase.initializeApp(firebaseConfig);
 
 // Get a reference to the database service
@@ -49,7 +49,7 @@ export default class App extends React.Component {
       callback(snapshot, key);
     }).then(() => {
       this.setState({loaded: true},()=>{
-        console.log(this.state.data);
+        console.log("LOADED");
       })
     });
   }
@@ -57,22 +57,29 @@ export default class App extends React.Component {
   render() {
     // <StatusBar hidden={true} />
     // <Player artist={Artists[0]} songs={Artists[0].songs} songIndex={1}/>
-    // <AgendaC data={this.state.data}/>
 
+    // <View style={styles.container}>
+    // <Text style={{color: 'red', fontSize: 18}}>{"Hola"}</Text>
+    // </View>
     return (
         <View style={{flex: 1, backgroundColor: '#eee'}}>
+        <StatusBar
+          backgroundColor="blue"
+          barStyle="light-content"
+          hidden={true}
+        />
           {this.state.loaded ? (
+            <AgendaC db={database} data={this.state.data}/>
+          ) : (
             <View style={styles.container}>
-              <Text style={{color: 'red', fontSize: 18}}>{"Hola"}</Text>
+              <ActivityIndicator size="large"/>
             </View>
-          ) : null}
+          )}
         </View>
     );
   }        
 }
-function isDefined(x){
-  return(typeof(x) !== 'undefined');
-}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
