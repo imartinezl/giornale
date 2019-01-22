@@ -18,7 +18,7 @@ export class AgendaItem extends React.Component {
 	render() {
 		return (
 			<View style={styles.item}>
-				<Text>{this.props.item.title}</Text>
+				<Text style={styles.title}>{this.props.item.title}</Text>
 				<Text>{this.props.item.artist}</Text>
 				<Text>{this.props.item.album}</Text>
 			</View>
@@ -38,5 +38,10 @@ const styles = StyleSheet.create({
   	paddingBottom: 10,
   	paddingLeft: 15,
   	paddingRight: 15,
+  },
+  title:{
+  	fontFamily: "Roboto-Bold",
+  	fontSize: 16,
+    textAlign: 'left',
   }
 });
