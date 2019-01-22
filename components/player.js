@@ -1,11 +1,11 @@
 import React from 'react';
 import { AppRegistry, Button, Component, Dimensions, Image, Modal, 
-	Text, TouchableHighlight, ScrollView, Slider, StyleSheet, View} from 'react-native';
+	Text, TouchableHighlight, ScrollView, Slider, StatusBar, StyleSheet, View} from 'react-native';
 
 
 // import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Font, Video } from 'expo';
+import { Video } from 'expo';
 
 const window = Dimensions.get('window');
 
@@ -27,11 +27,6 @@ export class Player extends React.Component {
 		this.onScroll = this.onScroll.bind(this);
 	}
 	componentDidMount(){
-		// await Font.loadAsync({
-		// 	'Roboto-Regular': require('../assets/fonts/Roboto/Roboto-Regular.ttf'),
-		// 	'Roboto-Bold': require('../assets/fonts/Roboto/Roboto-Bold.ttf'),
-		// });
-		// this.setState({ fontLoaded: true });
 		if(this.state.minified){
 			setTimeout(() => this.scroller.scrollTo({ x: scrollBox, y: 0, animated: false}) , 0);
 		}
@@ -173,10 +168,9 @@ export class Player extends React.Component {
 					onLoad={ this.onLoad.bind(this) }
 					onPlaybackStatusUpdate={ this.setTime.bind(this) }
 					isLooping={false}/>
-
 				<Modal
 		          animationType="slide"
-		          transparent={false}
+		          transparent={true}
 		          visible={!this.state.minified}
 		          onRequestClose={this.toggleMinify.bind(this)}>
                 <View style={styles.container}>
