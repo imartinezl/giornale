@@ -22,17 +22,16 @@ export class Player extends React.Component {
 		      currentTime: 0,
 		      songIndex: this.props.songIndex,
 		      minified: true,
-		      fontLoaded: false,
 		};
 		// this.onSlidingStart = this.onSlidingStart.bind(this);
 		this.onScroll = this.onScroll.bind(this);
 	}
-	async componentDidMount(){
-		await Font.loadAsync({
-			'Roboto-Regular': require('../assets/fonts/Roboto/Roboto-Regular.ttf'),
-			'Roboto-Bold': require('../assets/fonts/Roboto/Roboto-Bold.ttf'),
-		});
-		this.setState({ fontLoaded: true });
+	componentDidMount(){
+		// await Font.loadAsync({
+		// 	'Roboto-Regular': require('../assets/fonts/Roboto/Roboto-Regular.ttf'),
+		// 	'Roboto-Bold': require('../assets/fonts/Roboto/Roboto-Bold.ttf'),
+		// });
+		// this.setState({ fontLoaded: true });
 		if(this.state.minified){
 			setTimeout(() => this.scroller.scrollTo({ x: scrollBox, y: 0, animated: false}) , 0);
 		}
@@ -182,11 +181,9 @@ export class Player extends React.Component {
 		          onRequestClose={this.toggleMinify.bind(this)}>
                 <View style={styles.container}>
 					<View style={ styles.header }>
-						{this.state.fontLoaded ? (
 						<Text style={ styles.albumTitle }>
 							{ songPlaying.album }
 						</Text>
-						) : null}
 					</View>
 					<View style={ styles.headerClose }>
 						<Icon style={ styles.headerCloseIcon } onPress={ this.toggleMinify.bind(this) } name="ios-arrow-down" size={25} color="#fff" />
@@ -196,16 +193,12 @@ export class Player extends React.Component {
 						source={{uri: image,
 						width: window.width - 30,
 						height: 300}}/>
-					{this.state.fontLoaded ? (
-						<Text style={ styles.songTitle }>
-							{ songPlaying.title }
-						</Text>
-					): null}
-					{this.state.fontLoaded ? (
-						<Text style={ styles.artistTitle }>
-							{ this.props.artist.name }
-						</Text>
-					): null}
+					<Text style={ styles.songTitle }>
+						{ songPlaying.title }
+					</Text>
+					<Text style={ styles.artistTitle }>
+						{ this.props.artist.name }
+					</Text>
 					<View style={ styles.sliderContainer }>
 						<Slider
 							onSlidingComplete={ this.onSlidingComplete.bind(this) }
@@ -239,37 +232,37 @@ export class Player extends React.Component {
 									width: 60,
 									height: 60}}/>
 							</TouchableHighlight>
-							{this.state.fontLoaded ? (
-								<ScrollView 
-								contentContainerStyle={{ flexGrow: 1 }}
-								ref={(scroller) => {
-									this.scroller = scroller;
-								}}
-								horizontal={true} 
-								pagingEnabled={true} 
-								showsHorizontalScrollIndicator={false}
-								onMomentumScrollEnd={this.onScroll}
-								>
-									<View style={styles.scrollContainer}>
-										{backwardButtonMin}
+							
+							<ScrollView 
+							contentContainerStyle={{ flexGrow: 1 }}
+							ref={(scroller) => {
+								this.scroller = scroller;
+							}}
+							horizontal={true} 
+							pagingEnabled={true} 
+							showsHorizontalScrollIndicator={false}
+							onMomentumScrollEnd={this.onScroll}
+							>
+								<View style={styles.scrollContainer}>
+									{backwardButtonMin}
+								</View>
+								<View style={styles.scrollContainer}>
+								<TouchableHighlight	onPress={this.toggleMinify.bind(this)}>
+									<View>
+										<Text style={ styles.songTitleMin }>
+											{ songPlaying.title }
+										</Text>
+										<Text style={ styles.artistTitleMin }>
+											{ this.props.artist.name }
+										</Text>
 									</View>
-									<View style={styles.scrollContainer}>
-									<TouchableHighlight	onPress={this.toggleMinify.bind(this)}>
-										<View>
-											<Text style={ styles.songTitleMin }>
-												{ songPlaying.title }
-											</Text>
-											<Text style={ styles.artistTitleMin }>
-												{ this.props.artist.name }
-											</Text>
-										</View>
-									</TouchableHighlight>
-									</View>
-									<View style={styles.scrollContainer}>
-										{forwardButtonMin}
-									</View>
-								</ScrollView>
-							): null}
+								</TouchableHighlight>
+								</View>
+								<View style={styles.scrollContainer}>
+									{forwardButtonMin}
+								</View>
+							</ScrollView>
+							
 							{ playButtonMin }
 						</View>
 					</View>
