@@ -78,6 +78,9 @@ export class Player extends React.Component {
 		if( !this.state.sliding ){
 			this.setState({ currentTime: params.positionMillis });
 		}
+		if(params.didJustFinish){
+			this.goForward();
+		}
 	}
 	onLoad(params){
 		this.setState({ songDuration: params.durationMillis });
@@ -156,10 +159,10 @@ export class Player extends React.Component {
 		} else {
 			shuffleButton = <Icon onPress={ this.toggleShuffle.bind(this) } style={ styles.shuffle } name="ios-shuffle" size={28} color="#fff" />;
 		}
-		let image = songPlaying.albumImage ? songPlaying.albumImage : this.props.artist.background;
+		let image = songPlaying.albumImage;// ? songPlaying.albumImage : this.props.artist.background;
 		return (
 			<View style={styles.container}>
-                <Video source={{uri: songPlaying.url }}
+                <Video source={{uri: songPlaying.songFile }}
 					ref={(ref) => { this.videoRef = ref; }}
 					rate={1.0}
 					volume={ this.state.muted ? 0 : 1.0}
@@ -170,10 +173,10 @@ export class Player extends React.Component {
 					isLooping={false}/>
 				<Modal
 		          animationType="slide"
-		          transparent={true}
+		          transparent={false}
 		          visible={!this.state.minified}
 		          onRequestClose={this.toggleMinify.bind(this)}>
-                <View style={styles.container}>
+                <View style={styles.containerModal}>
 					<View style={ styles.header }>
 						<Text style={ styles.albumTitle }>
 							{ songPlaying.album }
@@ -191,7 +194,7 @@ export class Player extends React.Component {
 						{ songPlaying.title }
 					</Text>
 					<Text style={ styles.artistTitle }>
-						{ this.props.artist.name }
+						{ songPlaying.artist}
 					</Text>
 					<View style={ styles.sliderContainer }>
 						<Slider
@@ -247,7 +250,7 @@ export class Player extends React.Component {
 											{ songPlaying.title }
 										</Text>
 										<Text style={ styles.artistTitleMin }>
-											{ this.props.artist.name }
+											{ songPlaying.artist }
 										</Text>
 									</View>
 								</TouchableHighlight>
@@ -267,6 +270,13 @@ export class Player extends React.Component {
 }
 const styles = StyleSheet.create({
   container: {
+    //flex: 1,
+    height: 60,
+    marginTop: 'auto',
+    alignItems: 'center',
+    backgroundColor: '#040126',
+  },
+  containerModal: {
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#040126',
