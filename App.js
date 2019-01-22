@@ -4,7 +4,7 @@ import Hyperlink from 'react-native-hyperlink';
 import { Calendario } from './components/calendar.js';
 import { AgendaC } from './components/agenda.js';
 import { Player } from './components/player.js';
-
+import { Font, Video } from 'expo';
 
 import * as firebase from 'firebase';
 import {firebaseConfig} from './components/firebaseInit.js'
@@ -27,8 +27,13 @@ export default class App extends React.Component {
     this.getFromFirebase(database, 'data', this.getData)
   }
 
-  componentDidMount(){
+  async componentDidMount(){
     console.log("App Mount:",this.state);
+    await Font.loadAsync({
+      'Roboto-Regular': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
+      'Roboto-Bold': require('./assets/fonts/Roboto/Roboto-Bold.ttf'),
+    });
+    this.setState({ fontLoaded: true });
   }
 
   getFromStorage(storage, file, callback){
