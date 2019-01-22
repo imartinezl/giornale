@@ -20,10 +20,10 @@ export class AgendaC extends React.Component {
 	}
 
 	componentDidMount() {
-    	console.log("Component Mount");
+    	console.log("Agenda Mount");
 	}
 	componentWillUnmount() {
-    	console.log("Component Unmount");
+    	console.log("Agenda Unmount");
 	}
 	onDayPress(day){
 		console.log('day pressed:', day.dateString);
