@@ -203,10 +203,6 @@ const styles = StyleSheet.create({
   }
 });
 
-var today = new Date();
-var yesterday = new Date();
-yesterday.setDate(today.getDate() - 1);
-
 var markedDates = {
 	'2019-01-01': {selected: true, marked: true},
 	'2019-01-02': {marked: true},
@@ -221,8 +217,6 @@ const theme = {
 	selectedDayBackgroundColor: '#00adf5',
 	backgroundColor: '#ddd'
 };
-const minDate = '2018-11-01';
-const maxDate = '2019-01-08';//today;
-const selected = '2019-01-05';//yesterday;
+
 
 
