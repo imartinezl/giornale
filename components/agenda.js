@@ -19,7 +19,6 @@ export class AgendaC extends React.Component {
     	// this.loadItemsForMonth(day);
 	}
 	shouldComponentUpdate(nextProps, nextState) {
-		console.log("SHOULD:",this.props.songIndex,nextProps.songIndex);
 	    if (this.props.songIndex !== nextProps.songIndex){
 	    	return true;
 	    }
