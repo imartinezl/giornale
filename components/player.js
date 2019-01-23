@@ -53,6 +53,9 @@ export class Player extends React.Component {
 			this.setState({
 				songIndex: this.state.songIndex - 1,
 				currentTime: 0,
+			},()=>{
+				this.props.callback(this.state.songIndex);
+				console.log('Prev');
 			});
 		} else {
 			this.videoRef.setPositionAsync(0);
@@ -66,6 +69,9 @@ export class Player extends React.Component {
 			this.setState({
 			  songIndex: this.state.shuffle ? this.randomSongIndex() : this.state.songIndex + 1,
 			  currentTime: 0,
+			},()=>{
+				this.props.callback(this.state.songIndex);
+				console.log('Next');
 			});
 			this.videoRef.setPositionAsync(0);
 		}
