@@ -195,7 +195,8 @@ export class Player extends React.Component {
 						style={ styles.songImage }
 						source={{uri: image,
 						width: window.width - 30,
-						height: 300}}/>
+						height: 300}}
+						borderRadius={15}/>
 					<Text style={ styles.songTitle }>
 						{ songPlaying.title }
 					</Text>
