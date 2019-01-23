@@ -17,20 +17,25 @@ export class AgendaC extends React.Component {
 
     	// let day = {timestamp: new Date(minDate).getTime()};
     	// this.loadItemsForMonth(day);
-    	this.scrolledToEnd = true;
 	}
-
+	shouldComponentUpdate(nextProps, nextState) {
+		console.log("SHOULD:",this.props.songIndex,nextProps.songIndex);
+	    if (this.props.songIndex !== nextProps.songIndex){
+	    	return true;
+	    }
+	    return false;
+  	}
 	componentDidMount() {
     	console.log("Agenda Mount");
+    	setTimeout(() => {
+    		this.list.scrollToIndex({index: this.props.songIndex});
+		});
 	}
 	componentWillUnmount() {
     	console.log("Agenda Unmount");
 	}
 	componentDidUpdate(){
-		if(!this.scrolledToEnd){
-			this.list.scrollToEnd();
-			this.scrolledToEnd = true;
-		}
+		console.log("Agenda Updated");
 		this.list.scrollToIndex({index: this.props.songIndex});
 	}
 	onDayPress(day){
