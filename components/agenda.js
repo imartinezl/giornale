@@ -17,6 +17,7 @@ export class AgendaC extends React.Component {
 
     	// let day = {timestamp: new Date(minDate).getTime()};
     	// this.loadItemsForMonth(day);
+    	this.scrolledToEnd = true;
 	}
 
 	componentDidMount() {
@@ -24,6 +25,13 @@ export class AgendaC extends React.Component {
 	}
 	componentWillUnmount() {
     	console.log("Agenda Unmount");
+	}
+	componentDidUpdate(){
+		if(!this.scrolledToEnd){
+			this.list.scrollToEnd();
+			this.scrolledToEnd = true;
+		}
+		this.list.scrollToIndex({index: this.props.songIndex});
 	}
 	onDayPress(day){
 		console.log('day pressed:', day.dateString);
@@ -107,9 +115,11 @@ export class AgendaC extends React.Component {
 	}
 
 	render() {
+		
 		return (
 			<View style={{flex:1}}>
 			<Agenda
+			  ref={(c) => this.list = c}
 			  // the list of items that have to be displayed in agenda. If you want to render item as empty date
 			  // the value of date key kas to be an empty array []. If there exists no value for date key it is
 			  // considered that the date in question is not yet loaded

@@ -20,9 +20,11 @@ export default class App extends React.Component {
     console.ignoredYellowBox = ['Setting a timer'];
 
     this.state = {
-      loaded: false
+      loaded: false,
+      day: '2019-01-08'
     };    
     this.getData = this.getData.bind(this);
+    this.test = this.test.bind(this);
 
     this.getFromFirebase(database, 'data', this.getData)
   }
@@ -53,19 +55,39 @@ export default class App extends React.Component {
     database.ref(key).once('value', snapshot => {
       callback(snapshot, key);
     }).then(() => {
-      this.setState({loaded: true},()=>{
+      this.setState({
+        loaded: true,
+        songIndex: this.state.data.length-1
+      },()=>{
         console.log("LOADED");
       })
     });
   }
 
+  getPlayerSong(songIndex){
+    console.log("SongIndex:", songIndex);
+    this.setState({
+        day: this.state.data[songIndex].date,
+        songIndex: songIndex
+    });
+  }
+  test(){
+    this.setState({
+        songIndex: this.state.songIndex-1
+    },() =>{
+      console.log(this.state.songIndex);
+    });
+  }
+
   render() {
     // <StatusBar hidden={true} />
+    // <AgendaC db={database} data={this.state.data}/>
     // <Player artist={Artists[0]} songs={Artists[0].songs} songIndex={1}/>
 
     // <View style={styles.container}>
     // <Text style={{color: 'red', fontSize: 18}}>{"Hola"}</Text>
     // </View>
+              // <Player songs={this.state.data} songIndex={this.state.data.length-1} callback={this.getPlayerSong}/>
     return (
         <View style={{flex: 1, backgroundColor: '#eee'}}>
         <StatusBar
@@ -74,7 +96,16 @@ export default class App extends React.Component {
           hidden={true}
         />
           {this.state.loaded ? (
-            <AgendaC db={database} data={this.state.data}/>
+            <View style={{flex:1}}>
+              <AgendaC db={database} data={this.state.data} songIndex={this.state.songIndex}/>
+              <Button
+                onPress={this.test}
+                title="Learn More"
+                color="#841584"
+                accessibilityLabel="Learn more about this purple button"
+              />
+
+            </View>
           ) : (
             <View style={styles.container}>
               <ActivityIndicator size="large"/>
