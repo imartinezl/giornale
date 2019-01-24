@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, View, Text, StyleSheet } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { AgendaItem } from './agendaItem.js';
+import { AgendaDay } from './agendaDay.js';
 
 const minDate = '2018-11-01';
 const maxDate = '2019-01-08';
@@ -63,15 +64,18 @@ export class AgendaC extends React.Component {
 		);
 	}	
 	renderDay(day, item) {
-		//console.log("DAY:")
-		//console.log(day,item);
-		if(isDefined(day)){
-			return (
-					<View style={styles.date}><Text>{day.dateString}</Text></View>
-			);
-		}else{
-			return(<View />);
-		}
+		// console.log("DAY:")
+		// console.log(day,item);
+		return(
+			<AgendaDay day={day} item={item}/>
+		);
+		// if(isDefined(day)){
+		// 	return (
+		// 			<View style={styles.date}><Text>{day.dateString}</Text></View>
+		// 	);
+		// }else{
+		// 	return(<View />);
+		// }
 	}
 	storeInFirebase(database, key, field, value){
 		console.log('Value received!!!:',value);
@@ -153,7 +157,7 @@ export class AgendaC extends React.Component {
 			  // specify how each item should be rendered in agenda
 			  renderItem={this.renderItem.bind(this)}
 			  // specify how each date should be rendered. day can be undefined if the item is not first in that day.
-			  // renderDay={this.renderDay.bind(this)}
+			  renderDay={this.renderDay.bind(this)}
 			  // specify how empty date content with no items should be rendered
 			  renderEmptyDate={this.renderEmptyDate.bind(this)}
 			  // specify how agenda knob should look like
