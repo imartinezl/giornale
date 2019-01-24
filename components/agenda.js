@@ -3,6 +3,10 @@ import { Button, View, Text, StyleSheet } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { AgendaItem } from './agendaItem.js';
 
+const minDate = '2018-11-01';
+const maxDate = '2019-01-08';
+const selected = '2019-01-05'; 
+
 export class AgendaC extends React.Component {
 	constructor(props){
 		super(props);
