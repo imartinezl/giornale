@@ -25,51 +25,53 @@ export class AgendaItem extends React.Component {
 	// 	style={styles.image}
 	// 	source={{uri: this.props.item.albumImage}}
 	// />
+	// <Text style={styles.album}>{this.props.item.album}</Text>
 	render() {
 		return (
-			<ImageBackground
-				style={styles.imageBackground}
-				source={{uri: this.props.item.albumImage}}
-				resizeMode={'cover'}
-				borderRadius={15}
-				blurRadius={4}
-				>
 			<View style={styles.item}>
-				<View style={[styles.textContainer,{backgroundColor: 'rgba(255,0,0,0.4)',}]}>
-					<Text style={styles.title}>{this.props.item.title}</Text>
-					<Text style={styles.artist}>{this.props.item.artist}</Text>
-					<Text style={styles.album}>{this.props.item.album}</Text>
+				<ImageBackground
+					style={styles.imageBackground}
+					source={{uri: this.props.item.albumImage}}
+					resizeMode={'cover'}
+					borderTopLeftRadius={15}
+					borderTopRightRadius={15}
+					>
+				</ImageBackground>
+				<View style={styles.textContainer}>
+					<Text allowFontScaling={false} style={styles.title}>{this.props.item.title}</Text>
+					<Text allowFontScaling={false} style={styles.artist}>{this.props.item.artist + ' - ' + this.props.item.album}</Text>
+					
 				</View>
 			</View>
-			</ImageBackground>
 
 		)
 	}
 }
 
 const styles = StyleSheet.create({
-  imageBackground:{
+  item: {
+    flex: 1,
   	marginTop: 20,
-    marginBottom: 40,
     marginRight: 10,
+    marginBottom: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  imageBackground:{
     width: 280, 
     height: 280,
   },
-  item: {
-    flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.4)',
-    borderRadius: 15
-  },
   textContainer:{
   	height: 100,
-  	paddingTop: 20,
+  	width: 280,
+  	paddingTop: 5,
   	paddingRight: 20,
   	paddingBottom: 20,
-  	marginTop: 'auto',
-  	marginBottom: 0,
   	borderBottomLeftRadius: 15,
   	borderBottomRightRadius: 15,
-  	
+  	backgroundColor: '#FFF',
+  	borderTopWidth: 1,
+  	borderTopColor: '#AAA'
   },
   title:{
   	fontFamily: "Roboto-Bold",
@@ -78,13 +80,16 @@ const styles = StyleSheet.create({
   },
   artist:{
   	fontFamily: "Roboto-Regular",
-  	fontSize: 18,
+  	fontSize: 16,
     textAlign: 'right',
+    flex: 1, 
+    flexWrap: 'wrap',
   },
   album:{
   	fontFamily: "Roboto-Regular",
-  	fontSize: 18,
+  	fontSize: 16,
     textAlign: 'right',
+
   },
   image:{
 	width: 120, 
