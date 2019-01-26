@@ -1,5 +1,7 @@
 import React from 'react';
-import { ActivityIndicator, Alert, Button, Image, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Animated, Button, Dimensions, FlatList, 
+  Image, LayoutAnimation, NativeModules, StatusBar, StyleSheet, Text, 
+  TouchableHighlight, View } from 'react-native';
 import Hyperlink from 'react-native-hyperlink';
 import { Calendario } from './components/calendar.js';
 import { AgendaC } from './components/agenda.js';
@@ -14,6 +16,13 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 var storage = firebase.storage();
 
+const window = Dimensions.get('window');
+
+// const { UIManager } = NativeModules;
+// UIManager.setLayoutAnimationEnabledExperimental &&
+//   UIManager.setLayoutAnimationEnabledExperimental(true);
+
+
 export default class App extends React.Component {
   constructor(props){
     super(props);
@@ -21,13 +30,15 @@ export default class App extends React.Component {
 
     this.state = {
       loaded: false,
-      day: '2019-01-08'
+      day: '2019-01-08',
+      animatedValue: new Animated.Value(0),
     };    
     this.getData = this.getData.bind(this);
     this.getPlayerSong = this.getPlayerSong.bind(this);
     this.testButton = this.testButton.bind(this);
 
-    this.getFromFirebase(database, 'data', this.getData)
+    // this.getFromFirebase(database, 'data', this.getData)
+    this.handleScroll = this.handleScroll.bind(this)
   }
 
   async componentDidMount(){
@@ -37,6 +48,7 @@ export default class App extends React.Component {
       'Roboto-Bold': require('./assets/fonts/Roboto/Roboto-Bold.ttf'),
     });
     this.setState({ fontLoaded: true });
+
   }
 
   getFromStorage(storage, file, callback){
@@ -79,16 +91,11 @@ export default class App extends React.Component {
       console.log(this.state.songIndex);
     });
   }
-
   render() {
     // <StatusBar hidden={true} />
-
-    // <View style={styles.container}>
-    // <Text style={{color: 'red', fontSize: 18}}>{"Hola"}</Text>
-    // </View>
-              
-
     // <Player songs={this.state.data} songIndex={this.state.data.length-1} callback={this.getPlayerSong}/>
+
+    //<ActivityIndicator size="large"/>
     return (
         <View style={{flex: 1, backgroundColor: '#eee'}}>
         <StatusBar
@@ -108,20 +115,113 @@ export default class App extends React.Component {
             </View>
           ) : (
             <View style={styles.container}>
-              <ActivityIndicator size="large"/>
+             
+              <AnimatedFlatList
+                data={data}
+                scrollEventThrottle={16}
+                renderItem={({item, index}) => 
+                  <Item 
+                  item={item} 
+                  index={index}
+                  currentValue={this.state.currentValue}
+                  animatedValue={this.state.animatedValue}
+                  />
+                }
+                onScroll={
+                Animated.event(
+                  [{nativeEvent: {contentOffset: {y: this.state.animatedValue}}}],
+                  {useNativeDriver: false}
+                )}
+                contentContainerStyle={styles.contentContainer}
+                onContentSizeChange = {( contentWidth, contentHeight ) => {
+                  this.contentHeight = contentHeight
+                  // console.log("ContentHeight:",contentHeight);
+                }}
+               />
             </View>
           )}
         </View>
     );
-  }        
+  }
+  handleScroll(event){
+    // let yOffset = event.nativeEvent.contentOffset.y
+    // let contentHeight = event.nativeEvent.contentSize.height
+    // let value = yOffset / contentHeight
+    // // console.log("yOffset:",yOffset);
+    // // console.log("contentHeight:",contentHeight);
+    // // console.log("Value:",value);
+    // let x = (yOffset-containerPad)/itemHeight + offset
+  }
 }
+const data = [{key: 'Devin'},{key: 'Jackson'},{key: 'James'},{key: 'Joel'},
+{key: 'a'},{key: 'b'},{key: 'c'},{key: 'd'},{key: 'e'},{key: 'f'},{key: 'g'},{key: 'h'},
+{key: '12'},{key: '13'},{key: '14'},{key: 'i'},{key: 'j'},{key: 'k'},{key: 'l'},{key: 'm'},
+{key: 'n'},{key: 'o'},{key: 'p'},{key: 'q'},{key: 'r'},{key: 's'},{key: 't'},{key: 'u'},
+{key: 'v'},{key: 'w'},{key: 'x'},{key: 'y'},{key: 'z'},{key: '1'},{key: '2'},{key: '3∫'}
+]
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+
+
+class Item extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+
+    };
+  }
+  render(){
+
+    let index = this.props.index;
+
+    let i = this.props.animatedValue.interpolate({
+      inputRange: [ (index+offset)*itemHeight, (index+offset+0.3)*itemHeight, (index+offset+0.8)*itemHeight, (index+offset+1)*itemHeight],
+      outputRange: [itemHeight, itemHeight*4, itemHeight*4, itemHeight],
+      extrapolateRight: 'clamp',
+      extrapolateLeft: 'clamp'
+    });
+    
+    // LayoutAnimation.spring();
+    // if(index==0){this.props.animatedValue.addListener((value) => {console.log(value.value, index)})}
+    return(
+      <View style={[styles.item]}>
+        <Animated.View style={{height: i, backgroundColor:'blue'}}>
+          <Text>Hola</Text>
+        </Animated.View>
+      </View>
+    )
+  }
+  
+
+}
+const itemHeight = 80;
+const containerPad = 80;
+const offset = -0.5;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  item: {
+    // height: itemHeight,
+    width: 300,
+    borderWidth: 0.5,
+    borderColor: '#d6d7da',
+    padding: 0,
+  },
+  itemView: {
+    height: 150,
+    width: 300,
+    backgroundColor: 'red',
+    borderWidth: 1.5,
+    borderColor: 'blue',
+  },
+  itemText: {
+    fontSize: 18,
+  },
+  contentContainer:{
+    paddingTop: containerPad,
+    paddingBottom: containerPad*10
   },
 });
 
