@@ -1,6 +1,8 @@
 import React from 'react';
-import { Animated, Image, ImageBackground, View, Text, StyleSheet } from 'react-native';
+import { Animated, Dimensions, Image, ImageBackground, View, Text, StyleSheet } from 'react-native';
 import { FlatList, RectButton, Swipeable } from 'react-native-gesture-handler';
+
+const window = Dimensions.get('window');
 
 export class AgendaItem extends React.Component {
 	constructor(props){
@@ -20,26 +22,14 @@ export class AgendaItem extends React.Component {
 				duration: 10000,              // Make it take a while
 			}
 		).start(); 
-		// this.x.measure( (fx, fy, width, height, px, py) => {
-  //           console.log('Component width is: ' + width)
-  //           console.log('Component height is: ' + height)
-  //           console.log('X offset to frame: ' + fx)
-  //           console.log('Y offset to frame: ' + fy)
-  //           console.log('X offset to page: ' + px)
-  //           console.log('Y offset to page: ' + py)
-  //       })
 	}
 	componentWillUnmount() {
 
 	}
 	componentWillMount() {
-        console.log(this.props.item.albumImage);
+        console.log(this.props.item);
     }
-	// <Image
-	// 	style={styles.image}
-	// 	source={{uri: this.props.item.albumImage}}
-	// />
-	// <Text style={styles.album}>{this.props.item.album}</Text>
+
 	renderLeftActions(progress, dragX){
 		const trans = dragX.interpolate({
 		  inputRange: [0, 50, 100, 101],
@@ -59,40 +49,28 @@ export class AgendaItem extends React.Component {
 		);
 	}
 	render() {
+		let d = new Date(this.props.item.date)
+      	let day = ("0" + d.getDate()).slice(-2);
+      	let month = ("0" + (d.getMonth() + 1)).slice(-2);
+
+        
+
 		return (
-			<View ref={view => { this.x = view; }} style={styles.item} onLayout={event => {
-			    const layout = event.nativeEvent.layout;
-			    console.log('height:', layout.height);
-			    console.log('width:', layout.width);
-			    console.log('x:', layout.x);
-			    console.log('y:', layout.y);
-			  }}>
-			<Swipeable renderLeftActions={this.renderLeftActions}>
-				<ImageBackground
-					style={styles.imageBackground}
+			<View style={styles.item}>
+			
+				<Image
+					style={styles.image}
 					source={{uri: this.props.item.albumImage}}
 					resizeMode={'cover'}
-					borderTopLeftRadius={15}
-					borderTopRightRadius={15}
-					>
-				</ImageBackground>
+					borderRadius={8}
+				/>
 				<View style={styles.textContainer}>
 					<Text allowFontScaling={false} style={styles.title}>{this.props.item.title}</Text>
-					<Text allowFontScaling={false} style={styles.artist}>{this.props.item.artist + ' - ' + this.props.item.album}</Text>
-					<Animated.View style={{
-					    opacity: this.state.fadeAnim, // Binds directly
-					    // transform: [{
-					    //   translateY: this.state.fadeAnim.interpolate({
-					    //     inputRange: [0, 1],
-					    //     outputRange: [150, 150]  // 0 : 150, 0.5 : 75, 1 : 0
-					    //   }),
-					    // }],
-					    flex: 1,
-					    backgroundColor: 'red'
-					  }}/>
-
+					<Text allowFontScaling={false} style={styles.artist}>{this.props.item.artist}</Text>
 				</View>
-            </Swipeable>
+				<View style={styles.dateContainer}>
+            		<Text allowFontScaling={false} style={styles.date}>{day + '/' + month}</Text>
+            	</View>
 			</View>
 
 		)
@@ -102,49 +80,57 @@ export class AgendaItem extends React.Component {
 const styles = StyleSheet.create({
   item: {
     flex: 1,
-  	marginTop: 20,
-    marginRight: 10,
-    marginBottom: 100,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+  	backgroundColor: '#FFF',
+  	marginTop: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 8,
+  	borderRadius: 15,
   },
-  imageBackground:{
-    width: 280, 
-    height: 280,
+  image:{
+    padding: 15,
+    width: 70,
+    height: 70,
   },
   textContainer:{
-  	height: 100,
-  	width: 280,
-  	paddingTop: 5,
-  	paddingRight: 20,
-  	paddingBottom: 20,
-  	borderBottomLeftRadius: 15,
-  	borderBottomRightRadius: 15,
-  	backgroundColor: '#FFF',
-  	borderTopWidth: 1,
-  	borderTopColor: '#AAA'
+  	flex: 1,
+  	justifyContent: 'center',
   },
   title:{
   	fontFamily: "Roboto-Bold",
-  	fontSize: 22,
-    textAlign: 'right',
+  	fontSize: 16,
+    textAlign: 'left',
+    paddingLeft: 10,
   },
   artist:{
   	fontFamily: "Roboto-Regular",
   	fontSize: 16,
-    textAlign: 'right',
-    flex: 1, 
+    textAlign: 'left',
+    paddingLeft: 10,
     flexWrap: 'wrap',
+    color: '#aaa',
   },
   album:{
   	fontFamily: "Roboto-Regular",
   	fontSize: 16,
     textAlign: 'right',
+  },
+  dateContainer:{
+  	flex: 1,
+  	height: 78,
+    alignItems: 'flex-start',
+    position: 'absolute',
+    marginLeft: window.width*5/6,
+    marginRight: 0,
+    marginTop: 0,
 
   },
-  image:{
-	width: 120, 
-	height: 120,
-	marginLeft: 'auto',
+  date:{
+  	fontFamily: "Roboto-Regular",
+  	fontSize: 14,
+    color: '#aaa',
   }
+
 });
