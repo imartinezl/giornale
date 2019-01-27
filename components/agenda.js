@@ -64,18 +64,9 @@ export class AgendaC extends React.Component {
 		);
 	}	
 	renderDay(day, item) {
-		// console.log("DAY:")
-		// console.log(day,item);
 		return(
 			<AgendaDay day={day} item={item}/>
 		);
-		// if(isDefined(day)){
-		// 	return (
-		// 			<View style={styles.date}><Text>{day.dateString}</Text></View>
-		// 	);
-		// }else{
-		// 	return(<View />);
-		// }
 	}
 	storeInFirebase(database, key, field, value){
 		console.log('Value received!!!:',value);
@@ -87,7 +78,7 @@ export class AgendaC extends React.Component {
 		let items = {};
         for (var i = 0; i < data.length; i++) {
           let date = data[i].date;
-          delete data[i].date;
+          // delete data[i].date;
           items[date] = [data[i]];
         }
         return(items);
