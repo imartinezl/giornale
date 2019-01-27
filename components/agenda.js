@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, View, Text, StyleSheet } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import { AgendaItem } from './agendaItem.js';
+import { AgendaItem } from './agendaCleanItem.js';
 import { AgendaDay } from './agendaDay.js';
 
 const minDate = '2018-11-01';
@@ -214,7 +214,7 @@ const theme = {
 	agendaKnobColor: '#4ac4f7',
 	dotColor: '#00adf5',
 	selectedDayBackgroundColor: '#00adf5',
-	backgroundColor: '#ddd'
+	backgroundColor: '#fff'
 };
 
 

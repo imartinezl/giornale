@@ -1,10 +1,11 @@
 import React from 'react';
 import { ActivityIndicator, Alert, Animated, Button, Dimensions, FlatList, 
   Image, StatusBar, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
-import Hyperlink from 'react-native-hyperlink';
+
 import { Calendario } from './components/calendar.js';
 import { AgendaC } from './components/agenda.js';
 import { Player } from './components/player.js';
+
 import { Font, Video } from 'expo';
 
 import * as firebase from 'firebase';
@@ -16,7 +17,6 @@ var database = firebase.database();
 var storage = firebase.storage();
 
 const window = Dimensions.get('window');
-
 
 export default class App extends React.Component {
   constructor(props){
@@ -34,7 +34,6 @@ export default class App extends React.Component {
 
     this.getFromFirebase(database, 'data', this.getData)
   }
-
   async componentDidMount(){
     console.log("App Mount:",this.state);
     await Font.loadAsync({
@@ -42,7 +41,6 @@ export default class App extends React.Component {
       'Roboto-Bold': require('./assets/fonts/Roboto/Roboto-Bold.ttf'),
     });
     this.setState({ fontLoaded: true });
-
   }
 
   getFromStorage(storage, file, callback){
@@ -70,7 +68,6 @@ export default class App extends React.Component {
       })
     });
   }
-
   getPlayerSong(songIndex){
     console.log("SongIndex:", songIndex);
     this.setState({
@@ -114,7 +111,6 @@ export default class App extends React.Component {
         </View>
     );
   }
-  
 }
 
 

@@ -31,10 +31,11 @@ export class AgendaDay extends React.Component {
       let day = ("0" + d.getDate()).slice(-2);
       let month = ("0" + (d.getMonth() + 1)).slice(-2);
       return (
-        <View style={styles.date}>
-          <Text allowFontScaling={false} style={styles.dayNum}>{day}</Text>
-          <Text allowFontScaling={false} style={styles.dayText}>{month}</Text>
-          <Text allowFontScaling={false} style={styles.extra}>{day + '/' + month}</Text>
+        <View style={styles.container}>
+          <View style={styles.date}>
+            <Text allowFontScaling={false} style={styles.day}>{day}</Text>
+            <Text allowFontScaling={false} style={styles.month}>{month}</Text>
+          </View>
         </View>
       );
     } else {
@@ -46,28 +47,37 @@ export class AgendaDay extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  date: {
-    width: 30,
+  container:{
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 0,
+  },
+  date: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 25,
+    height: 70,
+    backgroundColor: '#fff',
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 0,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 0,
+    elevation: 3
 
   },
   day: {
     fontSize: 16,
-    fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Bold",
     color: '#000'
   },
   month: {
     fontSize: 16,
     fontFamily: "Roboto-Regular",
-    color: '#000',
-  },
-  extra:{
-    position: 'absolute',
-    marginLeft: window.width*5/6,
-    marginRight: 0,
-    marginTop: 25,
-    zIndex: 1,
     color: '#aaa',
-  }
+  },
+
 });
