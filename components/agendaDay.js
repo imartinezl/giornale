@@ -1,7 +1,7 @@
 import React from 'react';
-import { Image, ImageBackground, View, Text, StyleSheet } from 'react-native';
+import { Dimensions, Image, ImageBackground, View, Text, StyleSheet } from 'react-native';
 
-
+const window = Dimensions.get('window');
 
 export class AgendaDay extends React.Component {
 	constructor(props){
@@ -21,48 +21,53 @@ export class AgendaDay extends React.Component {
 	componentWillMount() {
        
   }
-	render() {
+  render() {
+    return (
+        null
+    );
     if (this.props.day) {
       let d = new Date(this.props.day.timestamp)
       let dateArray = d.toDateString().slice(0, -5).split(" ");
+      let day = ("0" + d.getDate()).slice(-2);
+      let month = ("0" + (d.getMonth() + 1)).slice(-2);
       return (
-        <View style={styles.day}>
-          <Text allowFontScaling={false} style={styles.dayNum}>{dateArray[2]}</Text>
-          <Text allowFontScaling={false} style={styles.dayText}>{dateArray[1]}</Text>
-          <Text allowFontScaling={false} style={styles.dayText}>{dateArray[0]}</Text>
+        <View style={styles.date}>
+          <Text allowFontScaling={false} style={styles.dayNum}>{day}</Text>
+          <Text allowFontScaling={false} style={styles.dayText}>{month}</Text>
+          <Text allowFontScaling={false} style={styles.extra}>{day + '/' + month}</Text>
         </View>
       );
     } else {
       return (
-        <View style={styles.day}/>
+        <View/>
       );
     }
 	}
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row'
-  },
-  dayNum: {
-    fontSize: 28,
-    fontWeight: '200',
-    color: '#000'
-  },
-  dayText: {
-    fontSize: 14,
-    fontWeight: '300',
-    color: '#000',
-    marginTop: -5,
-    backgroundColor: 'rgba(0,0,0,0)'
+  date: {
+    width: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+
   },
   day: {
-    width: 63,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginTop: 32
-  },
-  today: {
+    fontSize: 16,
+    fontFamily: "Roboto-Regular",
     color: '#000'
   },
+  month: {
+    fontSize: 16,
+    fontFamily: "Roboto-Regular",
+    color: '#000',
+  },
+  extra:{
+    position: 'absolute',
+    marginLeft: window.width*5/6,
+    marginRight: 0,
+    marginTop: 25,
+    zIndex: 1,
+    color: '#aaa',
+  }
 });
