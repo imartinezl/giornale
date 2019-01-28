@@ -22,6 +22,7 @@ export default class App extends React.Component {
   constructor(props){
     super(props);
     console.ignoredYellowBox = ['Setting a timer'];
+    console.disableYellowBox = true;
 
     this.state = {
       loaded: false,
