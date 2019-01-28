@@ -3,6 +3,8 @@ import { Animated, Dimensions, Easing, Image, PanResponder, StyleSheet, Text, To
 import { RectButton } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
+import { Ionicons } from '@expo/vector-icons';
+
 const window = Dimensions.get('window');
 
 export class AgendaItem extends React.Component {
@@ -10,13 +12,11 @@ export class AgendaItem extends React.Component {
 		super(props);
 
 		this.state = {
-		    pressed: false,
-		    animatedImageValue: new Animated.Value(0),
-			
+			liked: false
 		};
 	}
 	componentDidMount() {
-    console.log("moount");
+    
 	}
 	componentWillUnmount() {
 
@@ -27,40 +27,57 @@ export class AgendaItem extends React.Component {
 	renderLeftActions = (progress, dragX) => {
 
 			const trans = dragX.interpolate({
-        inputRange: [0, 50],
+        inputRange: [0, 80],
         outputRange: [-20, 0],
         extrapolate: 'clamp',
 			});
+      const scale = dragX.interpolate({
+        inputRange: [0, 80],
+        outputRange: [0, 1],
+        extrapolate: 'clamp',
+      });
       
 			return (
 			  <RectButton style={styles.leftAction} onPress={this.close}>
-			    <Animated.Text
+			    <Animated.View
 			      style={
 			        {
 			          transform: [{ translateX: trans }],
 			        }
 			      }>
+          <Text>
 			      Archive
-			    </Animated.Text>
+			    </Text>
+          <Ionicons name="md-checkmark-circle" size={32} color="green" />
+          </Animated.View>
 			  </RectButton>
 			);
 	}
   renderRightActions = (progress, dragX) => {
 
       const trans = dragX.interpolate({
-        inputRange: [-50, 0],
-        outputRange: [-50, 50],
+        inputRange: [-80, 0],
+        outputRange: [0, -20],
+        extrapolate: 'clamp',
+      });
+      const scale = dragX.interpolate({
+        inputRange: [-80, 0],
+        outputRange: [1, 0],
+        extrapolate: 'clamp',
       });
       return (
-        <RectButton onPress={this.close}>
-          <Animated.Text
+        <RectButton style={styles.rightAction} onPress={this.close}>
+          <Animated.View
             style={
               {
                 transform: [{ translateX: trans }],
               }
             }>
+          <Text>
             Archive
-          </Animated.Text>
+          </Text>
+          <Ionicons name="md-checkmark-circle" size={32} color="green" />
+          </Animated.View>
         </RectButton>
       );
   }
@@ -79,6 +96,7 @@ export class AgendaItem extends React.Component {
   handleMusicPlay(){
   	console.log("play music")
   }
+
 	render() {
 		let d = new Date(this.props.item.date)
       	let day = ("0" + d.getDate()).slice(-2);
@@ -128,8 +146,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   	backgroundColor: '#FFF',
-  	marginTop: 10,
-  	marginBottom: 10,
+  	marginTop: 5,
+  	marginBottom: 5,
     marginLeft: 10,
     marginRight: 10,
     padding: 0,
@@ -186,7 +204,17 @@ const styles = StyleSheet.create({
   },
   leftAction: {
     flex: 1,
-    backgroundColor: '#497AFC',
+    backgroundColor: '#388e3c',
+    justifyContent: 'center',
+  },
+  actionIcon: {
+    width: 30,
+    marginHorizontal: 10,
+  },
+  rightAction: {
+    alignItems: 'flex-end',
+    backgroundColor: '#dd2c00',
+    flex: 1,
     justifyContent: 'center',
   },
 });
