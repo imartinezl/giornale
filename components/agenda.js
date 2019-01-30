@@ -6,7 +6,7 @@ import { AgendaDay } from './agendaDay.js';
 
 const minDate = '2018-11-01';
 const maxDate = '2019-01-08';
-const selected = '2019-01-05'; 
+const selected = '2019-01-07'; 
 
 export class AgendaC extends React.Component {
 	constructor(props){
