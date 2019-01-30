@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "giornale2",
-    "slug": "giornale2",
+    "name": "giornale",
+    "slug": "giornale",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [

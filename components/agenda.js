@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, View, Text, StyleSheet } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import { AgendaItem } from './agendaCleanItem.js';
+import { AgendaItem } from './agendaItem.js';
 import { AgendaDay } from './agendaDay.js';
 
 const minDate = '2018-11-01';
@@ -33,7 +33,7 @@ export class AgendaC extends React.Component {
     	console.log("Agenda Mount");
     	setTimeout(() => {
     		this.list.scrollToIndex({index: this.props.songIndex});
-		});
+		},0);
 	}
 	componentWillUnmount() {
     	console.log("Agenda Unmount");
@@ -47,7 +47,6 @@ export class AgendaC extends React.Component {
 		this.setState({ selected: day.dateString }, () => {
 			console.log("State updated:",this.state.selected);
 			this.storeInFirebase(this.props.db, 'dates/', 'selected', this.state.selected);
-			// this.loadItems();			
 		});
 	}	
 	onDayChange(day){
@@ -55,10 +54,11 @@ export class AgendaC extends React.Component {
 	}
 	renderItem(item, firstItemInDay) {
 	    return (
-	      <AgendaItem item={item}/>
+	      <AgendaItem item={item} db={this.props.db}/>
 	    );
 	}
 	renderEmptyDate() {
+		return(null);
 		return (
 			<View style={styles.emptyDate}><Text>This is empty date!</Text></View>
 		);
@@ -69,7 +69,7 @@ export class AgendaC extends React.Component {
 		);
 	}
 	storeInFirebase(database, key, field, value){
-		console.log('Value received!!!:',value);
+		console.log('Stored in FB! ',value);
 		database.ref(key).set({
 		  [field]: value,
 		});
@@ -81,6 +81,7 @@ export class AgendaC extends React.Component {
           // delete data[i].date;
           items[date] = [data[i]];
         }
+        // console.log(items);
         return(items);
 	}
 	loadItemsForMonth(day){
