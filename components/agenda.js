@@ -5,26 +5,33 @@ import { AgendaItem } from './agendaItem.js';
 import { AgendaDay } from './agendaDay.js';
 
 const minDate = '2018-11-01';
-const maxDate = '2019-01-08';
+const maxDate = '2019-01-10';
 const selected = '2019-01-07'; 
 
 export class AgendaC extends React.Component {
 	constructor(props){
 		super(props);
 
+		this.storeInFirebase = this.storeInFirebase.bind(this);
+		this.getMarkedDays = this.getMarkedDays.bind(this);
+		this.likedCallback = this.likedCallback.bind(this);
+
 		let items = this.dataPreprocessing(this.props.data);
+		let markedDates = this.getMarkedDays(items);
 		this.state = {
 			selected: selected,
-			items: items
+			items: items,
+			oldItems: items,
+			markedDates: markedDates
 		};
-		this.storeInFirebase = this.storeInFirebase.bind(this);
+
     	this.storeInFirebase(this.props.db, 'dates/', 'selected', this.state.selected);
 
-    	// let day = {timestamp: new Date(minDate).getTime()};
-    	// this.loadItemsForMonth(day);
 	}
 	shouldComponentUpdate(nextProps, nextState) {
-	    if (this.props.songIndex !== nextProps.songIndex){
+		console.log("Should Update");
+	    if (this.props.songIndex !== nextProps.songIndex || 
+	    	JSON.stringify(this.state.markedDates) !== JSON.stringify(nextState.markedDates) ){
 	    	return true;
 	    }
 	    return false;
@@ -54,7 +61,7 @@ export class AgendaC extends React.Component {
 	}
 	renderItem(item, firstItemInDay) {
 	    return (
-	      <AgendaItem item={item} db={this.props.db}/>
+	      <AgendaItem item={item} db={this.props.db}  likedCallback={this.likedCallback}/>
 	    );
 	}
 	renderEmptyDate() {
@@ -117,6 +124,27 @@ export class AgendaC extends React.Component {
 	    const date = new Date(time);
 	    return date.toISOString().split('T')[0];
 	}
+	getMarkedDays(items){
+		let markedDates = {};
+		Object.keys(items).forEach(key => {
+			// console.log(key, this.state.oldItems[key]);
+			markedDates[key] = {marked: items[key][0].liked, selected: !items[key][0].opened }
+		});
+		console.log("MARKED:",markedDates);
+		return(markedDates)
+	}
+	likedCallback(item, liked){
+
+		console.log("LIKED");
+        let markedDates = {...this.state.markedDates}
+        markedDates[item.date] = {marked: liked};
+        this.setState({ 
+        	markedDates: markedDates 
+        }, () => {
+            console.log(this.state.markedDates); // further value
+            // this.list.generateMarkings();
+        });
+	}
 
 	render() {
 		
@@ -161,7 +189,7 @@ export class AgendaC extends React.Component {
 			  // Hide knob button. Default = false
 			  hideKnob={false}
 			  // By default, agenda dates are marked if they have at least one item, but you can override this if needed
-			  markedDates={markedDates}
+			  markedDates={this.state.markedDates}
 			  // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
 			  firstDay={1}
 			  // If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly.
@@ -203,7 +231,7 @@ const styles = StyleSheet.create({
   }
 });
 
-var markedDates = {
+var markedDates2 = {
 	'2019-01-01': {selected: true, marked: true},
 	'2019-01-02': {marked: true},
 	'2019-01-03': {disabled: true}
