@@ -86,7 +86,7 @@ export default class App extends React.Component {
   render() {
     // <StatusBar hidden={true} />
     // <Player songs={this.state.data} songIndex={this.state.data.length-1} callback={this.getPlayerSong}/>
-    
+
     return (
         <View style={{flex: 1, backgroundColor: '#eee'}}>
         <StatusBar
@@ -129,4 +129,4 @@ yesterday.setDate(today.getDate() - 1);
 
 const minDate = '2018-11-01';
 const maxDate = '2019-01-08';//today;
-const selected = '2019-01-05';//yesterday;
+const selected = '2019-01-07';//yesterday;
