@@ -18,10 +18,10 @@ export class AgendaC extends React.Component {
 
 		let items = this.dataPreprocessing(this.props.data);
 		let markedDates = this.getMarkedDays(items);
+		
 		this.state = {
 			selected: selected,
 			items: items,
-			oldItems: items,
 			markedDates: markedDates
 		};
 
@@ -127,7 +127,6 @@ export class AgendaC extends React.Component {
 	getMarkedDays(items){
 		let markedDates = {};
 		Object.keys(items).forEach(key => {
-			// console.log(key, this.state.oldItems[key]);
 			markedDates[key] = {marked: items[key][0].liked, selected: !items[key][0].opened }
 		});
 		console.log("MARKED:",markedDates);
@@ -142,7 +141,6 @@ export class AgendaC extends React.Component {
         	markedDates: markedDates 
         }, () => {
             console.log(this.state.markedDates); // further value
-            // this.list.generateMarkings();
         });
 	}
 
