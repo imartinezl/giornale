@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Dimensions, Easing, Image, PanResponder, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Dimensions, Easing, Image, Linking, PanResponder, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
@@ -7,17 +7,22 @@ import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
 
 const window = Dimensions.get('window');
 
+const emptyAlbum = '../assets/emptyAlbum.jpg';
+
 export class AgendaItem extends React.Component {
 	constructor(props){
 		super(props);
-    
+
 		this.state = {
-			
+      liked: this.props.item.liked,
+			opened: this.props.item.opened,
+      opacity: new Animated.Value(1)
 		};
     this.storeInFirebase = this.storeInFirebase.bind(this);
     this.getLike = this.getLike.bind(this);
+    this.likeAction = this.likeAction.bind(this);
 
-    this.getFromFirebase(this.props.db, 'data/' + this.props.item.id + '/liked', this.getLike)
+    // this.getFromFirebase(this.props.db, 'data/' + this.props.item.id + '/liked', this.getLike)
   }
   componentDidMount() {
     
@@ -46,6 +51,28 @@ export class AgendaItem extends React.Component {
       [field]: value,
     });
   }
+  likeAction = () => {
+    this.storeInFirebase(this.props.db, 'data/' + this.props.item.id, 'liked', !this.state.liked);
+    this.props.likedCallback(this.props.item, !this.state.liked);
+    this.setState({
+      liked: !this.state.liked
+    },()=>{
+      this._swipeableRow.close();
+    });
+  }
+  spotifyAction = () => {
+    let url = this.props.item.spotify;
+    Linking.canOpenURL(url)
+    .then((supported) => {
+      if (!supported) {
+        console.log("Can't handle url: " + url);
+      } else {
+        return Linking.openURL(url);
+      }
+    })
+    .catch((err) => console.error('An error occurred', err));
+    this._swipeableRow.close();
+  }
   renderLeftActions = (progress, dragX) => {
 
       const trans = dragX.interpolate({
@@ -60,7 +87,7 @@ export class AgendaItem extends React.Component {
       });
       
       return (
-        <RectButton style={styles.leftAction} onPress={this.likeAction}>
+        <RectButton style={styles.leftAction} onPress={this.spotifyAction}>
           <Animated.View
             style={
               {
@@ -72,13 +99,6 @@ export class AgendaItem extends React.Component {
           </Animated.View>
         </RectButton>
       );
-  }
-  likeAction = () => {
-    this.storeInFirebase(this.props.db, 'data/' + this.props.item.id, 'liked', !this.state.liked);
-    this.setState({
-      liked: !this.state.liked
-    });
-    this._swipeableRow.close();
   }
   renderRightActions = (progress, dragX) => {
 
@@ -92,9 +112,9 @@ export class AgendaItem extends React.Component {
         outputRange: [1, 0],
         extrapolate: 'clamp',
       });
-      // let heart = this.props.item.liked ? "ios-heart" : "ios-heart-dislike";
+      let heart = !this.state.liked ? "ios-heart" : "ios-heart-dislike";
       return (
-        <RectButton style={styles.rightAction} onPress={this.close}>
+        <RectButton style={styles.rightAction} onPress={this.likeAction}>
           <Animated.View
             style={
               {
@@ -102,7 +122,7 @@ export class AgendaItem extends React.Component {
                 transform: [{ translateX: trans }],
               }
             }>
-          <Ionicons name="ios-heart" size={40} color="white" />
+          <Ionicons name={heart} size={40} color="white" />
           </Animated.View>
         </RectButton>
       );
@@ -114,56 +134,113 @@ export class AgendaItem extends React.Component {
     this._swipeableRow.close();
   }
   onSwipeableLeftOpen(){
-    console.log("onSwipeableLeftOpen")
+    console.log("onSwipeableLeftOpen");
+    this.spotifyAction();
   }
   onSwipeableRightOpen(){
-    console.log("onSwipeableRightOpen")
+    console.log("onSwipeableRightOpen");
+    this.likeAction();
+  }
+  onSwipeableLeftWillOpen(){
+    console.log("onSwipeableLeftWillOpen");
+    // this.spotifyAction();
+  }
+  onSwipeableRightWillOpen(){
+    console.log("onSwipeableRightWillOpen");
+    // this.likeAction();
   }
   handleMusicPlay(){
   	console.log("play music")
+  }
+  opened(){
+    Animated.timing(this.state.opacity, {
+      toValue: 0,
+      duration: 2000,
+    }).start(()=>{
+      this.setState({
+        opened: !this.state.opened
+      },()=>{
+        Animated.timing(this.state.opacity, {
+          toValue: 1,
+          duration: 2000,
+        }).start();
+      })
+    });
+
   }
 
   render() {
     let d = new Date(this.props.item.date);
     let day = ("0" + d.getDate()).slice(-2);
     let month = ("0" + (d.getMonth() + 1)).slice(-2);
-    return (
-        <Swipeable 
-        ref={this.updateRef.bind(this)}
-        friction={3}
-        leftThreshold={40}
-        rightThreshold={40}
-        renderLeftActions={this.renderLeftActions.bind(this)}
-        renderRightActions={this.renderRightActions.bind(this)}
-        onSwipeableRightOpen={this.onSwipeableRightOpen.bind(this)}
-        onSwipeableLeftOpen={this.onSwipeableLeftOpen.bind(this)}
-        >
-        <View style={styles.item}>
+    if(!this.state.opened){
+      return(
+        <TouchableOpacity onPress={this.opened.bind(this)}>
+        <Animated.View style={[styles.item, {opacity: this.state.opacity}]}>
 
           
-        <View style={styles.date}>
-          <Text allowFontScaling={false} style={styles.day}>{day}</Text>
-          <Text allowFontScaling={false} style={styles.month}>{month}</Text>
-        </View>
-        
-        <View style={styles.textContainer}>
-          <TouchableOpacity onPress={this.handleMusicPlay.bind(this)}>
-            <Text allowFontScaling={false} style={styles.title}>{this.props.item.title}</Text>
-            <Text allowFontScaling={false} style={styles.artist}>{this.props.item.artist}</Text>
-          </TouchableOpacity> 
-        </View>
+          <View style={styles.date}>
+            <Text allowFontScaling={false} style={styles.day}>{day}</Text>
+            <Text allowFontScaling={false} style={styles.month}>{month}</Text>
+          </View>
+          
+          <View style={styles.textContainer}>
+              <Text allowFontScaling={false} style={[styles.title, {textDecorationLine: 'line-through'}]}>
+                {"«".repeat(this.props.item.title.length)}
+              </Text>
+              <Text allowFontScaling={false} style={[styles.artist, {textDecorationLine: 'line-through'}]}>
+                {"«".repeat(this.props.item.artist.length)}
+              </Text>
+          </View>
 
-        <Image
-          style={styles.image}
-          source={{uri: this.props.item.albumImage}}
-          resizeMode={'cover'}
-        />
+          <Image
+            style={styles.image}
+            source={require(emptyAlbum)}
+            resizeMode={'cover'}
+          />
+        </Animated.View>
+        </TouchableOpacity>
+      )
+    }
+    return(
+      <Swipeable 
+      ref={this.updateRef.bind(this)}
+      friction={2}
+      leftThreshold={60}
+      rightThreshold={60}
+      renderLeftActions={this.renderLeftActions.bind(this)}
+      renderRightActions={this.renderRightActions.bind(this)}
+      onSwipeableLeftOpen={this.onSwipeableLeftOpen.bind(this)} 
+      onSwipeableRightOpen={this.onSwipeableRightOpen.bind(this)}
+      onSwipeableLeftWillOpen={this.onSwipeableLeftWillOpen.bind(this)}
+      onSwipeableRightWillOpen={this.onSwipeableRightWillOpen.bind(this)}
+      >
+        <Animated.View style={[styles.item, {opacity: this.state.opacity}]}>
 
-      </View>
+          
+          <View style={styles.date}>
+            <Text allowFontScaling={false} style={styles.day}>{day}</Text>
+            <Text allowFontScaling={false} style={styles.month}>{month}</Text>
+          </View>
+          
+          <View style={styles.textContainer}>
+            <TouchableOpacity onPress={this.handleMusicPlay.bind(this)}>
+              <Text allowFontScaling={false} style={styles.title}>{this.props.item.title}</Text>
+              <Text allowFontScaling={false} style={styles.artist}>{this.props.item.artist}</Text>
+            </TouchableOpacity> 
+          </View>
+
+          <Image
+            style={styles.image}
+            source={{uri: this.props.item.albumImage}}
+            resizeMode={'cover'}
+          />
+        </Animated.View>
 			</Swipeable>
     )
   }
 }
+
 
 const styles = StyleSheet.create({
   item: {
