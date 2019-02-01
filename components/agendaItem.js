@@ -15,8 +15,9 @@ export class AgendaItem extends React.Component {
 
 		this.state = {
       liked: this.props.item.liked,
+      likedAction: false,
 			opened: this.props.item.opened,
-      opacity: new Animated.Value(1)
+      animated: new Animated.Value(0)
 		};
     this.storeInFirebase = this.storeInFirebase.bind(this);
     this.getLike = this.getLike.bind(this);
@@ -52,13 +53,22 @@ export class AgendaItem extends React.Component {
     });
   }
   likeAction = () => {
+
     this.storeInFirebase(this.props.db, 'data/' + this.props.item.id, 'liked', !this.state.liked);
-    this.props.likedCallback(this.props.item, !this.state.liked);
+    this.props.itemCallback(this.props.item, !this.state.liked, this.state.opened);
+
     this.setState({
-      liked: !this.state.liked
-    },()=>{
-      this._swipeableRow.close();
-    });
+      likedAction: true,
+    }, ()=>{
+      this.close();
+    })
+    // this.setState({
+    //   liked: !this.state.liked
+    // },()=>{
+    //   this.storeInFirebase(this.props.db, 'data/' + this.props.item.id, 'liked', this.state.liked);
+    //   this.props.itemCallback(this.props.item, this.state.liked, this.state.opened);
+    // });
+      
   }
   spotifyAction = () => {
     let url = this.props.item.spotify;
@@ -71,7 +81,28 @@ export class AgendaItem extends React.Component {
       }
     })
     .catch((err) => console.error('An error occurred', err));
-    this._swipeableRow.close();
+    this.close();
+  }
+  handleMusicPlay(){
+  	console.log("play music")
+  }
+  openAction(){
+    Animated.spring(this.state.animated, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start(()=>{
+      this.setState({
+        opened: !this.state.opened
+      },()=>{
+        // this.storeInFirebase(this.props.db, 'data/' + this.props.item.id, 'opened', this.state.opened);
+        this.props.itemCallback(this.props.item, this.state.liked, this.state.opened);
+        Animated.spring(this.state.animated, {
+          toValue: 0,
+          useNativeDriver: true,
+        }).start();
+      })
+    });
+
   }
   renderLeftActions = (progress, dragX) => {
 
@@ -149,24 +180,17 @@ export class AgendaItem extends React.Component {
     console.log("onSwipeableRightWillOpen");
     // this.likeAction();
   }
-  handleMusicPlay(){
-  	console.log("play music")
-  }
-  opened(){
-    Animated.timing(this.state.opacity, {
-      toValue: 0,
-      duration: 2000,
-    }).start(()=>{
+  onSwipeableClose(){
+    console.log("onSwipeableClose");
+    
+    if(this.state.likedAction){
+  
       this.setState({
-        opened: !this.state.opened
-      },()=>{
-        Animated.timing(this.state.opacity, {
-          toValue: 1,
-          duration: 2000,
-        }).start();
-      })
-    });
-
+        likedAction: false,
+        liked: !this.state.liked
+      });
+      
+    }
   }
 
   render() {
@@ -175,8 +199,19 @@ export class AgendaItem extends React.Component {
     let month = ("0" + (d.getMonth() + 1)).slice(-2);
     if(!this.state.opened){
       return(
-        <TouchableOpacity onPress={this.opened.bind(this)}>
-        <Animated.View style={[styles.item, {opacity: this.state.opacity}]}>
+        <TouchableOpacity onPress={this.openAction.bind(this)}>
+        <Animated.View style={[styles.item, {
+          opacity: this.state.animated.interpolate({
+            inputRange: [0, 1],
+            outputRange: [1, 0]
+          }),
+          transform: [{
+            scale: this.state.animated.interpolate({
+              inputRange: [0, 1],
+              outputRange: [1, 0]
+            }),
+          }],
+        }]}>
 
           
           <View style={styles.date}>
@@ -214,8 +249,20 @@ export class AgendaItem extends React.Component {
       onSwipeableRightOpen={this.onSwipeableRightOpen.bind(this)}
       onSwipeableLeftWillOpen={this.onSwipeableLeftWillOpen.bind(this)}
       onSwipeableRightWillOpen={this.onSwipeableRightWillOpen.bind(this)}
+      onSwipeableClose={this.onSwipeableClose.bind(this)}
       >
-        <Animated.View style={[styles.item, {opacity: this.state.opacity}]}>
+        <Animated.View style={[styles.item, {
+          opacity: this.state.animated.interpolate({
+            inputRange: [0, 1],
+            outputRange: [1, 0]
+          }),
+          transform: [{
+            scale: this.state.animated.interpolate({
+              inputRange: [0, 1],
+              outputRange: [1, 0]
+            }),
+          }],
+        }]}>
 
           
           <View style={styles.date}>
@@ -253,12 +300,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     padding: 0,
-  	borderRadius: 15,
-  	elevation: 5
+  	borderRadius: 10,
+  	elevation: 4
   },
   image:{
-    width: 70,
-    height: 70,
+    width: 100,
+    height: 100,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 8,
     borderTopLeftRadius: 0,
