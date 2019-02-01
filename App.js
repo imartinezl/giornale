@@ -1,13 +1,11 @@
 import React from 'react';
-import { ActivityIndicator, Alert, Animated, Button, Dimensions, FlatList, 
-  Image, StatusBar, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
-
-import { Calendario } from './components/calendar.js';
+import { ActivityIndicator, Alert, Animated, Button, Dimensions, 
+  FlatList, Image, StatusBar, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import { AgendaC } from './components/agenda.js';
 import { Player } from './components/player.js';
-
 import { DangerZone, Font, Video } from 'expo';
 const { Lottie } = DangerZone;
+const loadingAnimation = './assets/3713-loading.json';
 
 import * as firebase from 'firebase';
 import {firebaseConfig} from './components/firebaseInit.js'
@@ -16,7 +14,6 @@ var database = firebase.database();
 var storage = firebase.storage();
 
 const window = Dimensions.get('window');
-const loadingAnimation = './assets/3713-loading.json';
 
 export default class App extends React.Component {
   constructor(props){
@@ -46,7 +43,6 @@ export default class App extends React.Component {
   }
 
   getFromStorage(storage, file, callback){
-    // console.log("File:",file);
     storage.ref().child(file).getDownloadURL().then((downloadURL) => {
       callback(downloadURLs);
     })
