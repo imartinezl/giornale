@@ -236,7 +236,7 @@ const theme = {
 	agendaTodayColor: '#00adf5',
 	agendaKnobColor: '#4ac4f7',
 	dotColor: '#e4405f',
-	selectedDayBackgroundColor: '#1de5bd',
+	selectedDayBackgroundColor: '#4ac4f7',
 	backgroundColor: '#fff',
 	todayTextColor: 'red'
 };

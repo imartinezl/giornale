@@ -2,12 +2,14 @@ import React from 'react';
 import { Animated, Dimensions, Easing, Image, Linking, PanResponder, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-
 import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
+import { DangerZone } from 'expo';
+const { Lottie } = DangerZone;
 
 const window = Dimensions.get('window');
 
 const emptyAlbum = '../assets/emptyAlbum.jpg';
+const heartAnimation = '../assets/1000-heart.json';
 
 export class AgendaItem extends React.Component {
 	constructor(props){
@@ -26,7 +28,7 @@ export class AgendaItem extends React.Component {
     // this.getFromFirebase(this.props.db, 'data/' + this.props.item.id + '/liked', this.getLike)
   }
   componentDidMount() {
-    
+
   }
   componentWillUnmount() {
 
@@ -53,22 +55,15 @@ export class AgendaItem extends React.Component {
     });
   }
   likeAction = () => {
-
+    console.log("like action");
+    
     this.storeInFirebase(this.props.db, 'data/' + this.props.item.id, 'liked', !this.state.liked);
     this.props.itemCallback(this.props.item, !this.state.liked, this.state.opened);
-
     this.setState({
       likedAction: true,
     }, ()=>{
       this.close();
-    })
-    // this.setState({
-    //   liked: !this.state.liked
-    // },()=>{
-    //   this.storeInFirebase(this.props.db, 'data/' + this.props.item.id, 'liked', this.state.liked);
-    //   this.props.itemCallback(this.props.item, this.state.liked, this.state.opened);
-    // });
-      
+    })    
   }
   spotifyAction = () => {
     let url = this.props.item.spotify;
@@ -144,6 +139,7 @@ export class AgendaItem extends React.Component {
         extrapolate: 'clamp',
       });
       let heart = !this.state.liked ? "ios-heart" : "ios-heart-dislike";
+      let speed = !this.state.liked ? 0.7 : -0.5;
       return (
         <RectButton style={styles.rightAction} onPress={this.likeAction}>
           <Animated.View
@@ -153,11 +149,22 @@ export class AgendaItem extends React.Component {
                 transform: [{ translateX: trans }],
               }
             }>
-          <Ionicons name={heart} size={40} color="white" />
+          <Lottie
+            ref={animation => {this.animation = animation;}}
+            source={require(heartAnimation)}
+            style={styles.lottieAnimation}
+            resizeMode={'cover'}
+            // autoPlay={true}
+            // loop={true}
+            speed={speed}
+          />
+          
           </Animated.View>
         </RectButton>
       );
   }
+  // <Ionicons name={heart} size={40} color="white" />
+
   updateRef = (ref) => {
     this._swipeableRow = ref;
   }
@@ -178,13 +185,14 @@ export class AgendaItem extends React.Component {
   }
   onSwipeableRightWillOpen(){
     console.log("onSwipeableRightWillOpen");
+    this.animation.play(0,50);
     // this.likeAction();
   }
   onSwipeableClose(){
     console.log("onSwipeableClose");
-    
+    this.animation.reset();
     if(this.state.likedAction){
-  
+      
       this.setState({
         likedAction: false,
         liked: !this.state.liked
@@ -241,8 +249,8 @@ export class AgendaItem extends React.Component {
       <Swipeable 
       ref={this.updateRef.bind(this)}
       friction={2}
-      leftThreshold={60}
-      rightThreshold={60}
+      leftThreshold={80}
+      rightThreshold={80}
       renderLeftActions={this.renderLeftActions.bind(this)}
       renderRightActions={this.renderRightActions.bind(this)}
       onSwipeableLeftOpen={this.onSwipeableLeftOpen.bind(this)} 
@@ -361,6 +369,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     backgroundColor: '#e4405f',
     justifyContent: 'center',
+  },
+  lottieAnimation:{
+    width: 150,
+    height:150,
+    marginRight: -40,
   },
 });
 
