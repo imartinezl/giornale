@@ -6,17 +6,17 @@ import { Calendario } from './components/calendar.js';
 import { AgendaC } from './components/agenda.js';
 import { Player } from './components/player.js';
 
-import { Font, Video } from 'expo';
+import { DangerZone, Font, Video } from 'expo';
+const { Lottie } = DangerZone;
 
 import * as firebase from 'firebase';
 import {firebaseConfig} from './components/firebaseInit.js'
 firebase.initializeApp(firebaseConfig);
-
-// Get a reference to the database service
 var database = firebase.database();
 var storage = firebase.storage();
 
 const window = Dimensions.get('window');
+const loadingAnimation = './assets/3713-loading.json';
 
 export default class App extends React.Component {
   constructor(props){
@@ -37,6 +37,7 @@ export default class App extends React.Component {
   }
   async componentDidMount(){
     console.log("App Mount:",this.state);
+    this.animation.play();
     await Font.loadAsync({
       'Roboto-Regular': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
       'Roboto-Bold': require('./assets/fonts/Roboto/Roboto-Bold.ttf'),
@@ -86,7 +87,7 @@ export default class App extends React.Component {
   render() {
     // <StatusBar hidden={true} />
     // <Player songs={this.state.data} songIndex={this.state.data.length-1} callback={this.getPlayerSong}/>
-
+    // <ActivityIndicator size="large"/>
     return (
         <View style={{flex: 1, backgroundColor: '#eee'}}>
         <StatusBar
@@ -106,7 +107,12 @@ export default class App extends React.Component {
             </View>
           ) : (
             <View style={styles.container}>
-              <ActivityIndicator size="large"/>
+              <Lottie
+                ref={animation => {this.animation = animation;}}
+                source={require(loadingAnimation)}
+                style={styles.lottieAnimation}
+                resizeMode={'cover'}
+              />
             </View>
           )}
         </View>
@@ -120,6 +126,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  lottieAnimation:{
+    width: 300,
+    height:300,
   },
 });
 
