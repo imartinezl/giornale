@@ -4,7 +4,7 @@ import { AppRegistry, Button, Component, Dimensions, Image, Modal,
 
 
 // import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
 import { Video } from 'expo';
 
 const window = Dimensions.get('window');
@@ -15,22 +15,47 @@ export class Player extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-		      playing: false,
-		      muted: false,
-		      shuffle: false,
-		      sliding: false,
-		      currentTime: 0,
-		      songIndex: this.props.songIndex,
-		      minified: true,
+			playing: false,
+			muted: false,
+			shuffle: false,
+			sliding: false,
+			currentTime: 0,
+			songIndex: this.props.songs.length-1,
+			minified: true,
 		};
 		// this.onSlidingStart = this.onSlidingStart.bind(this);
 		this.onScroll = this.onScroll.bind(this);
 	}
 	componentDidMount(){
+		console.log("Player Mount");
 		if(this.state.minified){
 			setTimeout(() => this.scroller.scrollTo({ x: scrollBox, y: 0, animated: false}) , 0);
 		}
+	}	
+	componentWillUnmount() {
+    	console.log("Player Unmount");
 	}
+	componentDidUpdate(){
+		console.log("Player Updated");
+	}
+	shouldComponentUpdate(nextProps, nextState) {
+
+		return(true)
+		console.log(this.props.songsOpened, nextProps.songsOpened)
+	    if (JSON.stringify(this.props.songsOpened) !== JSON.stringify(nextProps.songsOpened) ){
+			console.log("Player Should Update");
+	    	return true;
+	    }
+		console.log("Player Should Not Update");
+	    return false;
+  	}
+
+  	updateSongIndex(pressedSongIndex){
+  		this.setState({
+			songIndex: pressedSongIndex
+		});
+		this.videoRef.setPositionAsync(0);
+  	}
 
 	togglePlay(){
 		this.setState({ playing: !this.state.playing });
@@ -54,7 +79,7 @@ export class Player extends React.Component {
 				songIndex: this.state.songIndex - 1,
 				currentTime: 0,
 			},()=>{
-				this.props.callback(this.state.songIndex);
+				this.props.songCallback(this.state.songIndex);
 				console.log('Prev');
 			});
 		} else {
@@ -70,7 +95,7 @@ export class Player extends React.Component {
 			  songIndex: this.state.shuffle ? this.randomSongIndex() : this.state.songIndex + 1,
 			  currentTime: 0,
 			},()=>{
-				this.props.callback(this.state.songIndex);
+				this.props.songCallback(this.state.songIndex);
 				console.log('Next');
 			});
 			this.videoRef.setPositionAsync(0);
@@ -111,6 +136,10 @@ export class Player extends React.Component {
 	}
 	render() {
 		let songPlaying = this.props.songs[this.state.songIndex];
+		if(!this.props.songsOpened[this.state.songIndex]){
+			songPlaying = nullSongPlaying;
+		}
+
 		let songPercentage;
 		if( this.state.songDuration !== undefined ){
 			songPercentage = this.state.currentTime / this.state.songDuration;
@@ -119,51 +148,51 @@ export class Player extends React.Component {
 		}
 		let playButton;
 		if( this.state.playing ){
-			playButton = <Icon onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-pause" size={60} color="#fff" />;
+			playButton = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-pause" size={60} color="#fff" />;
 		} else {
-			playButton = <Icon onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-play" size={60} color="#fff" />;
+			playButton = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-play" size={60} color="#fff" />;
 		}
 		let playButtonMin;
 		if( this.state.playing ){
-			playButtonMin = <Icon onPress={ this.togglePlay.bind(this) } style={ styles.playMin } name="ios-pause" size={30} color="#fff" />;
+			playButtonMin = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.playMin } name="ios-pause" size={30} color="#fff" />;
 		} else {
-			playButtonMin = <Icon onPress={ this.togglePlay.bind(this) } style={ styles.playMin } name="ios-play" size={30} color="#fff" />;
+			playButtonMin = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.playMin } name="ios-play" size={30} color="#fff" />;
 		}
 		let forwardButton;
 		if( !this.state.shuffle && this.state.songIndex + 1 === this.props.songs.length ){
-			forwardButton = <Icon style={ styles.forward } name="ios-skip-forward" size={36} color="#333" />;
+			forwardButton = <Ionicons style={ styles.forward } name="ios-skip-forward" size={36} color="#333" />;
 		} else {
-			forwardButton = <Icon onPress={ this.goForward.bind(this) } style={ styles.forward } name="ios-skip-forward" size={36} color="#fff" />;
+			forwardButton = <Ionicons onPress={ this.goForward.bind(this) } style={ styles.forward } name="ios-skip-forward" size={36} color="#fff" />;
 		}
 		let forwardButtonMin;
 		if( !this.state.shuffle && this.state.songIndex + 1 === this.props.songs.length ){
-			forwardButtonMin = <Icon style={ styles.forwardMin } name="ios-skip-forward" size={30} color="#333" />;
+			forwardButtonMin = <Ionicons style={ styles.forwardMin } name="ios-skip-forward" size={30} color="#333" />;
 		} else {
-			forwardButtonMin = <Icon style={ styles.forwardMin } name="ios-skip-forward" size={30} color="#fff" />;
+			forwardButtonMin = <Ionicons style={ styles.forwardMin } name="ios-skip-forward" size={30} color="#fff" />;
 		}
 		let backwardButton;
 		if( !this.state.shuffle && this.state.songIndex === 0 ){
-			backwardButton = <Icon style={ styles.backward } name="ios-skip-backward" size={36} color="#333" />;
+			backwardButton = <Ionicons style={ styles.backward } name="ios-skip-backward" size={36} color="#333" />;
 		} else {
-			backwardButton = <Icon onPress={ this.goBackward.bind(this) } style={ styles.backward } name="ios-skip-backward" size={36} color="#fff" />;
+			backwardButton = <Ionicons onPress={ this.goBackward.bind(this) } style={ styles.backward } name="ios-skip-backward" size={36} color="#fff" />;
 		}
 		let backwardButtonMin;
 		if( !this.state.shuffle && this.state.songIndex === 0 ){
-			backwardButtonMin = <Icon style={ styles.backwardMin } name="ios-skip-backward" size={30} color="#333" />;
+			backwardButtonMin = <Ionicons style={ styles.backwardMin } name="ios-skip-backward" size={30} color="#333" />;
 		} else {
-			backwardButtonMin = <Icon style={ styles.backwardMin } name="ios-skip-backward" size={30} color="#fff" />;
+			backwardButtonMin = <Ionicons style={ styles.backwardMin } name="ios-skip-backward" size={30} color="#fff" />;
 		}
 		let volumeButton;
 		if( this.state.muted ){
-			volumeButton = <Icon onPress={ this.toggleVolume.bind(this) } style={ styles.volume } name="ios-volume-off" size={28} color="#fff" />;
+			volumeButton = <Ionicons onPress={ this.toggleVolume.bind(this) } style={ styles.volume } name="ios-volume-off" size={28} color="#fff" />;
 		} else {
-			volumeButton = <Icon onPress={ this.toggleVolume.bind(this) } style={ styles.volume } name="ios-volume-up" size={28} color="#fff" />;
+			volumeButton = <Ionicons onPress={ this.toggleVolume.bind(this) } style={ styles.volume } name="ios-volume-high" size={28} color="#fff" />;
 		}
 		let shuffleButton;
 		if( this.state.shuffle ){
-			shuffleButton = <Icon onPress={ this.toggleShuffle.bind(this) } style={ styles.shuffle } name="ios-shuffle" size={28} color="#f62976" />;
+			shuffleButton = <Ionicons onPress={ this.toggleShuffle.bind(this) } style={ styles.shuffle } name="ios-shuffle" size={28} color="#f62976" />;
 		} else {
-			shuffleButton = <Icon onPress={ this.toggleShuffle.bind(this) } style={ styles.shuffle } name="ios-shuffle" size={28} color="#fff" />;
+			shuffleButton = <Ionicons onPress={ this.toggleShuffle.bind(this) } style={ styles.shuffle } name="ios-shuffle" size={28} color="#fff" />;
 		}
 		let image = songPlaying.albumImage;// ? songPlaying.albumImage : this.props.artist.background;
 		return (
@@ -189,13 +218,13 @@ export class Player extends React.Component {
 						</Text>
 					</View>
 					<View style={ styles.headerClose }>
-						<Icon style={ styles.headerCloseIcon } onPress={ this.toggleMinify.bind(this) } name="ios-arrow-down" size={25} color="#fff" />
+						<Ionicons style={ styles.headerCloseIcon } onPress={ this.toggleMinify.bind(this) } name="ios-arrow-down" size={25} color="#fff" />
 					</View>
 					<Image
 						style={ styles.songImage }
 						source={{uri: image,
-						width: window.width - 30,
-						height: 300}}
+						width: window.width - 40,
+						height: window.width - 40}}
 						borderRadius={15}/>
 					<Text style={ styles.songTitle }>
 						{ songPlaying.title }
@@ -453,5 +482,15 @@ function formattedTime( timeInSeconds ){
   } else {
     return(`${ withLeadingZero( minutes ) }:${ withLeadingZero( seconds.toFixed(0) ) }`);
   }
+}
+
+let nullSongPlaying = {
+  "title": "«««««««««««««",
+  "artist": "«««««««««",
+  "album": "«««««««««",
+  "albumImage": 'https://firebasestorage.googleapis.com/v0/b/giornale-ac271.appspot.com/o/emptyAlbum.jpg?alt=media&token=cc22cb45-1170-4b4a-b69f-ed96b5b7fa20',
+  "songFile": null,
+  "liked": false,
+  "opened": false
 }
 
