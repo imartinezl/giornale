@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, Alert, Animated, Button, Dimensions, 
+import { ActivityIndicator, Alert, Button, Dimensions, 
   FlatList, Image, StatusBar, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import { AgendaC } from './components/agenda.js';
 import { Player } from './components/player.js';
@@ -24,11 +24,11 @@ export default class App extends React.Component {
     this.state = {
       loaded: false,
       day: '2019-01-08',
-      animatedValue: new Animated.Value(0),
     };    
     this.getData = this.getData.bind(this);
     this.getPlayerSong = this.getPlayerSong.bind(this);
-    this.testButton = this.testButton.bind(this);
+    this.getOpenedDay = this.getOpenedDay.bind(this);
+    this.getPressedSong = this.getPressedSong.bind(this);
 
     this.getFromFirebase(database, 'data', this.getData)
   }
@@ -58,32 +58,55 @@ export default class App extends React.Component {
     database.ref(key).once('value', snapshot => {
       callback(snapshot, key);
     }).then(() => {
+      let songsOpened = [];
+      this.state.data.forEach((item,index) => {songsOpened[index] = item.opened;});
       this.setState({
         loaded: true,
-        songIndex: this.state.data.length-1
+        playerSongIndex: this.state.data.length-1,
+        pressedSongIndex: this.state.data.length-1,
+        songsOpened: songsOpened
       },()=>{
-        console.log("LOADED");
+        console.log("DATA LOADED");
       })
     });
   }
-  getPlayerSong(songIndex){
-    console.log("SongIndex:", songIndex);
+  getPlayerSong(playerSongIndex){
+    console.log("playerSongIndex:", playerSongIndex);
     this.setState({
-        day: this.state.data[songIndex].date,
-        songIndex: songIndex
+        day: this.state.data[playerSongIndex].date,
+        playerSongIndex: playerSongIndex
     });
   }
-  testButton(){
-    this.setState({
-        songIndex: this.state.songIndex-1
-    },() =>{
-      console.log(this.state.songIndex);
+  getOpenedDay(item){
+    console.log("Item opened");
+    let songsOpened = this.state.songsOpened
+    console.log("Songs Opened1");
+    console.log(songsOpened);
+    if(!songsOpened[item.id]){
+      songsOpened[item.id] = true;
+    }
+    console.log("Songs Opened2");
+    console.log(songsOpened);
+    this.setState({ 
+      songsOpened: songsOpened 
+    }, () => {
+      // console.log(this.state.dataSongs); // further value
     });
+
+  }
+  getPressedSong(pressedSongIndex){
+    this.player.updateSongIndex(pressedSongIndex);
   }
   render() {
-    // <StatusBar hidden={true} />
+    
     // <Player songs={this.state.data} songIndex={this.state.data.length-1} callback={this.getPlayerSong}/>
     // <ActivityIndicator size="large"/>
+    // <Button
+    //   onPress={this.testButton}
+    //   title="Learn More"
+    //   color="#7cc6fe"
+    //   accessibilityLabel="Learn more about this purple button"
+    // />
     return (
         <View style={{flex: 1, backgroundColor: '#eee'}}>
         <StatusBar
@@ -93,12 +116,17 @@ export default class App extends React.Component {
         />
           {this.state.loaded ? (
             <View style={{flex:1}}>
-              <AgendaC db={database} data={this.state.data} songIndex={this.state.songIndex}/>
-              <Button
-                onPress={this.testButton}
-                title="Learn More"
-                color="#7cc6fe"
-                accessibilityLabel="Learn more about this purple button"
+              <AgendaC 
+              db={database} 
+              data={this.state.data} 
+              playerSongIndex={this.state.playerSongIndex} 
+              openedCallback={this.getOpenedDay}
+              pressedCallback={this.getPressedSong}/>
+              <Player 
+              ref={(p) => this.player = p}
+              songs={this.state.data} 
+              songsOpened={this.state.songsOpened}
+              songCallback={this.getPlayerSong}
               />
             </View>
           ) : (
@@ -135,4 +163,4 @@ yesterday.setDate(today.getDate() - 1);
 
 const minDate = '2018-11-01';
 const maxDate = '2019-01-08';//today;
-const selected = '2019-01-07';//yesterday;
+const selected = '2019-01-03';//yesterday;
