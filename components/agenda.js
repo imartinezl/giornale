@@ -6,7 +6,7 @@ import { AgendaDay } from './agendaDay.js';
 
 const minDate = '2018-11-01';
 const maxDate = '2019-01-10';
-const selected = '2019-01-07'; 
+const selected = '2019-01-03'; 
 
 export class AgendaC extends React.Component {
 	constructor(props){
@@ -15,6 +15,7 @@ export class AgendaC extends React.Component {
 		this.storeInFirebase = this.storeInFirebase.bind(this);
 		this.getMarkedDays = this.getMarkedDays.bind(this);
 		this.itemCallback = this.itemCallback.bind(this);
+		this.pressedCallback = this.pressedCallback.bind(this);
 
 		let items = this.dataPreprocessing(this.props.data);
 		let markedDates = this.getMarkedDays(items);
@@ -29,17 +30,18 @@ export class AgendaC extends React.Component {
 
 	}
 	shouldComponentUpdate(nextProps, nextState) {
-		console.log("Should Update");
-	    if (this.props.songIndex !== nextProps.songIndex || 
+	    if (this.props.playerSongIndex !== nextProps.playerSongIndex || 
 	    	JSON.stringify(this.state.markedDates) !== JSON.stringify(nextState.markedDates) ){
+			console.log("Agenda Should Update");
 	    	return true;
 	    }
+		console.log("Agenda Should Update");
 	    return false;
   	}
 	componentDidMount() {
     	console.log("Agenda Mount");
     	setTimeout(() => {
-    		this.list.scrollToIndex({index: this.props.songIndex});
+    		this.list.scrollToIndex({index: this.props.playerSongIndex});
 		},0);
 	}
 	componentWillUnmount() {
@@ -47,21 +49,21 @@ export class AgendaC extends React.Component {
 	}
 	componentDidUpdate(){
 		console.log("Agenda Updated");
-		this.list.scrollToIndex({index: this.props.songIndex});
+		// this.list.scrollToIndex({index: this.props.playerSongIndex});
 	}
 	onDayPress(day){
-		console.log('day pressed:', day.dateString);
+		console.log('Day pressed:', day.dateString);
 		this.setState({ selected: day.dateString }, () => {
 			console.log("State updated:",this.state.selected);
 			// this.storeInFirebase(this.props.db, 'dates/', 'selected', this.state.selected);
 		});
 	}	
 	onDayChange(day){
-		console.log('day changed:', day);
+		console.log('Day changed:', day.dateString);
 	}
 	renderItem(item, firstItemInDay) {
 	    return (
-	      <AgendaItem item={item} db={this.props.db}  itemCallback={this.itemCallback}/>
+	      <AgendaItem item={item} db={this.props.db}  itemCallback={this.itemCallback} pressedCallback={this.pressedCallback}/>
 	    );
 	}
 	renderEmptyDate() {
@@ -129,19 +131,24 @@ export class AgendaC extends React.Component {
 		Object.keys(items).forEach(key => {
 			markedDates[key] = {marked: items[key][0].liked, disabled: !items[key][0].opened}
 		});
-		console.log("MARKED:",markedDates);
+		// console.log("MARKED:",markedDates);
 		return(markedDates)
 	}
 	itemCallback(item, liked, opened){
 
-		console.log("LIKED", item, liked, opened);
+		console.log("LIKED/OPENED", item.id, liked, opened);
+		this.props.openedCallback(item);
         let markedDates = {...this.state.markedDates}
         markedDates[item.date] = {marked: liked, disabled: !opened};
         this.setState({ 
         	markedDates: markedDates 
         }, () => {
-            console.log(this.state.markedDates); // further value
+            // console.log(this.state.markedDates);
         });
+	}
+	pressedCallback(pressedSongIndex){
+		console.log("pressedCallback",pressedSongIndex);
+		this.props.pressedCallback(pressedSongIndex);
 	}
 
 	render() {
