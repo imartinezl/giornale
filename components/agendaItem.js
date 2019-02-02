@@ -79,7 +79,8 @@ export class AgendaItem extends React.Component {
     this.close();
   }
   handleMusicPlay(){
-  	console.log("play music")
+  	console.log("play music", this.props.item.id);
+    this.props.pressedCallback(this.props.item.id)
   }
   openAction(){
     Animated.spring(this.state.animated, {
@@ -138,7 +139,7 @@ export class AgendaItem extends React.Component {
         outputRange: [1, 0],
         extrapolate: 'clamp',
       });
-      let heart = !this.state.liked ? "ios-heart" : "ios-heart-dislike";
+     
       let speed = !this.state.liked ? 0.7 : -0.5;
       return (
         <RectButton style={styles.rightAction} onPress={this.likeAction}>
@@ -163,6 +164,7 @@ export class AgendaItem extends React.Component {
         </RectButton>
       );
   }
+   // let heart = !this.state.liked ? "ios-heart" : "ios-heart-dislike";
   // <Ionicons name={heart} size={40} color="white" />
 
   updateRef = (ref) => {
@@ -373,7 +375,7 @@ const styles = StyleSheet.create({
   lottieAnimation:{
     width: 150,
     height:150,
-    marginRight: -40,
+    marginRight: -45,
   },
 });
 
