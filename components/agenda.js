@@ -4,9 +4,13 @@ import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { AgendaItem } from './agendaItem.js';
 import { AgendaDay } from './agendaDay.js';
 
-const minDate = '2018-11-01';
-const maxDate = '2019-01-10';
-const selected = '2019-01-03'; 
+var today = new Date();
+var yesterday = new Date();
+yesterday.setDate(today.getDate() - 1);
+
+const minDate = '2019-02-04';
+const maxDate = today;//today;
+const selected = today;//yesterday;
 
 export class AgendaC extends React.Component {
 	constructor(props){
