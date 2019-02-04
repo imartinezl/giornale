@@ -148,51 +148,51 @@ export class Player extends React.Component {
 		}
 		let playButton;
 		if( this.state.playing ){
-			playButton = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-pause" size={60} color="#fff" />;
+			playButton = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-pause" size={60} color="#19191c" />;
 		} else {
-			playButton = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-play" size={60} color="#fff" />;
+			playButton = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-play" size={60} color="#19191c" />;
 		}
 		let playButtonMin;
 		if( this.state.playing ){
-			playButtonMin = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.playMin } name="ios-pause" size={30} color="#fff" />;
+			playButtonMin = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.playMin } name="ios-pause" size={30} color="#19191c" />;
 		} else {
-			playButtonMin = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.playMin } name="ios-play" size={30} color="#fff" />;
+			playButtonMin = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.playMin } name="ios-play" size={30} color="#19191c" />;
 		}
 		let forwardButton;
 		if( !this.state.shuffle && this.state.songIndex + 1 === this.props.songs.length ){
-			forwardButton = <Ionicons style={ styles.forward } name="ios-skip-forward" size={36} color="#333" />;
+			forwardButton = <Ionicons style={ styles.forward } name="ios-skip-forward" size={36} color="#ababac" />;
 		} else {
-			forwardButton = <Ionicons onPress={ this.goForward.bind(this) } style={ styles.forward } name="ios-skip-forward" size={36} color="#fff" />;
+			forwardButton = <Ionicons onPress={ this.goForward.bind(this) } style={ styles.forward } name="ios-skip-forward" size={36} color="#19191c" />;
 		}
 		let forwardButtonMin;
 		if( !this.state.shuffle && this.state.songIndex + 1 === this.props.songs.length ){
-			forwardButtonMin = <Ionicons style={ styles.forwardMin } name="ios-skip-forward" size={30} color="#333" />;
+			forwardButtonMin = <Ionicons style={ styles.forwardMin } name="ios-skip-forward" size={30} color="#ababac" />;
 		} else {
-			forwardButtonMin = <Ionicons style={ styles.forwardMin } name="ios-skip-forward" size={30} color="#fff" />;
+			forwardButtonMin = <Ionicons style={ styles.forwardMin } name="ios-skip-forward" size={30} color="#19191c" />;
 		}
 		let backwardButton;
 		if( !this.state.shuffle && this.state.songIndex === 0 ){
-			backwardButton = <Ionicons style={ styles.backward } name="ios-skip-backward" size={36} color="#333" />;
+			backwardButton = <Ionicons style={ styles.backward } name="ios-skip-backward" size={36} color="#ababac" />;
 		} else {
-			backwardButton = <Ionicons onPress={ this.goBackward.bind(this) } style={ styles.backward } name="ios-skip-backward" size={36} color="#fff" />;
+			backwardButton = <Ionicons onPress={ this.goBackward.bind(this) } style={ styles.backward } name="ios-skip-backward" size={36} color="#19191c" />;
 		}
 		let backwardButtonMin;
 		if( !this.state.shuffle && this.state.songIndex === 0 ){
-			backwardButtonMin = <Ionicons style={ styles.backwardMin } name="ios-skip-backward" size={30} color="#333" />;
+			backwardButtonMin = <Ionicons style={ styles.backwardMin } name="ios-skip-backward" size={30} color="#ababac" />;
 		} else {
-			backwardButtonMin = <Ionicons style={ styles.backwardMin } name="ios-skip-backward" size={30} color="#fff" />;
+			backwardButtonMin = <Ionicons style={ styles.backwardMin } name="ios-skip-backward" size={30} color="#19191c" />;
 		}
 		let volumeButton;
 		if( this.state.muted ){
-			volumeButton = <Ionicons onPress={ this.toggleVolume.bind(this) } style={ styles.volume } name="ios-volume-off" size={28} color="#fff" />;
+			volumeButton = <Ionicons onPress={ this.toggleVolume.bind(this) } style={ styles.volume } name="ios-volume-off" size={28} color="#19191c" />;
 		} else {
-			volumeButton = <Ionicons onPress={ this.toggleVolume.bind(this) } style={ styles.volume } name="ios-volume-high" size={28} color="#fff" />;
+			volumeButton = <Ionicons onPress={ this.toggleVolume.bind(this) } style={ styles.volume } name="ios-volume-high" size={28} color="#19191c" />;
 		}
 		let shuffleButton;
 		if( this.state.shuffle ){
 			shuffleButton = <Ionicons onPress={ this.toggleShuffle.bind(this) } style={ styles.shuffle } name="ios-shuffle" size={28} color="#f62976" />;
 		} else {
-			shuffleButton = <Ionicons onPress={ this.toggleShuffle.bind(this) } style={ styles.shuffle } name="ios-shuffle" size={28} color="#fff" />;
+			shuffleButton = <Ionicons onPress={ this.toggleShuffle.bind(this) } style={ styles.shuffle } name="ios-shuffle" size={28} color="#19191c" />;
 		}
 		let image = songPlaying.albumImage;// ? songPlaying.albumImage : this.props.artist.background;
 		return (
@@ -208,7 +208,7 @@ export class Player extends React.Component {
 					isLooping={false}/>
 				<Modal
 		          animationType="slide"
-		          transparent={false}
+		          transparent={true}
 		          visible={!this.state.minified}
 		          onRequestClose={this.toggleMinify.bind(this)}>
                 <View style={styles.containerModal}>
@@ -218,14 +218,15 @@ export class Player extends React.Component {
 						</Text>
 					</View>
 					<View style={ styles.headerClose }>
-						<Ionicons style={ styles.headerCloseIcon } onPress={ this.toggleMinify.bind(this) } name="ios-arrow-down" size={25} color="#fff" />
+						<Ionicons style={ styles.headerCloseIcon } onPress={ this.toggleMinify.bind(this) } name="ios-arrow-down" size={25} color="#ababac" />
 					</View>
+					<View style={ styles.songImage }>
 					<Image
-						style={ styles.songImage }
 						source={{uri: image,
-						width: window.width - 40,
-						height: window.width - 40}}
+						width: window.width - 50,
+						height: window.width - 50}}
 						borderRadius={15}/>
+					</View>
 					<Text style={ styles.songTitle }>
 						{ songPlaying.title }
 					</Text>
@@ -238,7 +239,7 @@ export class Player extends React.Component {
 							onValueChange={ this.onSlidingChange.bind(this) }
 							style={ styles.slider }
 							minimumTrackTintColor='#767488'
-							thumbTintColor='#FFF'
+							thumbTintColor='#19191c'
 							maximumTrackTintColor='#bab9c3'
 							value={ songPercentage }/>
 
@@ -310,12 +311,12 @@ const styles = StyleSheet.create({
     height: 60,
     marginTop: 'auto',
     alignItems: 'center',
-    backgroundColor: '#040126',
+    backgroundColor: '#f9fcff',
   },
   containerModal: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#040126',
+    backgroundColor: '#f9fcff',
   },
   header: {
     marginTop: 10,
@@ -334,31 +335,32 @@ const styles = StyleSheet.create({
   	paddingRight: 15,
   },
   albumTitle: {
-    color: "#BBB",
+    color: "#ababac",
     fontFamily: "Roboto-Regular",
     fontSize: 14,
     textAlign: 'center',
   },
   songImage: {
-    marginTop: 10,
-    marginBottom: 15,
+    padding: 8,
+    elevation: 5,
   },
   songTitle: {
-    color: "white",
+    color: "#19191c",
     fontFamily: "Roboto-Bold",
     marginBottom: 10,
-    marginTop: 13,
-    fontSize: 19
+    marginTop: 8,
+    fontSize: 19,
+    textAlign: 'center',
   },
   artistTitle: {
-    color: "#BBB",
+    color: "#ababac",
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     marginBottom: 20,
   },
   controls: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 0,
   },
   play: {
 	paddingTop: 12,
@@ -397,12 +399,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   time: {
-    color: '#FFF',
+    color: '#19191c',
     flex: 1,
     fontSize: 12,
   },
   timeRight: {
-    color: '#FFF',
+    color: '#19191c',
     textAlign: 'right',
     flex: 1,
     fontSize: 12,
@@ -418,10 +420,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 30,
     width: window.width,
-    backgroundColor: '#1a1839'
+    backgroundColor: '#f9fcff'
   },
   songTitleMin: {
-    color: "white",
+    color: "#19191c",
     fontFamily: "Roboto-Bold",
 	paddingTop: 5,
   	paddingBottom: 0,
@@ -430,7 +432,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   artistTitleMin: {
-    color: "#BBB",
+    color: "#ababac",
     fontFamily: "Roboto-Regular",
     fontSize: 12,
     paddingTop: 0,
