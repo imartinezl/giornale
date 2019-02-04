@@ -15,14 +15,9 @@ var storage = firebase.storage();
 
 const window = Dimensions.get('window');
 
-var today = new Date();
-var yesterday = new Date();
-yesterday.setDate(today.getDate() - 1);
-
-console.log(today);
 const minDate = '2019-02-04';
-const maxDate = today;//today;
-const selected = today;//yesterday;
+var today = getToday();
+console.log(today);
 
 export default class App extends React.Component {
   constructor(props){
@@ -60,7 +55,8 @@ export default class App extends React.Component {
     if(snapshot){
       console.log(key,' OBTAINED ]]]')
       let data = snapshot.val();
-      data = data.filter((item) => item.date <= today.toISOString().slice(0,10));
+      data = data.filter((item) => item.date <= today);
+      console.log(data)
       this.setState({[key]: data});
     }
   }
@@ -155,6 +151,23 @@ export default class App extends React.Component {
   }
 }
 
+function getToday(){
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1; //January is 0!
+  var yyyy = today.getFullYear();
+
+  if (dd < 10) {
+    dd = '0' + dd;
+  }
+
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+
+  today = yyyy + "-" + mm + "-" + dd;
+  return(today);
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -167,3 +180,5 @@ const styles = StyleSheet.create({
     height:300,
   },
 });
+
+
