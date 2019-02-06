@@ -50,7 +50,7 @@ export class AgendaC extends React.Component {
 	}
 	componentDidUpdate(){
 		console.log("Agenda Updated");
-		// this.list.scrollToIndex({index: this.props.playerSongIndex});
+		this.list.scrollToIndex({index: this.props.playerSongIndex});
 	}
 	onDayPress(day){
 		console.log('Day pressed:', day.dateString);
@@ -259,12 +259,12 @@ const styles = StyleSheet.create({
 const theme = {
 	agendaDayTextColor: '#7a92a5',
 	agendaDayNumColor: '#7a92a5',
-	agendaTodayColor: '#00adf5',
-	agendaKnobColor: '#4ac4f7',
+	agendaTodayColor: '#f62976',
+	agendaKnobColor: '#f62976',
 	dotColor: '#e4405f',
-	selectedDayBackgroundColor: '#4ac4f7',
+	selectedDayBackgroundColor: '#f62976',
 	backgroundColor: '#fff',
-	// todayTextColor: 'red'
+	todayTextColor: '#f62976'
 };
 
 
