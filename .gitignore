@@ -1,6 +1,8 @@
 
-assets/data/*.mp3
-assets/data/*.jpg
+assets/data/songs/*.mp3
+assets/data/cover/*.jpg
+assets/old_data/*.mp3
+assets/old_data/*.jpg
 .expo/*
 npm-debug.*
 package-lock.json
