@@ -1,28 +1,137 @@
 {
-	"data": [
-		{
-			"date": "2019-01-07",
-	        "title": "Mr. Brightside",
-	        "artist": "The Killers",
-	        "album": "Hot Fuss"
-      	},
-      	{
-			"date": "2019-01-08",
-	        "title": "Fade Out Lines",
-	        "artist": "The Avener & Phoebe Killdeer",
-	        "album": "The Avener Rework"
-      	},		
-      	{
-			"date": "2019-01-09",
-	        "title": "Patience",
-	        "artist": "Take That",
-	        "album": "Beautiful World"
-      	},
-      	{
-			"date": "2019-01-10",
-	        "title": "La Playa",
-	        "artist": "La Oreja de Van Gogh",
-	        "album": "El viaje de Copperpot"
-      	}
-	]
+	"data":[
+  {
+    "date": "2019-02-04",
+    "title": "Time",
+    "artist": "Hans Zimmer",
+    "album": "Inception",
+    "spotify": "spotify:playlist:37i9dQZF1DWWF3yivn1m3D"
+  },
+  {
+    "date": "2019-02-05",
+    "title": "Unchained Melody",
+    "artist": "The Righteous Brothers",
+    "album": "Just Once in My Life",
+    "spotify": "spotify:playlist:37i9dQZF1DZ06evO2rncef"
+  },
+  {
+    "date": "2019-02-06",
+    "title": "Smooth",
+    "artist": "Santana, Rob Thomas",
+    "album": "Discover More",
+    "spotify": "spotify:playlist:37i9dQZF1DZ06evO3X3E0E"
+  },
+  {
+    "date": "2019-02-07",
+    "title": "Get Lucky",
+    "artist": "Daft Punk, Pharrell Williams",
+    "album": "Random Access Memories",
+    "spotify": "spotify:playlist:37i9dQZF1DWZAkrucRF6Gq"
+  },
+  {
+    "date": "2019-02-08",
+    "title": "The Ecstasy of Gold",
+    "artist": "Ennio Morricone",
+    "album": "The Good, the Bad and the Ugly",
+    "spotify": "spotify:playlist:37i9dQZF1DZ06evO0L6m7S"
+  },
+  {
+    "date": "2019-02-09",
+    "title": "American Pie",
+    "artist": "Don McLean",
+    "album": "American Pie",
+    "spotify": "spotify:playlist:37i9dQZF1DZ06evO0GYCDS"
+  },
+  {
+    "date": "2019-02-10",
+    "title": "Y, ¿Si fuera ella?",
+    "artist": "Alejandro Sanz",
+    "album": "Más",
+    "spotify": "spotify:playlist:37i9dQZF1DX6t4zDdAeW2k"
+  },
+  {
+    "date": "2019-02-11",
+    "title": "Patience",
+    "artist": "Take That",
+    "album": "Beautiful World",
+    "spotify": "spotify:playlist:37i9dQZF1DX5joH2aOAS4r"
+  },
+  {
+    "date": "2019-02-12",
+    "title": "24K Magic",
+    "artist": "Bruno Mars",
+    "album": "24K Magic",
+    "spotify": "spotify:playlist:37i9dQZF1DX177vQ7mVRmP"
+  },
+  {
+    "date": "2019-02-13",
+    "title": "Somewhere Only We Know",
+    "artist": "Keane",
+    "album": "Hopes And Fears",
+    "spotify": "spotify:playlist:37i9dQZF1DZ06evO2YcT04"
+  },
+  {
+    "date": "2019-02-14",
+    "title": "MALAMENTE - Cap 1 Augurio",
+    "artist": "ROSALÍA",
+    "album": "El Mal Querer",
+    "spotify": "spotify:album:355bjCHzRJztCzaG5Za4gq"
+  },
+  {
+    "date": "2019-02-15",
+    "title": "Roxanne",
+    "artist": "The Police",
+    "album": "Outlandos D'Amour",
+    "spotify": "spotify:playlist:37i9dQZF1DZ06evO3pXaXS"
+  },
+  {
+    "date": "2019-02-16",
+    "title": "Perfect Day",
+    "artist": "Lou Reed",
+    "album": "Transformer",
+    "spotify": "spotify:playlist:37i9dQZF1DXdVelxaccCqL"
+  },
+  {
+    "date": "2019-02-17",
+    "title": "Prodigal Son",
+    "artist": "Rationale",
+    "album": "Prodigal Son",
+    "spotify": "spotify:album:6H9qymov6q3LpGwjhaSLsn"
+  },
+  {
+    "date": "2019-02-18",
+    "title": "The Mother We Share",
+    "artist": "CHVRCHES",
+    "album": "The Bones Of What You Believe",
+    "spotify": "spotify:playlist:37i9dQZF1DX65ghozxgjNQ"
+  },
+  {
+    "date": "2019-02-19",
+    "title": "Ain't No Mountain High Enough",
+    "artist": "Marvin Gaye, Tammi Terrell",
+    "album": "Moods of Marvin Gaye",
+    "spotify": "spotify:playlist:37i9dQZF1DZ06evO1VI5MY"
+  },
+  {
+    "date": "2019-02-20",
+    "title": "Piano Concerto No 5 In E Flat, Op 73, The Emperor, I Allegro",
+    "artist": "Ludwig van Beethoven",
+    "album": "Piano Concerto No.5 In E Flat",
+    "spotify": "spotify:playlist:37i9dQZF1DX12YIlzNkccL"
+  },
+  {
+    "date": "2019-02-21",
+    "title": "Wish You Were Here",
+    "artist": "Pink Floyd",
+    "album": "Wish You Were Here",
+    "spotify": "spotify:playlist:37i9dQZF1DXaQ34lqGBfrU"
+  },
+  {
+    "date": "2019-02-22",
+    "title": "The Gospel",
+    "artist": "Alicia Keys",
+    "album": "HERE",
+    "spotify": "spotify:playlist:37i9dQZF1DZ06evO275qeI"
+  }
+]
 }
