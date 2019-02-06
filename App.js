@@ -17,7 +17,7 @@ const window = Dimensions.get('window');
 
 const minDate = '2019-02-04';
 var today = getToday();
-console.log(today);
+
 
 export default class App extends React.Component {
   constructor(props){
@@ -56,7 +56,6 @@ export default class App extends React.Component {
       console.log(key,' OBTAINED ]]]')
       let data = snapshot.val();
       data = data.filter((item) => item.date <= today);
-      console.log(data)
       this.setState({[key]: data});
     }
   }
@@ -88,12 +87,12 @@ export default class App extends React.Component {
     console.log("Item opened");
     let songsOpened = this.state.songsOpened
     console.log("Songs Opened1");
-    console.log(songsOpened);
+    //console.log(songsOpened);
     if(!songsOpened[item.id]){
       songsOpened[item.id] = true;
     }
     console.log("Songs Opened2");
-    console.log(songsOpened);
+    //console.log(songsOpened);
     this.setState({ 
       songsOpened: songsOpened 
     }, () => {
