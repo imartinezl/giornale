@@ -90,7 +90,7 @@ export class AgendaItem extends React.Component {
       this.setState({
         opened: !this.state.opened
       },()=>{
-        // this.storeInFirebase(this.props.db, 'data/' + this.props.item.id, 'opened', this.state.opened);
+        this.storeInFirebase(this.props.db, 'data/' + this.props.item.id, 'opened', this.state.opened);
         this.props.itemCallback(this.props.item, this.state.liked, this.state.opened);
         Animated.spring(this.state.animated, {
           toValue: 0,
@@ -287,11 +287,11 @@ export class AgendaItem extends React.Component {
             </TouchableOpacity> 
           </View>
 
-          <Image
+          {false && <Image
             style={styles.image}
             source={{uri: this.props.item.albumImage}}
             resizeMode={'cover'}
-          />
+          />}
         </Animated.View>
 			</Swipeable>
     )
@@ -305,20 +305,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   	backgroundColor: '#FFF',
-  	marginTop: 8,
-  	marginBottom: 8,
+  	marginTop: 10,
+  	marginBottom: 10,
     marginLeft: 10,
     marginRight: 10,
     padding: 0,
-  	borderRadius: 10,
-  	elevation: 4
+  	borderRadius: 10,//10,
+  	//elevation: 0
   },
   image:{
-    width: 100,
-    height: 100,
-    borderBottomLeftRadius: 0,
+    width: 70,
+    height: 70,
+    borderBottomLeftRadius: 8,
     borderBottomRightRadius: 8,
-    borderTopLeftRadius: 0,
+    borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
   },
   textContainer:{
@@ -346,6 +346,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   date: {
+    height: 70,
     alignItems: 'center',
     justifyContent: 'center',
     paddingLeft: 10,
