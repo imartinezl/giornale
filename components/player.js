@@ -22,6 +22,7 @@ export class Player extends React.Component {
 			currentTime: 0,
 			songIndex: this.props.songs.length-1,
 			minified: true,
+			loaded: false
 		};
 		// this.onSlidingStart = this.onSlidingStart.bind(this);
 		this.onScroll = this.onScroll.bind(this);
@@ -36,7 +37,7 @@ export class Player extends React.Component {
     	console.log("Player Unmount");
 	}
 	componentDidUpdate(){
-		console.log("Player Updated");
+		// console.log("Player Updated");
 	}
 	shouldComponentUpdate(nextProps, nextState) {
 
@@ -51,10 +52,17 @@ export class Player extends React.Component {
   	}
 
   	updateSongIndex(pressedSongIndex){
-  		this.setState({
-			songIndex: pressedSongIndex
-		});
-		this.videoRef.setPositionAsync(0);
+  		if(this.state.songIndex !== pressedSongIndex && this.state.loaded){
+  			this.setState({
+			  songIndex: pressedSongIndex,
+			  currentTime: 0,
+			  loaded: false,
+			},()=>{
+				// this.props.songCallback(this.state.songIndex);
+				this.videoRef.setPositionAsync(0);
+				console.log('UpdatedSongIndex');
+			});
+  		}
   	}
 
 	togglePlay(){
@@ -74,7 +82,7 @@ export class Player extends React.Component {
 		});
 	}
 	goBackward(){
-		if(this.state.currentTime < 3000 && this.state.songIndex !== 0 ){
+		if(this.state.currentTime < 3000 && this.state.songIndex !== 0){
 			this.setState({
 				songIndex: this.state.songIndex - 1,
 				currentTime: 0,
@@ -90,7 +98,7 @@ export class Player extends React.Component {
 		}
 	}
 	goForward(){
-		if(this.state.songIndex !== (this.props.songs.length - 1) ){
+		if(this.state.songIndex !== (this.props.songs.length - 1)){
 			this.setState({
 			  songIndex: this.state.shuffle ? this.randomSongIndex() : this.state.songIndex + 1,
 			  currentTime: 0,
@@ -114,7 +122,12 @@ export class Player extends React.Component {
 		}
 	}
 	onLoad(params){
-		this.setState({ songDuration: params.durationMillis });
+		console.log("song loaded");
+		this.setState({ 
+			songDuration: params.durationMillis,
+			loaded: true
+		});
+		// this.videoRef.setPositionAsync(0);
 	}
 	onSlidingChange(value){
 		this.setState({ sliding: true });
@@ -147,37 +160,37 @@ export class Player extends React.Component {
 			songPercentage = 0;
 		}
 		let playButton;
-		if( this.state.playing ){
+		if( this.state.playing){
 			playButton = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-pause" size={60} color="#19191c" />;
 		} else {
 			playButton = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.play } name="ios-play" size={60} color="#19191c" />;
 		}
 		let playButtonMin;
-		if( this.state.playing ){
-			playButtonMin = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.playMin } name="ios-pause" size={30} color="#19191c" />;
+		if( this.state.playing){
+			playButtonMin = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.playMin } name="ios-pause" size={30} color="#f62976" />;
 		} else {
-			playButtonMin = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.playMin } name="ios-play" size={30} color="#19191c" />;
+			playButtonMin = <Ionicons onPress={ this.togglePlay.bind(this) } style={ styles.playMin } name="ios-play" size={30} color="#f62976" />;
 		}
 		let forwardButton;
-		if( !this.state.shuffle && this.state.songIndex + 1 === this.props.songs.length ){
+		if( !this.state.shuffle && this.state.songIndex + 1 === this.props.songs.length){
 			forwardButton = <Ionicons style={ styles.forward } name="ios-skip-forward" size={36} color="#ababac" />;
 		} else {
 			forwardButton = <Ionicons onPress={ this.goForward.bind(this) } style={ styles.forward } name="ios-skip-forward" size={36} color="#19191c" />;
 		}
 		let forwardButtonMin;
-		if( !this.state.shuffle && this.state.songIndex + 1 === this.props.songs.length ){
+		if( !this.state.shuffle && this.state.songIndex + 1 === this.props.songs.length){
 			forwardButtonMin = <Ionicons style={ styles.forwardMin } name="ios-skip-forward" size={30} color="#ababac" />;
 		} else {
 			forwardButtonMin = <Ionicons style={ styles.forwardMin } name="ios-skip-forward" size={30} color="#19191c" />;
 		}
 		let backwardButton;
-		if( !this.state.shuffle && this.state.songIndex === 0 ){
+		if( !this.state.shuffle && this.state.songIndex === 0){
 			backwardButton = <Ionicons style={ styles.backward } name="ios-skip-backward" size={36} color="#ababac" />;
 		} else {
 			backwardButton = <Ionicons onPress={ this.goBackward.bind(this) } style={ styles.backward } name="ios-skip-backward" size={36} color="#19191c" />;
 		}
 		let backwardButtonMin;
-		if( !this.state.shuffle && this.state.songIndex === 0 ){
+		if( !this.state.shuffle && this.state.songIndex === 0){
 			backwardButtonMin = <Ionicons style={ styles.backwardMin } name="ios-skip-backward" size={30} color="#ababac" />;
 		} else {
 			backwardButtonMin = <Ionicons style={ styles.backwardMin } name="ios-skip-backward" size={30} color="#19191c" />;
@@ -260,7 +273,7 @@ export class Player extends React.Component {
                 { this.state.minified && (
 					<View style={ styles.containerMin }>
 						<View style={ styles.controlsMin }>
-							<TouchableHighlight	onPress={this.toggleMinify.bind(this)}>
+							<TouchableHighlight	onPress={this.toggleMinify.bind(this)} underlayColor={"#fff"}>
 								<Image
 									source={{uri: image,
 									width: 60,
@@ -281,7 +294,7 @@ export class Player extends React.Component {
 									{backwardButtonMin}
 								</View>
 								<View style={styles.scrollContainer}>
-								<TouchableHighlight	onPress={this.toggleMinify.bind(this)}>
+								<TouchableHighlight	onPress={this.toggleMinify.bind(this)} underlayColor={"#fff"}>
 									<View>
 										<Text style={ styles.songTitleMin }>
 											{ songPlaying.title }
@@ -341,13 +354,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   songImage: {
-    padding: 8,
-    elevation: 5,
+    backgroundColor: '#f9fcff',
+    borderRadius:15,
+    margin: 8,
+    elevation: 15,
   },
   songTitle: {
     color: "#19191c",
     fontFamily: "Roboto-Bold",
-    marginBottom: 10,
+    marginBottom: 8,
     marginTop: 8,
     fontSize: 19,
     textAlign: 'center',
@@ -420,7 +435,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 30,
     width: window.width,
-    backgroundColor: '#f9fcff'
+    backgroundColor: '#fff',
+  	borderTopWidth: 2,
+    borderTopColor: '#f62976',
   },
   songTitleMin: {
     color: "#19191c",
@@ -491,7 +508,7 @@ let nullSongPlaying = {
   "artist": "«««««««««",
   "album": "«««««««««",
   "albumImage": 'https://firebasestorage.googleapis.com/v0/b/giornale-ac271.appspot.com/o/emptyAlbum.jpg?alt=media&token=cc22cb45-1170-4b4a-b69f-ed96b5b7fa20',
-  "songFile": null,
+  "songFile": 'http://cdn-data.motu.com/media/ethno/demo-audio/mp3/02-Africa.mp3',
   "liked": false,
   "opened": false
 }
