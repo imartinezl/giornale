@@ -15,9 +15,7 @@ var storage = firebase.storage();
 
 const window = Dimensions.get('window');
 
-const minDate = '2019-02-04';
 var today = getToday();
-
 
 export default class App extends React.Component {
   constructor(props){
