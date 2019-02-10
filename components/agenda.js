@@ -7,7 +7,7 @@ import { AgendaDay } from './agendaDay.js';
 
 const minDate = '2019-02-04';
 const maxDate = getToday();//today;
-const selected = minDate;//top dateeeee;
+const selected = getFromToday(20);//top dateeeee;
 
 export class AgendaC extends React.Component {
 	constructor(props){
@@ -41,16 +41,18 @@ export class AgendaC extends React.Component {
   	}
 	componentDidMount() {
     	console.log("Agenda Mount");
-    	setTimeout(() => {
-    		this.list.scrollToIndex({index: this.props.playerSongIndex});
-		},0);
+    	// setTimeout(() => {
+    		// this.list.scrollToIndex({index: 11});
+    		// this.list.scrollToIndex({index: this.props.playerSongIndex});
+    		// this.list.scrollToEnd();
+		// },0);
 	}
 	componentWillUnmount() {
     	console.log("Agenda Unmount");
 	}
 	componentDidUpdate(){
 		console.log("Agenda Updated");
-		this.list.scrollToIndex({index: this.props.playerSongIndex});
+		// this.list.scrollToIndex({index: this.props.playerSongIndex});
 	}
 	onDayPress(day){
 		console.log('Day pressed:', day.dateString);
@@ -118,10 +120,11 @@ export class AgendaC extends React.Component {
 		      //console.log(this.state.items);
 		      const newItems = {};
 		      Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
+		      //console.log(newItems);
 		      this.setState({
 		        items: newItems
 		      });
-		}, 1000);
+		}, 200);
 	}
 	timeToString(time) {
 	    const date = new Date(time);
@@ -177,9 +180,9 @@ export class AgendaC extends React.Component {
 			  // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
 			  maxDate={maxDate}
 			  // Max amount of months allowed to scroll to the past. Default = 50
-			  pastScrollRange={5}
+			  pastScrollRange={7}
 			  // Max amount of months allowed to scroll to the future. Default = 50
-			  futureScrollRange={5}
+			  futureScrollRange={7}
 			  // specify how each item should be rendered in agenda
 			  renderItem={this.renderItem.bind(this)}
 			  // specify how each date should be rendered. day can be undefined if the item is not first in that day.
@@ -219,6 +222,26 @@ function isDefined(x){
 }
 function getToday(){
   var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1; //January is 0!
+  var yyyy = today.getFullYear();
+
+  if (dd < 10) {
+    dd = '0' + dd;
+  }
+
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+
+  today = yyyy + "-" + mm + "-" + dd;
+  return(today);
+}
+function getFromToday(span){
+  var today = new Date(maxDate)
+  today = new Date(today-span*24*3600*1000);
+  today = new Date(Math.max(today,new Date(minDate)))
+
   var dd = today.getDate();
   var mm = today.getMonth() + 1; //January is 0!
   var yyyy = today.getFullYear();
