@@ -231,18 +231,18 @@ export class AgendaItem extends React.Component {
           
           <View style={styles.textContainer}>
               <Text allowFontScaling={false} style={[styles.title, {textDecorationLine: 'line-through'}]}>
-                {"«".repeat(this.props.item.title.length)}
+                {"«".repeat(this.props.item.title.length/2)}
               </Text>
               <Text allowFontScaling={false} style={[styles.artist, {textDecorationLine: 'line-through'}]}>
-                {"«".repeat(this.props.item.artist.length)}
+                {"«".repeat(this.props.item.artist.length/2)}
               </Text>
           </View>
 
-          <Image
+          {false && <Image
             style={styles.image}
             source={require(emptyAlbum)}
             resizeMode={'cover'}
-          />
+          />}
         </Animated.View>
         </TouchableOpacity>
       )
