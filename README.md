@@ -18,8 +18,9 @@ Android app to discover one song per day.
 
 * [React-native](https://facebook.github.io/react-native/)  - [*0.57.1*]
 * [Expo](https://expo.io/) SDK - [*32.0.0*]
-* [Firebase](https://firebase.google.com) for storage and database - [*^5.8.1*]
 * [React](https://reactjs.org/) - [*16.5.0*]
+* [Firebase](https://firebase.google.com) for storage and database - [*^5.8.1*]
+* [React-native-calendars](https://github.com/wix/react-native-calendars) - [*^1.22.0*]
 * [Babel-preset-expo"](https://github.com/expo/expo/tree/master/packages/babel-preset-expo) - ["^5.0.0"]
 
 ### Install and run
@@ -65,9 +66,15 @@ export const firebaseConfig = {
 }
 ```
 
-* Run:
+* Run in development
 ```
 npm start
+```
+
+* Publish to expo and build Android apk
+```
+expo publish
+expo build:android
 ```
 
 ## Authors
