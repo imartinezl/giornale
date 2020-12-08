@@ -2,9 +2,9 @@
 
 Android app to discover one song per day. 
 
-<kbd> <img src="docs/gif/agenda.gif" width="275" /> </kbd>
-<kbd> <img src="docs/gif/player.gif" width="275" /> </kbd>
-<kbd> <img src="docs/gif/like_spotify.gif" width="275" /> </kbd>
+<kbd> <img src="docs/gif/agenda.gif" width="260" /> </kbd>
+<kbd> <img src="docs/gif/player.gif" width="260" /> </kbd>
+<kbd> <img src="docs/gif/like_spotify.gif" width="260" /> </kbd>
 
 ### Features
 
@@ -84,6 +84,5 @@ expo build:android
 ## License
 This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) file for details
 
-<kbd> <img src="docs/main_view.png" width="280" /> </kbd>
 
 
